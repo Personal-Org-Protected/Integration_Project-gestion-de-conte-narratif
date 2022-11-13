@@ -1,0 +1,42 @@
+﻿@model StorytellingWebApp.Models.ImageVM
+<h1>Create</h1>
+
+<h4>Storytell</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="image.NomImage" class="control-label"></label>
+                <input asp-for="image.NomImage" class="form-control"/>
+                <span asp-validation-for="image.NomImage" class="text-danger"></span>
+            </div>
+                 <div class="form-group">
+                <label asp-for="image.descriptionImage" class="control-label"></label>
+                <input asp-for="image.descriptionImage" class="form-control"/>
+                <span asp-validation-for="image.descriptionImage" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+              <label asp-for="image.IdTag"></label>
+                @Html.DropDownListFor(m => m.image.IdTag, Model.selectListItems, "Select Tag")
+            </div>
+            <div class="form-group" hidden>
+                <label asp-for="image.Uri" class="control-label"></label>
+                <input asp-for="image.Uri" class="form-control" value="@Model.Uri"/>
+                <span asp-validation-for="image.Uri" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

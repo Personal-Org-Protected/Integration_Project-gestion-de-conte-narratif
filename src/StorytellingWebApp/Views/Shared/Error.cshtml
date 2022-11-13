@@ -1,0 +1,23 @@
+﻿
+@{
+    ViewData["Title"] = "Error";
+}
+
+<h1 class="text-danger">Error.</h1>
+<h2 class="text-danger">An error occurred while processing your request.</h2>
+
+
+<h3>Development Mode</h3>
+    @for(int i =0; i<ViewData.Count;i++){
+<p>
+   <br />
+   <strong> @ViewData.ElementAtOrDefault(i).Value</strong>
+</p>
+    }
+
+
+    <script type="text/javascript">  
+window.setTimeout(function(){
+window.location.href='https://localhost:7278/';
+}, 4000);   
+    </script>  

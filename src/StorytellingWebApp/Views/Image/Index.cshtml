@@ -1,0 +1,83 @@
+﻿@model StorytellingWebApp.Models.ImageVM
+
+
+<h1>All your Images</h1>
+<div class="align-content-between col-3 flex-row">
+<div class="row">
+    <div class="col-xl-3">
+        <form asp-action="Index" asp-route-pgNumber="1">
+            <div style="display:flex; justify-content:space-evenly;flex-direction:column-reverse">
+                <div class="form-group">
+                  <label asp-for="IdTag"></label>
+                     @Html.DropDownListFor(m => m.IdTag, Model.selectListItems, "Select Tag")
+                </div>
+                <div class="form-group" style="transform:translateY(18pt)">
+                    <input type="submit" value="Sort" class="btn btn-primary" />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<br />
+<br />
+<br />
+<p>
+    <a class="btn btn-primary u-btn-2" asp-action="Create">Create New</a>
+</p>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+               <th>
+                @Html.DisplayNameFor(model => model.image.NomImage)
+            </th>
+             <th>
+                Image
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.PaginatedItems.Items) {
+        <tr>
+             <td>
+                @Html.DisplayFor(modelItem => item.NomImage)
+            </td>
+             <td>
+                <img src="@item.Uri" style="height:200px;width:300px"/>
+            </td>
+            <td> 
+                <a class="btn btn-primary" asp-action="Edit" asp-route-id="@item.IdImage">Update</a>    <a  class="btn btn-primary" asp-action="Details" asp-route-id="@item.IdImage">Select</a>
+
+                <form asp-action="Delete" asp-route-id="@item.IdImage">
+                     <input type="submit" value="Delete" class="btn btn-danger" /> 
+                </form>
+            </td>
+
+        </tr>
+
+}
+    </tbody>
+</table>
+
+
+<div class="footer">
+
+             <table cellpadding="0" cellspacing="0">
+                <tr>
+                    @for (int i = 1; i <= Model.PaginatedItems.TotalPages; i++)
+                    {
+                        <td>
+                            @if (Model.PaginatedItems.HasNextPage)
+                            {
+                                <a asp-action="Index" asp-route-IdTag="@Model.IdTag" asp-route-pgNumber="@i"> @i </a>
+                            }
+                            else
+                            {
+                                <span>@i</span>
+                            }
+                        </td>
+                    }
+                </tr>
+            </table>
+</div>

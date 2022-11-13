@@ -1,0 +1,39 @@
+﻿@model StorytellingWebApp.Models.ChapitreCreationVM
+<h1>Create</h1>
+
+<h4>chap</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreatePost">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="chapitre.IdImage" class="control-label"></label>
+                <input asp-for="chapitre.IdImage" class="form-control" value="@Model.idImage"/>
+                <span asp-validation-for="chapitre.IdImage" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="chapitre.IdStory" class="control-label"></label>
+                <input asp-for="chapitre.IdStory" class="form-control" value="@Model.idStory"/>
+                <span asp-validation-for="chapitre.IdStory" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="chapitre.IdStoryTelling" class="control-label"></label>
+                <input asp-for="chapitre.IdStoryTelling" class="form-control" value="@Model.idStoryTelling"/>
+                <span asp-validation-for="chapitre.IdStoryTelling" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}
+

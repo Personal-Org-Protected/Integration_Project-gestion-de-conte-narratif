@@ -1,0 +1,47 @@
+﻿@model StorytellingWebApp.Models.User
+
+<a asp-action="Edit" asp-route-id="@Model.user_id"></a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.username)
+            </th>
+               <th>
+                @Html.DisplayNameFor(model => model.email)
+            </th>
+              <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+               <th>
+                @Html.DisplayNameFor(model => model.phoneNumber)
+            </th>
+
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => modelItem.username)
+            </td>
+             <td>
+                @Html.DisplayFor(modelItem => modelItem.email)
+            </td>
+              <td>
+                @Html.DisplayFor(modelItem => modelItem.Location)
+            </td>
+              <td>
+                @Html.DisplayFor(modelItem => modelItem.phoneNumber)
+            </td>
+
+            <td>
+                <form asp-action="Delete" asp-route-user_id="@Model.user_id">
+                     <input type="submit" value="Delete" class="btn btn-danger" /> 
+                </form>
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>
