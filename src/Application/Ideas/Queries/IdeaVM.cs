@@ -8,6 +8,6 @@ namespace Application.Ideas.Queries
 {
     public class IdeaVM
     {
-        public IList<IdeaDto> Ideas { get; set; }
+        public ICollection<IdeaDto> Ideas { get; set; }
     }
 }

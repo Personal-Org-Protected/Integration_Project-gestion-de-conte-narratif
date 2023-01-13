@@ -11,11 +11,8 @@ using System.Threading.Tasks;
 
 namespace Application.StoryTellings.Command.UpdateCommand
 {
-    public class StopReadingBookCommand :IRequest<Result>
-    {
-        public int idBox { get; set; }
-        public int order { get; set; }
-    }
+    public record StopReadingBookCommand(int idBox, int order) : IRequest<Result>;
+
 
     public class StopReadingBookCommandHandler : IRequestHandler<StopReadingBookCommand, Result>
     {

@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Common.Models;
+using Application.Images.Queries.Dto;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
@@ -18,7 +19,7 @@ namespace Application.Images.Queries
 
     public class GetImageByOwnerQueriesHandler : IRequestHandler<GetImageByOwnerQueries, PaginatedItems<ImageDto>>
     {
-        private const int _pageSize = 50;
+        private const int _pageSize = 4;
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
 
@@ -29,26 +30,44 @@ namespace Application.Images.Queries
         }
         public async Task<PaginatedItems<ImageDto>> Handle(GetImageByOwnerQueries request, CancellationToken cancellationToken)
         {
-            var user = await _context.userEntities
-                .Where(t => t.user_id == request.user_id)
-                .SingleOrDefaultAsync()?? throw new NotFoundException("No user Found");
-            var tag = await getDefaultTag(request.idTag);
-            return await _context.Images
-                .Where(d => d.owner == user.IdUser && d.IdTag==tag)
-                .ProjectTo<ImageDto>(_mapper.ConfigurationProvider)
-                .OrderBy(t => t.IdImage)
-                .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken) ?? throw new NotFoundException("there is no image like that");
+            if (request.idTag != 0)
+                return await getSpec(request.user_id, request.idTag, request.pgNumber, cancellationToken);
+
+
+            return await getAll(request.user_id, request.pgNumber, cancellationToken);
+              
         }
 
-        private async Task<int> getDefaultTag(int idTag)
+        public async Task<PaginatedItems<ImageDto>> getAll(string user_id,int pgNumber,CancellationToken cancellationToken)
         {
-            if (idTag == 0)
-            {
-                var result = await _context.Tag
-                                   .Where(t => t.NameTag == "Default")
-                                   .SingleOrDefaultAsync() ?? throw new NotFoundException("no tag by default found"); idTag = result.IdTag;
-            }
-            return idTag;
+            return await _context.Images
+            .Where(d => d.user_id == user_id)
+            .ProjectTo<ImageDto>(_mapper.ConfigurationProvider)
+            .OrderBy(t => t.IdImage)
+            .PaginatedListAsync(pgNumber, _pageSize, cancellationToken) ?? throw new NotFoundException("there is no image like that");
         }
+
+
+        public async Task<PaginatedItems<ImageDto>> getSpec(string user_id, int idTag,int pgNumber, CancellationToken cancellationToken)
+        {
+                return await _context.Images
+                    .Where(d => d.user_id == user_id && d.IdTag == idTag)
+                    .ProjectTo<ImageDto>(_mapper.ConfigurationProvider)
+                    .OrderBy(t => t.IdImage)
+                    .PaginatedListAsync(pgNumber, _pageSize, cancellationToken) ?? throw new NotFoundException("there is no image like that");
+        }
+
+
+
+        //private async Task<int> getDefaultTag(int idTag)
+        //{
+        //    if (idTag == 0)
+        //    {
+        //        var result = await _context.Tag
+        //                           .Where(t => t.NameTag == "Default")
+        //                           .SingleOrDefaultAsync() ?? throw new NotFoundException("no tag by default found"); idTag = result.IdTag;
+        //    }
+        //    return idTag;
+        //}
     }
 }

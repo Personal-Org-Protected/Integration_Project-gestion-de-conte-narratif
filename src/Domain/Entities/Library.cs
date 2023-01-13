@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,9 +11,8 @@ namespace Domain.Entities
     {
         public string IdLibrary { get; set; }
         public string NameLibrary { get; set; }
-        public string IdUser { get; set; }
-        public virtual UserEntity Owner { get; set; }
+        public string user_id { get; set; }
+        public virtual User Owner { get; set; }
         public virtual ICollection<StoryTellBox> StoryTellBoxes { get; set; }
-        public virtual ICollection<Transaction> TransactionLibrary { get; set; }
     }
 }

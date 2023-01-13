@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces;
+﻿using Application.Common.Exceptions;
+using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
 using MediatR;
@@ -13,7 +14,7 @@ namespace Application.Commentaries.Command.CreateCommand
 {
     public class CreateCommentaryCommand : IRequest<Result>
     {
-        public string Owner { get; set; }
+        public string user_id { get; set; }
         public string Commentaire { get; set; }
         public int IdZone { get; set; }
     }
@@ -28,16 +29,13 @@ namespace Application.Commentaries.Command.CreateCommand
         }
         public async Task<Result> Handle(CreateCommentaryCommand request, CancellationToken cancellationToken)
         {
-            var userEntity = await _context.userEntities
-                .Where(t => t.user_id == request.Owner)
-                .SingleOrDefaultAsync();
             var entity = new Commentaires
             {
                 Commentaire = request.Commentaire,
-                Owner = userEntity.IdUser,
+                user_id =request.user_id,
                 IdZone =request.IdZone,
                 DateCreation=DateTime.Now,
-                signal=10
+                signal=0
             };
 
             _context.Commentaries.Add(entity);

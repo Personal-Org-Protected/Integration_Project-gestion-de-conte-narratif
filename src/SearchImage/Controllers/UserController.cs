@@ -19,57 +19,85 @@ namespace SearchImage.Controllers
     [ApiController]
     public class UserController : ApiController
     {
-        //[Authorize("ReadUser")]
+        //[Authorize("AdminAcces")]
         [HttpGet]
         public async Task<PaginatedItems<UserDisplay>> GetAsync([FromQuery] GetUserQueries getUserQueries)
         {
             return await Mediator.Send(getUserQueries);
         }
-       // [Authorize("ReadUser")]
+
+        //[Authorize("AdminAcces")]
         [HttpGet("{user_id}")]
         public async Task<UserDisplay> GetByIdAsync(string user_id)
         {
             return await Mediator.Send(new GetUserByIdQueries(user_id));
         }
+
+        //[Authorize("ReadContent")]
+        [HttpGet("Simple/{user_id}")]
+        public async Task<UserSimpleInfoDto> GetByIdAsync2(string user_id)
+        {
+            return await Mediator.Send(new GetUserSimpleInfoQueries(user_id));
+        }
+
+  
+        [HttpGet("GenerateId")]
+        public async Task<UserIdDto> GetAsync([FromQuery]GetUserIDQueries getUserIDQueries)
+        {
+            return await Mediator.Send(getUserIDQueries);
+        }
+
+
         [HttpPost]
-        public async Task<Result> CreateAsync(CreateUserCommand createUserCommand)
+        public async Task<ActionResult<Result>> CreateAsync(CreateUserCommand createUserCommand)
         {
             return await Mediator.Send(createUserCommand);
         }
+
+
+
        // [Authorize("UpdateUser")]
         [HttpPut("{user_id}")]
-        public async Task<Result> UpdateAsync(UpdateUserCommand updateUserCommand)
+        public async Task<ActionResult<Result>> UpdateAsync(string user_id, UpdateUserCommand updateUserCommand)
         {
-          return  await Mediator.Send(updateUserCommand);
+            if (user_id != updateUserCommand.user_id)
+            {
+                return BadRequest();
+            }
+            return  await Mediator.Send(updateUserCommand);
         }
+
+
+
+
         //[Authorize("AdminAccess")]
-        [HttpDelete("{user_id}")]
-        public async Task<Result> DeleteAsync(string user_id)
-        {
-            return await Mediator.Send(new DeleteUserCommand(user_id));
-        }
+        //[HttpDelete("{user_id}")]
+        //public async Task<ActionResult<Result>> DeleteAsync(string user_id)
+        //{
+        //    return await Mediator.Send(new DeleteUserCommand(user_id));
+        //}
 
-        [HttpPut("Choice-Forfait")]
-        public async Task<Result> ChoiceForfait([FromQuery]ChoiceForfaitCommand choiceForfaitCommand)
-        {
-            return await Mediator.Send(choiceForfaitCommand);
-        }
+        //[HttpPut("Choice-Forfait")]
+        //public async Task<ActionResult<Result>> ChoiceForfait([FromQuery]ChoiceForfaitCommand choiceForfaitCommand)
+        //{
+        //    return await Mediator.Send(choiceForfaitCommand);
+        //}
 
-        [HttpPut("Resilience-Forfait")]
-        public async Task<Result> ResilieForfait([FromQuery]ResiliateForfeitCommand resiliateForfeit)
-        {
-            return await Mediator.Send(resiliateForfeit);
-        }
+        //[HttpPut("Resilience-Forfait")]
+        //public async Task<ActionResult<Result>> ResilieForfait([FromQuery]ResiliateForfeitCommand resiliateForfeit)
+        //{
+        //    return await Mediator.Send(resiliateForfeit);
+        //}
 
-        [HttpGet("UsersIntern")]
-        public async Task<PaginatedItems<UserInternDto>> GetInternAsync([FromQuery] GetUserInternQueries getUserQueries)
-        {
-            return await Mediator.Send(getUserQueries);
-        }
-        [HttpGet("UsersIntern/{user_id}")]
-        public async Task<UserInternDto> GetInternAsyncById([FromQuery] GetUserInternByIdentityUserIdQueries getUserQueriesById)
-        {
-            return await Mediator.Send(getUserQueriesById);
-        }
+        //[HttpGet("UsersIntern")]
+        //public async Task<PaginatedItems<UserInternDto>> GetInternAsync([FromQuery] GetUserInternQueries getUserQueries)
+        //{
+        //    return await Mediator.Send(getUserQueries);
+        //}
+        //[HttpGet("UsersIntern/{user_id}")]
+        //public async Task<UserInternDto> GetInternAsyncById(string user_id)
+        //{
+        //    return await Mediator.Send(new GetUserInternByIdentityUserIdQueries(user_id));
+        //}
     }
 }

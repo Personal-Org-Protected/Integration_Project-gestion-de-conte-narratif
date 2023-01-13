@@ -28,12 +28,7 @@ namespace Application.Forfaits.Command.UpdateCommand
         public async Task<Result> Handle(UpdateForfaitCommand request, CancellationToken cancellationToken)
         {
             var entity = await _context.Forfaits
-            .FindAsync(new object[] { request.IdForfait }, cancellationToken);
-
-            if (entity == null)
-            {
-                throw new NotFoundException(nameof(ForfaitClient), request.IdForfait);
-            }
+            .FindAsync(request.IdForfait ) ?? throw new NotFoundException(nameof(ForfaitClient), request.IdForfait); ;
 
             entity.ForfaitLibelle = request.ForfaitLibelle;
             entity.ForfaitValue = request.ForfaitValue;

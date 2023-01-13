@@ -38,63 +38,99 @@ namespace Application.DependencyInjections
 
             services.AddAuthorization(options => {
 
-                //admin access
-                options.AddPolicy("AdminAcces", policy => {
-                                                 policy.Requirements
-                                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:item-admin"));
-                                                 policy.Requirements
-                                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "create:item-admin"));
-                                                 policy.Requirements
-                                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:item-admin"));
-                                                 policy.Requirements
-                                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:users"));
-                    //       policy.Requirements
-                    //.Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:role_members"));
+            //admin access
+            options.AddPolicy("AdminAcces", policy => {
+                policy.Requirements
+                       .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:item-admin"));
+                policy.Requirements
+                       .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "create:item-admin"));
+                policy.Requirements
+                       .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:item-admin"));
+                //       policy.Requirements
+                //.Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:role_members"));
+
+            });
+
+            //author access
+            options.AddPolicy("AuthorAccess", policy => { policy.Requirements
+                                                             .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:Author-item"));
+                policy.Requirements
+                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "write:Author-item"));
+                policy.Requirements
+                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:Author-item"));
+                policy.Requirements
+                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:Author-item"));
+
+            });
+
+            //user access
+            options.AddPolicy("UserAccess", policy => {
+                policy.Requirements
+                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:user-item"));
+                policy.Requirements
+                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:user-item"));
+                policy.Requirements
+                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "buy:book"));
+
+            });
+
+            options.AddPolicy("ReadContent", policy =>
+                                                     policy.Requirements
+                                                     .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:item")));
+
+
+                //commentary Interactions
+                options.AddPolicy("CommentaryAccess", policy => {
+                                                                policy.Requirements
+                                                                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:commentary"));
+                                                                policy.Requirements
+                                                                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:commentary"));
+                                                                policy.Requirements
+                                                                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:commentary"));
+                                                                policy.Requirements
+                                                                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "create:commentary"));
+
+
 
                 });
-                     
-                //author access
-                options.AddPolicy("ReadAuthorAccess", policy => policy.Requirements
-                                                                .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:Author-item")));
-                options.AddPolicy("WriteAuthorAccess", policy => policy.Requirements
-                                                                 .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "write:Author-item")));
-                options.AddPolicy("UpdateAuthorAccess", policy => policy.Requirements
-                                                                  .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:Author-item")));
-                options.AddPolicy("DeleteAuthorAccess", policy => policy.Requirements
-                                                                  .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:Author-item")));
-                options.AddPolicy("ForumAccess", policy => {
-                                                        policy.Requirements
-                                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "create:forum"));
-                                                        policy.Requirements
-                                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:forum"));
+
+                //forfait Intercations access
+                options.AddPolicy("ForfaitAccess", policy =>
+                {
+                                                                policy.Requirements
+                                                                   .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:forfait"));
+                                                                policy.Requirements
+                                                                  .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "change:forfait"));
+
                 });
 
-                //user access
-                options.AddPolicy("UpdateUserAccess", policy => policy.Requirements
-                                                                .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:user-item")));
-                options.AddPolicy("DeleteUserAccess", policy => policy.Requirements
-                                                                .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:user-item")));
 
-                options.AddPolicy("ReadBookAccess", policy => policy.Requirements
-                                                              .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:book")));
-               
-                options.AddPolicy("BuybookAccess", policy => policy.Requirements
-                                                             .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "buy:book")));
+                options.AddPolicy("RoleAccess", policy =>
+                {
+                                                                policy.Requirements
+                                                                  .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "change:role"));
 
-                options.AddPolicy("BuyForfaitAccess", policy => policy.Requirements
-                                                                .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "buy:forfait")));
-              
-                options.AddPolicy("Resilience", policy => policy.Requirements
-                                                          .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "stop:forfait")));// a voir
+                });
+
+                options.AddPolicy("Resilience", policy => {
+                                                                    policy.Requirements
+                                                                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "stop:forfait"));
+                                                                    policy.Requirements
+                                                                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "stop:role"));
+
+
+                });// a voir
 
 
                 //userIdentity
-                options.AddPolicy("ReadIdentityUser", policy => {
-                                                        policy.Requirements
-                                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:users"));
-                                                        policy.Requirements
-                                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:user_idp_tokens"));
-                });
+                //options.AddPolicy("ReadIdentityUser", policy => {
+                //                                        policy.Requirements
+                //                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:users"));
+                //                                        policy.Requirements
+                //                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:user_idp_tokens"));
+                //});
+
+
                 options.AddPolicy("UpdateUser", policy => {
                                                         policy.Requirements
                                                         .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:users"));

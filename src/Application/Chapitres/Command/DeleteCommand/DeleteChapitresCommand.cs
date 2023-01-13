@@ -35,21 +35,21 @@ namespace Application.Chapitres.Command.DeleteCommand
             _context.Chapitres.Remove(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
-            var resultStory=await deleteStory(entity.IdStory,cancellationToken);
-
-            if (resultTask > 0 && resultStory.Succeeded) return Result.Success("Chapitre deleted with success");
-            return Result.Failure("Action Failed : Chapitre could not be deleted", new List<string>()); //delete story avec
-        }
-
-        private async Task<Result> deleteStory(int idStory,CancellationToken cancellationToken)
-        {
-           var story=await _context.Stories.FindAsync(idStory)??throw new NotFoundException();
-            _context.Stories.Remove(story);
-            var resultTask = await _context.SaveChangesAsync(cancellationToken);
-
+            //var resultStory=await deleteStory(entity.IdStory,cancellationToken);
 
             if (resultTask > 0) return Result.Success("Chapitre deleted with success");
             return Result.Failure("Action Failed : Chapitre could not be deleted", new List<string>()); //delete story avec
         }
+
+        //private async Task<Result> deleteStory(int idStory,CancellationToken cancellationToken)
+        //{
+        //   var story=await _context.Stories.FindAsync(idStory)??throw new NotFoundException();
+        //    _context.Stories.Remove(story);
+        //    var resultTask = await _context.SaveChangesAsync(cancellationToken);
+
+
+        //    if (resultTask > 0) return Result.Success("Chapitre deleted with success");
+        //    return Result.Failure("Action Failed : Chapitre could not be deleted", new List<string>()); //delete story avec
+        //}
     }
 }

@@ -2,6 +2,7 @@
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Common.Models;
+using Application.Images.Queries.Dto;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;

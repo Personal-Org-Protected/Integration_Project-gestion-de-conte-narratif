@@ -25,7 +25,8 @@ namespace Application.Stories.Queries
         }
         public async Task<StoryDto> Handle(GetStoriesByIdQueries request, CancellationToken cancellationToken)
         {
-           var Story=await  _context.Stories.Where(t => t.IdStory == request.id).FirstOrDefaultAsync() ?? throw new NotFoundException("there is no story available");
+           var Story=await  _context.Stories
+                .FindAsync(request.id) ?? throw new NotFoundException("there is no story available");
             return _mapper.Map<StoryDto>(Story);
         }
     }

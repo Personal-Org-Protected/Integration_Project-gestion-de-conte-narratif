@@ -19,7 +19,7 @@ namespace Application.Stories.Command.UpdateCommand
                 .GreaterThan(0).WithMessage("id Story can not be negative");
             RuleFor(v => v.NomStory)
                    .NotEmpty().WithMessage("Name is required.")
-                   .MaximumLength(40).WithMessage("Name must not exceed 100 characters.");
+                   .MaximumLength(40).WithMessage("Name must not exceed 40 characters.");
             RuleFor(v => v.TextStory)
                 .MaximumLength(1000).WithMessage("Desciption must not exceed 1000 characters.");
         }

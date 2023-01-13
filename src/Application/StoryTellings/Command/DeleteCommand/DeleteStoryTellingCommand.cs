@@ -28,7 +28,7 @@ namespace Application.StoryTellings.Command.DeleteCommand
             var entity = await _context.StoryTellings
             .Where(l => l.IdStoryTelling == request.id)
             .SingleOrDefaultAsync(cancellationToken)?? throw new NotFoundException(nameof(StoryTelling), request.id);
-           var resultChapter= await deleteProcess(request.id, cancellationToken); ; if (resultChapter == null) return resultChapter;
+           //var resultChapter= await deleteProcess(request.id, cancellationToken); ; if (resultChapter == null) return resultChapter;
 
             _context.StoryTellings.Remove(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
@@ -39,27 +39,27 @@ namespace Application.StoryTellings.Command.DeleteCommand
         }
 
 
-        private async Task<Result> deleteProcess(int bookId, CancellationToken cancellationToken)
-        {
-            var chapters = await getChaptersRelated(bookId);
-            _context.Chapitres.RemoveRange(chapters);
-            foreach (var chapter in chapters)
-            {
-                var story = await _context.Stories
-                    .FindAsync(chapter.IdStory)?? throw new NotFoundException($"story{chapter.IdStory} not found");
+        //private async Task<Result> deleteProcess(int bookId, CancellationToken cancellationToken)
+        //{
+        //    var chapters = await getChaptersRelated(bookId);
+        //    _context.Chapitres.RemoveRange(chapters);
+        //    foreach (var chapter in chapters)
+        //    {
+        //        var story = await _context.Stories
+        //            .FindAsync(chapter.IdStory)?? throw new NotFoundException($"story{chapter.IdStory} not found");
 
-                _context.Stories.Remove(story);
-            }
-            var resultTask = await _context.SaveChangesAsync(cancellationToken);
-             return Result.Success(" delete process with success : " +resultTask/2+" chapter deleted");
+        //        _context.Stories.Remove(story);
+        //    }
+        //    var resultTask = await _context.SaveChangesAsync(cancellationToken);
+        //     return Result.Success(" delete process with success : " +resultTask/2+" chapter deleted");
 
-        }
-        private async Task<List<Chapitre>> getChaptersRelated(int bookId)
-        {
-           return  await _context.Chapitres
-             .Where(t => t.IdStoryTelling == bookId)
-             .ToListAsync();
-        }
+        //}
+        //private async Task<List<Chapitre>> getChaptersRelated(int bookId)
+        //{
+        //   return  await _context.Chapitres
+        //     .Where(t => t.IdStoryTelling == bookId)
+        //     .ToListAsync();
+        //}
     }
 
 }

@@ -1,6 +1,8 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
+using Domain.Entities;
+using Domain.Identity;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -11,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Application.Commentaries.Command.DeleteCommand
 {
-    public record DeleteCommentaryCommand(int id,string user_id) : IRequest<Result>;
+    public record DeleteCommentaryCommand(int id) : IRequest<Result>;
     public class DeleteCommentaryCommandHandler : IRequestHandler<DeleteCommentaryCommand, Result>
     {
         private readonly IApplicationDbContext _context;
@@ -22,12 +24,8 @@ namespace Application.Commentaries.Command.DeleteCommand
         }
         public async Task<Result> Handle(DeleteCommentaryCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _context.Commentaries.FindAsync(request.id,cancellationToken);
-
-            if (entity == null && entity.Owner==request.user_id)
-            {
-                throw new NotFoundException(nameof(Images), request.id);
-            }
+            var entity = await _context.Commentaries
+                .FindAsync(request.id)?? throw new NotFoundException(nameof(Commentaires), request.id);
             _context.Commentaries.Remove(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 

@@ -17,7 +17,7 @@ namespace Application.Transactions.Command.CreateCommand
             RuleFor(v => v.price)
               .NotEmpty()
               .WithMessage("this transaction must have a price");
-            RuleFor(v => v.User_id)
+            RuleFor(v => v.user_id)
               .NotEmpty()
               .WithMessage("this transaction must belong to someone");
             RuleFor(v => v.StoryTellId)

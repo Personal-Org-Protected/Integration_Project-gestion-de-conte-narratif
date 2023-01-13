@@ -17,6 +17,7 @@ namespace Infrastructure.Persistence.DataConfiguration
             builder.ToTable("Tag");
             builder.HasKey(item => item.IdTag);
             builder.Property(e => e.NameTag).HasColumnName("Libelle").IsRequired();
+            builder.Property(e => e.numberRef).HasColumnName("Nombre de reference").HasDefaultValue(0);
         }
     }
 }

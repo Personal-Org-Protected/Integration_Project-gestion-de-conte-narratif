@@ -11,10 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.Commentaries.Command.UpdateCommand
 {
-    public class SignalCommentaryCommand : IRequest<Result>
-    {
-        public int id { get; set; }
-    }
+    public record SignalCommentaryCommand(int id) : IRequest<Result>;
 
 
     public class SignalCommentaryCommandHandler : IRequestHandler<SignalCommentaryCommand, Result>

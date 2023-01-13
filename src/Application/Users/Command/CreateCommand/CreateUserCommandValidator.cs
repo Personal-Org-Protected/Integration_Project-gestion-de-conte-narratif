@@ -36,24 +36,26 @@ namespace Application.Users.Command.CreateCommand
                .NotEmpty().WithMessage("password is necessarry")
                .MaximumLength(15).WithMessage("too long")
                .MinimumLength(5).WithMessage("need more than that as password")
-               .Matches("^[A-Z][a-z]*[0-9].*$")
+               .Matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
                .WithMessage("Lower case Upper case and number needed");
-               ;
             RuleFor(v=>v.phoneNumber)
                 .Length(10).WithMessage("must be 10 character")
                 .MustAsync((x, cancellationToken) => PhoneNumberdExist(x, cancellationToken)).WithMessage("phone already taken");
+
+            RuleFor(v => v.description)
+         .MaximumLength(200).WithMessage("must be max 200  character");
 
         }
 
         private async Task<bool> EmailExist(string email,CancellationToken cancellationToken)
         {
-            return await _context.Users
-                .AnyAsync(t => t.email != email, cancellationToken);
+            return ! await _context.Users
+                .AnyAsync(t => t.email == email, cancellationToken);
         }
         private async Task<bool> UserIdExist(string username, CancellationToken cancellationToken)
         {
-            return await _context.Users
-                .AnyAsync(t=> t.username != username, cancellationToken);
+            return ! await _context.Users
+                .AnyAsync(t=> t.username == username, cancellationToken);
         }
         private async Task<bool> isMajeur(DateTime birth)
         {
@@ -61,8 +63,8 @@ namespace Application.Users.Command.CreateCommand
         }
         private async Task<bool> PhoneNumberdExist(string phoneNumber, CancellationToken cancellationToken)
         {
-            return await _context.Users
-                .AnyAsync(t => t.phoneNumber != phoneNumber, cancellationToken);
+            return ! await _context.Users
+                .AnyAsync(t => t.phoneNumber == phoneNumber, cancellationToken);
         }
     }
 }

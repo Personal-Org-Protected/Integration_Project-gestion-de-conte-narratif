@@ -40,7 +40,7 @@ builder.Services.AddSwaggerGen(opt =>
         Description="The first version of this api",
         TermsOfService=new Uri("https://nwb.one/blog/swagger-api-versioning-dotnet-core"),
         Contact=new OpenApiContact { 
-        Name="Mouhsine Ayi & Zakaria Chillah",
+        Name="Mouhsine Ayi",
         Email= "Psr11140@students.ephec.be",
         Url=new Uri("https://twitter.com/elonmusk?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor")
         },
@@ -64,10 +64,10 @@ builder.Services.AddCors(option =>
     option.AddPolicy(name: configuration["CorsPolicy:Angular:name"],
                       policy =>
                       {
-                          policy.WithOrigins(configuration["CorsPolicy:Angular:uri:Angular"])
+                          policy.AllowAnyOrigin()
                           .AllowAnyHeader()
                           .AllowAnyMethod();
-                          
+                      
                       });
 });
 

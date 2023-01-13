@@ -16,7 +16,7 @@ namespace Application.Forfaits.Queries
         public double ForfaitValue { get; set; }
         public double Reduction { get; set; }
         public bool IsForAuthor { get; set;}
-        public int IdRole { get; set; }
+        public int RoleId { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<ForfaitClient, ForfaitDto>();

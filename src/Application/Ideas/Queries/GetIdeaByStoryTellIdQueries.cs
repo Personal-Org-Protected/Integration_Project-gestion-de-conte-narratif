@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Application.Ideas.Queries
 {
-    public record GetIdeaByStoryTellIdQueries(int idStoryTell) : IRequest<ICollection<IdeaDto>>;
+    public record GetIdeaByStoryTellIdQueries(int idStoryTell) : IRequest<IdeaVM>;
 
-    public class GetIdeaByStoryTellIdQueriesHandler : IRequestHandler<GetIdeaByStoryTellIdQueries, ICollection<IdeaDto>>
+    public class GetIdeaByStoryTellIdQueriesHandler : IRequestHandler<GetIdeaByStoryTellIdQueries, IdeaVM>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
@@ -23,12 +23,16 @@ namespace Application.Ideas.Queries
             _context = context;
             _mapper = mapper;
         }
-        public async Task<ICollection<IdeaDto>> Handle(GetIdeaByStoryTellIdQueries request, CancellationToken cancellationToken)
+        public async Task<IdeaVM> Handle(GetIdeaByStoryTellIdQueries request, CancellationToken cancellationToken)
         {
             var Idea = await _context.Ideas
-               .Where(t => t.IdStoryTelling == request.idStoryTell)           
-               .ToListAsync() ?? throw new NotFoundException("Idea", request);
-            return _mapper.Map<ICollection<IdeaDto>>(Idea);
+               .Where(t => t.IdStoryTelling == request.idStoryTell)
+               .ToListAsync();
+           var Ideas = _mapper.Map<List<IdeaDto>>(Idea);
+            return new IdeaVM()
+            {
+                Ideas =  Ideas
+            };
         }
     }
 }

@@ -18,21 +18,11 @@ namespace Application.Libraries.Command.CreateCommand
             RuleFor(v=>v.NameLibrary)
                 .NotEmpty()
                 .WithMessage("Need a name for the library");
-            RuleFor(v=>v.user_id)
+            RuleFor(v => v.user_id)
                 .NotEmpty()
-                .WithMessage("This library must belong to someone")
-                .MustAsync((x, cancellationToken) => CheckIfUserExist(x, cancellationToken)).WithMessage("User does not  exist ");
+                .WithMessage("This library must belong to someone");
         }
 
 
-      public async Task<bool> CheckIfUserExist(string user_id, CancellationToken cancellationToken)
-        {
-            var user = await _context.userEntities
-                  .Where(t => t.user_id == user_id)
-                  .SingleOrDefaultAsync();
-            return await _context
-                .userEntities
-                .AnyAsync(t => t.IdUser ==user.IdUser , cancellationToken);
-        }
     }
 }

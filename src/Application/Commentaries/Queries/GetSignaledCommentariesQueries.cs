@@ -1,10 +1,12 @@
-﻿using Application.Common.Exceptions;
+﻿using Application.Commentaries.Queries.Dto;
+using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using Application.Common.Models;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,13 +32,15 @@ namespace Application.Commentaries.Queries
                 _mapper = mapper;
             }
             public async Task<PaginatedItems<CommentaryDto>> Handle(GetSignaledCommentariesQueries request, CancellationToken cancellationToken)
-            {
-                return await _context.Commentaries
+            {//rajouter info avec les commentaires
+                return  await _context.Commentaries
                    .Where(d => d.signal>=10)
                    .ProjectTo<CommentaryDto>(_mapper.ConfigurationProvider)
-                   .OrderBy(t => t.DateCreation)//mettre date => rajouter migration
+                   .OrderBy(t => t.DateCreation)
                    .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken) ?? throw new NotFoundException("there is no commentary available");
 
             }
-        }
+
+
+    }
 }

@@ -11,12 +11,11 @@ namespace Domain.Entities
     public class Commentaires
     {
         public int IdCommentaire { get; set; }
-        public string Owner { get; set; }
+        public string user_id { get; set; }
+        public int? like { get; set; }
         public int signal { get; set; }
         public string Commentaire { get; set; }
         public int IdZone { get; set; }//new
-        [DisplayFormat(DataFormatString = "{yyyy-MM-dd -- H:mm:ss}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.Date)]
         public DateTime DateCreation { get;set; }
         public virtual ZoneCommentary ZoneCommentary { get; set; }//new
     }

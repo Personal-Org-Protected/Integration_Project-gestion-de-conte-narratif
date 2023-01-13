@@ -10,11 +10,8 @@ using System.Threading.Tasks;
 
 namespace Application.Ideas.Command.CreateCommand
 {
-    public class CreateIdeaCommand : IRequest<Result>
-    {
-        public string idea { get; set; }
-        public int StoryId { get; set; }
-    }
+    public record CreateIdeaCommand(int StoryId, string idea) : IRequest<Result>;
+
 
     public class CreateIdeaCommandHandler : IRequestHandler<CreateIdeaCommand, Result>
     {

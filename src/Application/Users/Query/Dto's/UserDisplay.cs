@@ -20,8 +20,8 @@ namespace Application.Users.Query.Dto_s
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; }
         public string phoneNumber { get; set; }
+        public string description { get; set; }
 
-        public ICollection<RolesDto> rolesDtos { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<User, UserDisplay>();

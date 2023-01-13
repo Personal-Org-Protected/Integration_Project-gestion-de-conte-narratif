@@ -11,11 +11,8 @@ using System.Threading.Tasks;
 
 namespace Application.Ideas.Command.UpdateCommand
 {
-    public class UpdateIdeaCommand : IRequest<Result>
-    {
-        public int idIdea { get; set; }
-        public string idea { get; set; }
-    }
+    public record UpdateIdeaCommand(int idIdea,string idea) : IRequest<Result>;
+
 
     public class UpdateIdeaCommandHandler : IRequestHandler<UpdateIdeaCommand, Result>
     {

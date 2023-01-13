@@ -5,9 +5,11 @@ using Application.Ideas.Command.DeleteCommand;
 using Application.Ideas.Command.UpdateCommand;
 using Application.Ideas.Queries;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace SearchImage.Controllers
 {
+   // [Authorize("AuthorAccess")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -15,10 +17,10 @@ namespace SearchImage.Controllers
     public class IdeaController : ApiController
     {
 
-        [HttpGet]
-        public async Task<ICollection<IdeaDto>> GetIdeasByStory([FromQuery] GetIdeaByStoryTellIdQueries getIdeaByStoryTell)
+        [HttpGet("StoryTell/{id}")]
+        public async Task<IdeaVM> GetIdeasByStory(int id)
         {
-            return await Mediator.Send(getIdeaByStoryTell);
+            return await Mediator.Send(new GetIdeaByStoryTellIdQueries(id));
         }
         [HttpGet("{id}")]
         public async Task<IdeaDto> GetIdeaById(int id)
@@ -26,19 +28,29 @@ namespace SearchImage.Controllers
             return await Mediator.Send(new GetIdeaByIdQueries(id));
         }
         [HttpPost]
-        public async Task<Result> Post(CreateIdeaCommand createForfait)
+        public async Task<ActionResult<Result>> Post(CreateIdeaCommand createForfait)
         {
             return await Mediator.Send(createForfait);
         }
-        [HttpPut]
-        public async Task<Result> Update(UpdateIdeaCommand updateForfait)
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Result>> Update(int id,UpdateIdeaCommand updateForfait)
         {
+            if (id != updateForfait.idIdea)
+            {
+                return BadRequest();
+            }
             return await Mediator.Send(updateForfait);
         }
-        [HttpDelete]
-        public async Task<Result> Delete([FromQuery] DeleteIdeaCommand deleteForfait)
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Result>> Delete(int id)
         {
-            return await Mediator.Send(deleteForfait);
+            return await Mediator.Send(new DeleteIdeaCommand(id));
+        }
+        [HttpDelete("histoire/{id}")]
+        public async Task<ActionResult<Result>> Delete2(int id)
+        {
+            return await Mediator.Send(new DeleteAllIdeaCommand(id));
         }
     }
 }

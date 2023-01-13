@@ -26,21 +26,18 @@ namespace Application.Libraries.Queries
         }
         public async Task<LibrariesDto> Handle(GetLibraryByOwnerQueries request, CancellationToken cancellationToken)
         {
-            var user=await  _context.userEntities
-                .Where(t=>t.user_id==request.owner)
-                .SingleOrDefaultAsync();
             var library = await _context.Libraries
-                .Where(t => t.IdUser == user.IdUser) //creer un moel qui recupere la librairie et les hitsoires a l' interieur
+                .Where(t => t.user_id == request.owner) //creer un moel qui recupere la librairie et les hitsoires a l' interieur
                 .FirstOrDefaultAsync() ?? throw new NotFoundException("Library", request);
 
-            var libraryDto = _mapper.Map<LibrariesDto>(library);
+            return _mapper.Map<LibrariesDto>(library);
 
-            libraryDto.StoryTellBoxDtos=await _context.storyTellBoxes
-                .Where(t=>t.IdLibrary==library.IdLibrary)
-                .ProjectTo<StoryTellBoxDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
+            //libraryDto.StoryTellBoxDtos=await _context.storyTellBoxes
+            //    .Where(t=>t.IdLibrary==library.IdLibrary)
+            //    .ProjectTo<StoryTellBoxDto>(_mapper.ConfigurationProvider)
+            //    .ToListAsync();
 
-            return libraryDto;
+            //return libraryDto;
         }
     }
 }

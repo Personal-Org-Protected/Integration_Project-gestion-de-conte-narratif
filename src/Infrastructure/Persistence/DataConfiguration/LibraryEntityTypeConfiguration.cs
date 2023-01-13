@@ -16,7 +16,7 @@ namespace Infrastructure.Persistence.DataConfiguration
             builder.ToTable("Bibliotheque");
             builder.HasKey(item => item.IdLibrary);
             builder.Property(e => e.NameLibrary).HasColumnName("Nom de Bibliotheque");
-            builder.Property(e => e.IdUser).HasColumnName("users Property");
+            builder.Property(e => e.user_id).HasColumnName("Proprietaire");//new
         }
     }
 }

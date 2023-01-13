@@ -3,41 +3,63 @@ using Application.Forfaits.Command.CreateCommand;
 using Application.Forfaits.Command.DeleteCommand;
 using Application.Forfaits.Command.UpdateCommand;
 using Application.Forfaits.Queries;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SearchImage.Controllers
 {
+    //[Authorize("ForfaitAccess")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class ForfaitController :ApiController
     {
-        [HttpGet("User-Forfait")]
-        public async Task<PaginatedItems<ForfaitDto>> GetForUser([FromQuery] GetForfaitUserQueries getForfaitUser)
+
+        [HttpGet]
+        public async Task<PaginatedItems<ForfaitDto>> Get([FromQuery] GetForfaitQueries getForfait)
         {
-            return await Mediator.Send(getForfaitUser);
+            return await Mediator.Send(getForfait);
         }
-        [HttpGet("Author-Forfait")]
-        public async Task<PaginatedItems<ForfaitDto>> GetForAuthor([FromQuery] GetForfaitAuthorQueries getForfaitAuthor)
+
+
+
+
+        [HttpGet("{id}")]
+        public async Task<ForfaitDto> Get(int id)
         {
-            return await Mediator.Send(getForfaitAuthor);
+            return await Mediator.Send(new GetForfaitByIdQueries(id));
         }
+
+
+
+
         [HttpPost]
-        public async Task<Result> Post(CreateForfaitCommand createForfait)
+        public async Task<ActionResult<Result>> Post(CreateForfaitCommand createForfait)
         {
             return await Mediator.Send(createForfait);
         }
-        [HttpPut]
-        public async Task<Result> Update(UpdateForfaitCommand updateForfait)
+
+
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Result>> Update(int id,UpdateForfaitCommand updateForfait)
         {
+
+            if (id != updateForfait.IdForfait)
+            {
+                return BadRequest();
+            }
             return await Mediator.Send(updateForfait);
         }
-        [HttpDelete]
-        public async Task<Result> Delete([FromQuery] DeleteUserLambdaForfaitCommand deleteForfait)
+
+
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<Result>> Delete(int id)
         {
-            return await Mediator.Send(deleteForfait);
+            return await Mediator.Send(new DeleteUserLambdaForfaitCommand(id));
         }
     }
 }

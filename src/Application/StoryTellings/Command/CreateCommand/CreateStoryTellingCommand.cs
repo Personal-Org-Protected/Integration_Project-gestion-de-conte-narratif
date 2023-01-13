@@ -16,7 +16,7 @@ namespace Application.StoryTellings.Command.CreateCommand
     {
         public string? url { get; set; }//new
         public string NameStory { get; set; }
-        public string IdUser { get; set; }
+        public string user_id { get; set; }
         public double price { get; set; }
         public string synopsis { get; set; }
         public int idTag { get; set; }
@@ -33,23 +33,24 @@ namespace Application.StoryTellings.Command.CreateCommand
         }
         public async Task<Result> Handle(CreateStoryTellingCommand request, CancellationToken cancellationToken)
         {
-
-
+            var zoneCommentaire = await CreateZoneComm(cancellationToken);
+            var tag = await getDefaultTag(request.idTag);
             var entity = new StoryTelling()
             {
                 NameStory = request.NameStory,
                 url = request.url,
-                IdUser=request.IdUser,
+                user_id=request.user_id,
                 DateCreation=DateTime.Now,
                 price = request.price,
                 Sypnopsis=request.synopsis,
-                IdZone=await CreateZoneComm(cancellationToken),
-                idTag=await getDefaultTag(request.idTag),
+                IdZone= zoneCommentaire,
+                idTag=tag,
             };
             _context.StoryTellings.Add(entity);
+            await changeTagCount(tag);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
-            if (resultTask > 0) return Result.Success("StoryTell added with success");
+            if (resultTask > 1) return Result.Success("StoryTell added with success");
             return Result.Failure("Action Failed : StoryTell could not be added", new List<string>());
         }
 
@@ -70,6 +71,13 @@ namespace Application.StoryTellings.Command.CreateCommand
                                    .SingleOrDefaultAsync() ?? throw new NotFoundException("no tag by default found"); idTag = result.IdTag;
             }
             return idTag;
+        }
+        private async Task changeTagCount(int idTag)
+        {
+            var tag = await _context.Tag
+                .FindAsync(idTag);
+            tag.numberRef++;
+            _context.Tag.Update(tag);
         }
     }
 }

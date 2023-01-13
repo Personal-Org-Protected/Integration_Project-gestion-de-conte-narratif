@@ -29,26 +29,10 @@ namespace Application.Users.Query
         }
         public async Task<UserDisplay> Handle(GetUserByIdQueries request, CancellationToken cancellationToken)
         {
-            var entity= await _context.Users
-                .Where(t=>t.user_id==request.user_id)
-                .FirstOrDefaultAsync() ?? throw new NotFoundException("there is no User available");
+            var entity= await _context.Users.FindAsync(request.user_id)?? throw new NotFoundException("there is no User available");
 
-            var user = _mapper.Map<UserDisplay>(entity);
-            var user_role =  await _context.Roles_Users
-                .Where(t => t.user_id == user.user_id)
-                .ToListAsync();
-            var ids=new List<int>();
-
-            foreach(var id in user_role)
-            {
-                ids.Add(id.idRole);
-            }
-            user.rolesDtos=await _context.Roles
-                .Where(t=>ids.Contains(t.IdRole))
-                .ProjectTo<RolesDto>(_mapper.ConfigurationProvider)
-                .ToListAsync();
-
-            return user;
+            return _mapper.Map<UserDisplay>(entity);
+   
 
 
         }

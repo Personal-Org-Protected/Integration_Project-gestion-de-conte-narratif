@@ -12,10 +12,7 @@ using System.Threading.Tasks;
 namespace Application.Commentaries.Command.UpdateCommand
 {
  
-    public class SignalCommBackToZeroCommand : IRequest<Result>
-    {
-        public int id { get; set; }
-    }
+    public record SignalCommBackToZeroCommand(int id) : IRequest<Result>;
 
 
     public class SignalCommBackToZeroCommandHandler : IRequestHandler<SignalCommBackToZeroCommand, Result>

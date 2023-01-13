@@ -72,21 +72,29 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnName("commentaire");
 
                     b.Property<DateTime>("DateCreation")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("SMALLDATETIME")
                         .HasColumnName("Date de creation");
 
                     b.Property<int>("IdZone")
                         .HasColumnType("int")
                         .HasColumnName("Zone de Commenataire");
 
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)")
-                        .HasColumnName("Owner");
+                    b.Property<int?>("like")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("Like");
 
                     b.Property<int>("signal")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
+                        .HasDefaultValue(0)
                         .HasColumnName("Signalement");
+
+                    b.Property<string>("user_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Proprietaire");
 
                     b.HasKey("IdCommentaire");
 
@@ -97,13 +105,13 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Forfait_UserIntern", b =>
                 {
-                    b.Property<string>("IdUser")
+                    b.Property<string>("user_id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("IdForfait")
                         .HasColumnType("int");
 
-                    b.HasKey("IdUser", "IdForfait");
+                    b.HasKey("user_id", "IdForfait");
 
                     b.HasIndex("IdForfait");
 
@@ -210,15 +218,16 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Description");
 
-                    b.Property<string>("owner")
+                    b.Property<string>("user_id")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Proprietaire");
 
                     b.HasKey("IdImage");
 
                     b.HasIndex("IdTag");
 
-                    b.HasIndex("owner");
+                    b.HasIndex("user_id");
 
                     b.ToTable("Image", (string)null);
                 });
@@ -228,19 +237,19 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<string>("IdLibrary")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("IdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("users Property");
-
                     b.Property<string>("NameLibrary")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Nom de Bibliotheque");
 
+                    b.Property<string>("user_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Proprietaire");
+
                     b.HasKey("IdLibrary");
 
-                    b.HasIndex("IdUser")
+                    b.HasIndex("user_id")
                         .IsUnique();
 
                     b.ToTable("Bibliotheque", (string)null);
@@ -314,13 +323,14 @@ namespace Infrastructure.Persistence.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IdStoryTelling"), 1L, 1);
 
                     b.Property<DateTime>("DateCreation")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("date")
                         .HasColumnName("Date de creation de l'Histoire");
 
-                    b.Property<string>("IdUser")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("Owner");
+                    b.Property<bool>("Finished")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("Vendable");
 
                     b.Property<int>("IdZone")
                         .HasColumnType("int");
@@ -338,6 +348,12 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<int?>("idTag")
                         .HasColumnType("int");
 
+                    b.Property<int>("numberRef")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("nombre de vente");
+
                     b.Property<double>("price")
                         .HasColumnType("float")
                         .HasColumnName("Prix");
@@ -346,14 +362,19 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("image vignette");
 
-                    b.HasKey("IdStoryTelling");
+                    b.Property<string>("user_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Proprietaire");
 
-                    b.HasIndex("IdUser");
+                    b.HasKey("IdStoryTelling");
 
                     b.HasIndex("IdZone")
                         .IsUnique();
 
                     b.HasIndex("idTag");
+
+                    b.HasIndex("user_id");
 
                     b.ToTable("Histoire", (string)null);
                 });
@@ -370,6 +391,12 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Libelle");
+
+                    b.Property<double>("numberRef")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("float")
+                        .HasDefaultValue(0.0)
+                        .HasColumnName("Nombre de reference");
 
                     b.HasKey("IdTag");
 
@@ -388,9 +415,6 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("datetime2")
                         .HasColumnName("Date de la transaction");
 
-                    b.Property<string>("LibraryIdLibrary")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("NameBook")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
@@ -400,40 +424,20 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("int")
                         .HasColumnName("IdStory");
 
-                    b.Property<string>("User_id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<double>("price")
                         .HasColumnType("float");
 
-                    b.HasKey("TransactionId");
+                    b.Property<string>("user_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasIndex("LibraryIdLibrary");
+                    b.HasKey("TransactionId");
 
                     b.HasIndex("StoryTellId");
 
-                    b.HasIndex("User_id");
+                    b.HasIndex("user_id");
 
                     b.ToTable("Transactions", (string)null);
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserEntity", b =>
-                {
-                    b.Property<string>("IdUser")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("user_id")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)")
-                        .HasColumnName("User Identity");
-
-                    b.HasKey("IdUser");
-
-                    b.HasIndex("user_id")
-                        .IsUnique();
-
-                    b.ToTable("UserIntern", (string)null);
                 });
 
             modelBuilder.Entity("Domain.Entities.ZoneCommentary", b =>
@@ -505,13 +509,17 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2")
+                        .HasColumnType("date")
                         .HasColumnName("Birth Date");
 
                     b.Property<string>("Location")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Region");
+
+                    b.Property<string>("description")
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Description");
 
                     b.Property<string>("email")
                         .IsRequired()
@@ -587,9 +595,9 @@ namespace Infrastructure.Persistence.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.UserEntity", "User")
+                    b.HasOne("Domain.Identity.User", "User")
                         .WithMany("ForfaitUser")
-                        .HasForeignKey("IdUser")
+                        .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -630,9 +638,9 @@ namespace Infrastructure.Persistence.Migrations
                         .IsRequired()
                         .HasConstraintName("Tag_FK");
 
-                    b.HasOne("Domain.Entities.UserEntity", "User")
+                    b.HasOne("Domain.Identity.User", "User")
                         .WithMany("Images")
-                        .HasForeignKey("owner")
+                        .HasForeignKey("user_id")
                         .IsRequired();
 
                     b.Navigation("Tags");
@@ -642,9 +650,9 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Library", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntity", "Owner")
+                    b.HasOne("Domain.Identity.User", "Owner")
                         .WithOne("Library")
-                        .HasForeignKey("Domain.Entities.Library", "IdUser")
+                        .HasForeignKey("Domain.Entities.Library", "user_id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -673,12 +681,6 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.StoryTelling", b =>
                 {
-                    b.HasOne("Domain.Entities.UserEntity", "User")
-                        .WithMany("Stories")
-                        .HasForeignKey("IdUser")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Domain.Entities.ZoneCommentary", "ZoneCommentary")
                         .WithOne("StoryTelling")
                         .HasForeignKey("Domain.Entities.StoryTelling", "IdZone")
@@ -689,6 +691,12 @@ namespace Infrastructure.Persistence.Migrations
                         .HasForeignKey("idTag")
                         .OnDelete(DeleteBehavior.ClientNoAction);
 
+                    b.HasOne("Domain.Identity.User", "User")
+                        .WithMany("Stories")
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Tags");
 
                     b.Navigation("User");
@@ -698,36 +706,21 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Entities.Transaction", b =>
                 {
-                    b.HasOne("Domain.Entities.Library", null)
-                        .WithMany("TransactionLibrary")
-                        .HasForeignKey("LibraryIdLibrary");
-
                     b.HasOne("Domain.Entities.StoryTelling", "StoryTelling")
                         .WithMany("Transactions")
                         .HasForeignKey("StoryTellId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.UserEntity", "User")
+                    b.HasOne("Domain.Identity.User", "User")
                         .WithMany("Transactions")
-                        .HasForeignKey("User_id")
+                        .HasForeignKey("user_id")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("StoryTelling");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("Domain.Entities.UserEntity", b =>
-                {
-                    b.HasOne("Domain.Identity.User", "user")
-                        .WithOne("UserEntity")
-                        .HasForeignKey("Domain.Entities.UserEntity", "user_id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("user");
                 });
 
             modelBuilder.Entity("Domain.Identity.Roles_Users", b =>
@@ -762,8 +755,6 @@ namespace Infrastructure.Persistence.Migrations
             modelBuilder.Entity("Domain.Entities.Library", b =>
                 {
                     b.Navigation("StoryTellBoxes");
-
-                    b.Navigation("TransactionLibrary");
                 });
 
             modelBuilder.Entity("Domain.Entities.Story", b =>
@@ -790,20 +781,6 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("StoryTellings");
                 });
 
-            modelBuilder.Entity("Domain.Entities.UserEntity", b =>
-                {
-                    b.Navigation("ForfaitUser");
-
-                    b.Navigation("Images");
-
-                    b.Navigation("Library")
-                        .IsRequired();
-
-                    b.Navigation("Stories");
-
-                    b.Navigation("Transactions");
-                });
-
             modelBuilder.Entity("Domain.Entities.ZoneCommentary", b =>
                 {
                     b.Navigation("Commentaires");
@@ -821,8 +798,16 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Identity.User", b =>
                 {
-                    b.Navigation("UserEntity")
+                    b.Navigation("ForfaitUser");
+
+                    b.Navigation("Images");
+
+                    b.Navigation("Library")
                         .IsRequired();
+
+                    b.Navigation("Stories");
+
+                    b.Navigation("Transactions");
 
                     b.Navigation("UsersRoles");
                 });

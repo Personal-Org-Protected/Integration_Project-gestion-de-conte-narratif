@@ -29,7 +29,6 @@ namespace Application.Common.Interfaces
         DbSet<Transaction> Transactions { get; set; }
         DbSet<StoryTellBox> storyTellBoxes { get; set; }
 
-        DbSet<UserEntity> userEntities { get; set; }
         DbSet<Roles> Roles { get; set; }
 
         DbSet<Roles_Users> Roles_Users { get; set; }

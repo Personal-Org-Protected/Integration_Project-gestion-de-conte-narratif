@@ -1,6 +1,7 @@
 ﻿using Application.Common.Models;
 using Application.Tags.Command.CreateCommand;
 using Application.Tags.Command.DeleteCommand;
+using Application.Tags.Command.UpdateCommand;
 using Application.Tags.Query;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,19 +15,43 @@ namespace SearchImage.Controllers
     [ApiController]
     public class TagController : ApiController
     {
-        //[Authorize("ReadAccess")]
+        //[Authorize("ReadContent")]
         [HttpGet]
-        public async Task<TagVM> Get()
+        public async Task<PaginatedItems<TagDto>> Get([FromQuery] GetTagQueries getTagQueries)
         {
-            return await Mediator.Send(new GetTagQueries());
+            return await Mediator.Send(getTagQueries);
         }
-       // [Authorize("WriteAccess")]
+
+
+        //[Authorize("ReadContent")]
+        [HttpGet("{id}")]
+        public async Task<TagDto> Get(int id)
+        {
+            return await Mediator.Send(new GetTagByIdQueries(id));
+        }
+
+
+        // [Authorize("AdminAcces")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateTagsCommand createTags)
         {
             return await Mediator.Send(createTags);
         }
-        //[Authorize("DeleteAccess")]
+
+        // [Authorize("AdminAcces")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Result>> Put(int id,UpdateTagCommand updateTags)
+        {
+            if (id != updateTags.IdTag)
+            {
+                return BadRequest();
+            }
+            return await Mediator.Send(updateTags);
+        }
+
+
+
+        // [Authorize("AdminAcces")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Result>> Delete(int id)
         {

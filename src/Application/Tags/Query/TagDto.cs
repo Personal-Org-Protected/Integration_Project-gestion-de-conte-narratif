@@ -13,6 +13,7 @@ namespace Application.Tags.Query
     {
         public int IdTag { get; set; }
         public string NameTag { get; set; }
+        public double NumberRef { get; set; }
 
         public void Mapping(Profile profile)
         {

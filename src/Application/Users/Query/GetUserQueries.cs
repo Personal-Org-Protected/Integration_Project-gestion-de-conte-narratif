@@ -31,30 +31,11 @@ namespace Application.Users.Query
         }
         public async Task<PaginatedItems<UserDisplay>> Handle(GetUserQueries request, CancellationToken cancellationToken)
         {
-            var users = await _context.Users
+            return  await _context.Users
                  .ProjectTo<UserDisplay>(_mapper.ConfigurationProvider)
                  .OrderBy(t => t.username)
                  .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken) ?? throw new NotFoundException("there is no User available");//de base c'est juste ca a partir de cette ligne
 
-            var ids= new List<int>();
-            foreach (var user in users.Items)
-            {
-                var user_role = await _context.Roles_Users
-                    .Where(t => t.user_id == user.user_id).
-                    ToListAsync();
-
-                foreach(var role in user_role)
-                {
-                    ids.Add(role.idRole);
-                }
-
-                user.rolesDtos =await _context.Roles
-                    .Where(t => ids.Contains(t.IdRole))
-                    .ProjectTo<RolesDto>(_mapper.ConfigurationProvider)
-                    .ToListAsync();
-            }
-
-            return users;
 
         }
     }

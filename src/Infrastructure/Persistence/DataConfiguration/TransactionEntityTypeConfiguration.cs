@@ -24,7 +24,7 @@ namespace Infrastructure.Persistence.DataConfiguration
                 .OnDelete(DeleteBehavior.NoAction);
             builder.HasOne(f => f.User)
                 .WithMany(d => d.Transactions)
-                .HasForeignKey(e => e.User_id)
+                .HasForeignKey(e => e.user_id)
                 .OnDelete(DeleteBehavior.NoAction);
             //builder.HasOne(f => f.Library)
             //    .WithMany(d => d.TransactionLibrary)

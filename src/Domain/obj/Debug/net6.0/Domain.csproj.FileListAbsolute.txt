@@ -33,4 +33,3 @@ D:\VS2022\Examen\srcAvecCss\src\Domain\obj\Debug\net6.0\Domain.csproj.CoreCompil
 D:\VS2022\Examen\srcAvecCss\src\Domain\obj\Debug\net6.0\Domain.dll
 D:\VS2022\Examen\srcAvecCss\src\Domain\obj\Debug\net6.0\ref\Domain.dll
 D:\VS2022\Examen\srcAvecCss\src\Domain\obj\Debug\net6.0\Domain.pdb
-D:\VS2022\Examen\srcAvecCss\src\Domain\obj\Debug\net6.0\Domain.csproj.AssemblyReference.cache

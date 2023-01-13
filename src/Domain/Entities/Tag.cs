@@ -10,6 +10,7 @@ namespace Domain.Entities
     {
         public int IdTag { get; set; }
         public string NameTag { get; set; }
+        public double numberRef { get; set; }
         public virtual ICollection<Image> Image { get; set; }
         public virtual ICollection<StoryTelling> StoryTellings { get; set; }
     }

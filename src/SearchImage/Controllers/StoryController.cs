@@ -18,20 +18,20 @@ namespace SearchImage.Controllers
     public class StoryController : ApiController
     {
 
-       // [Authorize("ReadAccess")]
+        // [Authorize("ReadContent")]
         [HttpGet("{id}")]
         public async Task<StoryDto> GetById(int id)
         {
             return await Mediator.Send(new GetStoriesByIdQueries(id));
         }
-       // [Authorize("WriteAccess")]
+        //[Authorize("AuthorAccess")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateStoriesCommand createStories)
         {
             return await Mediator.Send(createStories);
         }
-        //[Authorize("UpdateAccess")]
-        [HttpPut]
+        //[Authorize("AuthorAccess")]
+        [HttpPut("{id}")]
         public async Task<ActionResult<Result>> Put(int id, UpdateStoriesCommand updateStories)
         {
             if (id != updateStories.IdStory)
@@ -40,7 +40,7 @@ namespace SearchImage.Controllers
             }
             return await Mediator.Send(updateStories);
         }
-       // [Authorize("DeleteAccess")]
+        //[Authorize("AuthorAccess")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Result>> Delete(int id)
         {

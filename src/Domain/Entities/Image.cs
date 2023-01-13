@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,13 +15,13 @@ namespace Domain.Entities
         public string descriptionImage { get; set; }
         public string PathImage { get; set; }
         public string Uri { get; set; }
-        public string owner { get; set; }
+        public string user_id { get; set; }
         public int IdTag { get; set; }
 
         public DateTime DateCreation { get; set; }
         public DateTime DateModif { get; set; }
         public virtual Tag Tags { get; set; }
         public virtual ICollection<Chapitre> Chapitres { get; set; }
-        public virtual UserEntity User { get; set; }
+        public virtual User User { get; set; }
     }
 }

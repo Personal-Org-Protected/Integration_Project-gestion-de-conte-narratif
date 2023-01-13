@@ -34,42 +34,47 @@ namespace Application.Images.Command.CreateCommand
         }
         public async Task<Result> Handle(CreateImageCommand request, CancellationToken cancellationToken)
         {
-            var format = request.Uri[request.Uri.LastIndexOf('.')..];
+            var tag = await getDefaultTag(request.IdTag);
+            //var format = request.Uri[request.Uri.LastIndexOf('.')..];
             var entity = new Image()
             {
                 NomImage = request.NomImage,
                 descriptionImage=request.descriptionImage,
-                PathImage=CreateImageFile.PathImage(request.NomImage, CreateImageFile.GetFormat(format)),
-                IdTag= await getDefaultTag(request.IdTag),
+                PathImage="path not available",//CreateImageFile.PathImage(request.NomImage, CreateImageFile.GetFormat(format)),
+                IdTag= tag,
                 Uri=request.Uri,
                 DateCreation=DateTime.Now,
-                owner=await getUser(request.user_id)
+                user_id=request.user_id
             };
             _context.Images.Add(entity);
+           await  changeTagCount(tag);
             var resultTask=await _context.SaveChangesAsync(cancellationToken);
-
-            if (resultTask > 0) {
-                CreateImageFile.EnsureImageCreated(request.Uri,request.NomImage,CreateImageFile.GetFormat(format));
+            
+            if (resultTask > 1) {
+               // CreateImageFile.EnsureImageCreated(request.Uri,request.NomImage,CreateImageFile.GetFormat(format));
                 return Result.Success("Image added with success"); }
             return Result.Failure("Action Failed : image could not be added", new List<string>());
         }
 
         private async Task<int> getDefaultTag(int idTag)
         {
-            if (idTag == 0) { var result = await _context.Tag
+            if (idTag != 0) return idTag;
+            
+            var result = await _context.Tag
                      .Where(t => t.NameTag == "Default")
                      .SingleOrDefaultAsync() ?? throw new NotFoundException("no tag by default found"); idTag = result.IdTag;
-            }
+            
             return idTag;
         }
-        private async Task<string> getUser(string user_id)
+        private async Task changeTagCount(int idTag)
         {
-            var user = await _context.userEntities
-                .Where(t => t.user_id == user_id)
-                .SingleOrDefaultAsync()?? throw new NotFoundException("No user found in image creation");
-            return user.IdUser;
+            var tag = await _context.Tag
+                .FindAsync(idTag);
+            tag.numberRef++;
+            _context.Tag.Update(tag);
         }
     }
+
 
 
     internal static class CreateImageFile

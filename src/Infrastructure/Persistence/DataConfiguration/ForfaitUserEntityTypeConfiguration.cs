@@ -14,7 +14,7 @@ namespace Infrastructure.Persistence.DataConfiguration
         public void Configure(EntityTypeBuilder<Forfait_UserIntern> builder)
         {
             builder.ToTable("Forfait_User");
-            builder.HasKey(e => new { e.IdUser, e.IdForfait });
+            builder.HasKey(e => new { e.user_id, e.IdForfait });
             builder.HasOne(e => e.User)
             .WithMany(p => p.ForfaitUser);
             builder.HasOne(e => e.ForfaitClient)

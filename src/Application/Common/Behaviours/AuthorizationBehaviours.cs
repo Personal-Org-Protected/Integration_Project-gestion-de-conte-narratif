@@ -25,7 +25,7 @@ namespace Application.Common.Behaviours
 
 
     public class HasScopeHandler : AuthorizationHandler<HasScopeRequirement>
-    {
+    {//a voir si durant une raquette lid du use est passe aussi
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, HasScopeRequirement requirement)
         {
             if (!context.User.HasClaim(c => c.Type == "scope" && c.Issuer == requirement.Issuer))

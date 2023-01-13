@@ -1,6 +1,7 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
 using Application.Common.Models;
+using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -29,7 +30,7 @@ namespace Application.Tags.Command.DeleteCommand
 
             if (entity == null)
             {
-                throw new NotFoundException(nameof(Images), request.id);
+                throw new NotFoundException(nameof(Tag), request.id);
             }
 
             _context.Tag.Remove(entity);

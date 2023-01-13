@@ -16,72 +16,67 @@ using System.Threading.Tasks;
 
 namespace Application.StoryTellings.Queries
 {
-    public record StoreWindowQueries(int idTag,string user_id,int pgNumber):IRequest<PaginatedItems<StoryTellingDto>>;
+    public record StoreWindowQueries(int idTag,string user_id,int pgNumber) :IRequest<PaginatedItems<FacadeDto>>;
 
-    public class StoreWindowQueriesHandler : IRequestHandler<StoreWindowQueries, PaginatedItems<StoryTellingDto>>
+    public class StoreWindowQueriesHandler : IRequestHandler<StoreWindowQueries, PaginatedItems<FacadeDto>>
     {
-        private const int _pageSize = 50;
+        private const int _pageSize = 10;
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
+        private readonly int _roleId=2;
 
         public StoreWindowQueriesHandler(IApplicationDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
         }
-        public async Task<PaginatedItems<StoryTellingDto>> Handle(StoreWindowQueries request, CancellationToken cancellationToken)
+        public async Task<PaginatedItems<FacadeDto>> Handle(StoreWindowQueries request, CancellationToken cancellationToken)
         {
-            var user = await _context.userEntities
-               .Where(t => t.user_id == request.user_id)
-               .SingleOrDefaultAsync() ?? throw new NotFoundException("No user Found");
-
             var tag = await getDefaultTag(request.idTag);
-
             var histoire = await _context.StoryTellings
-                .Where(d=>d.idTag == tag)
-                .ProjectTo<StoryTellingDto>(_mapper.ConfigurationProvider)
+                .Where(d=>d.idTag == tag && d.Finished) //changer ici
+                .ProjectTo<FacadeDto>(_mapper.ConfigurationProvider)
                 .OrderBy(t => t.price)
-                .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken) ?? throw new NotFoundException("there is no image like that");
-
-            return await ApplyForfaitReduction(user, histoire);
+                .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken) ?? throw new NotFoundException("there is no book like that");
+            return await ApplyForfaitReduction(request.user_id, histoire);
          
         }
 
-        private async Task<PaginatedItems<StoryTellingDto>> ApplyForfaitReduction(UserEntity userEntity, PaginatedItems<StoryTellingDto> paginatedItems)
+        private async Task<PaginatedItems<FacadeDto>> ApplyForfaitReduction(string user_id, PaginatedItems<FacadeDto> paginatedItems)
         {
             foreach (var item in paginatedItems.Items)
             {
+                await implementAuthor(item);
                 var price = item.price;
-                item.price=await CalculPrice(userEntity,price);
+                item.price=await CalculPrice(user_id,price);
             }
             return paginatedItems;
         }//si tu rajoute des tags et autre parametres dans forfait alors tu devras en prendre compte ici et dans transaction
 
-        private async Task<double> CalculPrice(UserEntity userEntity, double price)
+        private async Task<double> CalculPrice(string user_id, double price)
         {
-                var forfaits = await GetForfaits(userEntity);
-                var reduction =  GetReduction(forfaits);
+                var forfaits = await GetForfaits(user_id);
+                var reduction =   GetReduction(forfaits);
                 return price - (price * reduction) / 100;
         }
         private  double GetReduction(List<ForfaitClient> forfaitClients)
         {
-            return  ChooseAppropriateForfeit(forfaitClients).Reduction;
+            var forfait=   ChooseAppropriateForfeit(forfaitClients);
+            return forfait.Reduction;
         }
         private  ForfaitClient ChooseAppropriateForfeit(List<ForfaitClient> forfaits)
         {
-            if (forfaits.Any(t => t.RoleId == 2))
-                return forfaits
-                    .SingleOrDefault(t=>t.RoleId==2);
-
-            return forfaits
-                    .SingleOrDefault();
+            var forfait=new ForfaitClient();
+            forfait=forfaits.SingleOrDefault(t=>t.RoleId == _roleId && t.IdForfait>1);
+            if(forfait==null)return forfaits.FirstOrDefault();
+            return forfait;
 
         }
 
-        private async Task<List<ForfaitClient>> GetForfaits(UserEntity userEntity)
+        private async Task<List<ForfaitClient>> GetForfaits(string user_id)
         {
             var forfaitUser = await _context.Forfait_Users
-                 .Where(t => t.IdUser == userEntity.IdUser)
+                 .Where(t => t.user_id == user_id)
                  .ToListAsync();
             var ids = new List<int>();
             foreach (var item in forfaitUser)
@@ -103,6 +98,14 @@ namespace Application.StoryTellings.Queries
                                    .SingleOrDefaultAsync() ?? throw new NotFoundException("no tag by default found"); idTag = result.IdTag;
             }
             return idTag;
+        }
+
+        private async Task implementAuthor(FacadeDto facade)
+        {
+            var user = await _context.Users.FindAsync(facade.user_id)
+                ?? throw new NotFoundException("there is no user like that");
+            facade.author = _mapper.Map<AuthorDto>(user);
+
         }
     }
 

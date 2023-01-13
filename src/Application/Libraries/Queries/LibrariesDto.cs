@@ -13,9 +13,9 @@ namespace Application.Libraries.Queries
     {
         public string IdLibrary { get; set; }
         public string NameLibrary { get; set; }
-        public string IdUser { get; set; }
+        public string user_id { get; set; }
 
-        public ICollection<StoryTellBoxDto> StoryTellBoxDtos { get; set; }
+        //public ICollection<StoryTellBoxDto> StoryTellBoxDtos { get; set; }
         public void Mapping(Profile profile)
         {
             profile.CreateMap<Library, LibrariesDto>();

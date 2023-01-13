@@ -15,10 +15,14 @@ namespace Application.StoryTellings.Queries.Dto
         public int IdStoryTelling { get; set; }
         public string NameStory { get; set; }
         public double price { get; set; }
+        public string IdUser { get; set; }
         public string url { get; set; }
+        public string Sypnopsis { get; set; }
         public int? idTag { get; set; }
         public int IdZone { get; set; }
-        //public ICollection<ChapitresDto> Chapitres { get; set; }
+        public int numberRef { get; set; }
+        public bool Finished { get; set; }
+
         public void Mapping(Profile profile)
         {
             profile.CreateMap<StoryTelling, StoryTellingDto>();

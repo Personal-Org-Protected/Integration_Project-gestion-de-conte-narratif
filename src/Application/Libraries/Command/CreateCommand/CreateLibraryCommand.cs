@@ -27,14 +27,11 @@ namespace Application.Libraries.Command.CreateCommand
         }
         public async Task<Result> Handle(CreateLibraryCommand request, CancellationToken cancellationToken)
         {
-            var userEntity = await _context.userEntities
-                .Where(t => t.user_id == request.user_id)
-                .SingleOrDefaultAsync();
             var entity = new Library()
             {
-                IdLibrary= "Library_"+userEntity.IdUser,
+                IdLibrary= "Library_"+request.user_id,
                 NameLibrary = request.NameLibrary,
-                IdUser = userEntity.IdUser,
+                user_id = request.user_id,
 
             };
             _context.Libraries.Add(entity);

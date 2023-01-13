@@ -17,10 +17,11 @@ namespace Infrastructure.Persistence.DataConfiguration
             builder.ToTable("Commentaire");
             builder.HasKey(item=>item.IdCommentaire);
             builder.Property(e => e.Commentaire).HasColumnName("commentaire").IsRequired();
-            builder.Property(e => e.Owner).HasColumnName("Owner").IsRequired();
+            builder.Property(e => e.user_id).HasColumnName("Proprietaire").IsRequired();
             builder.Property(e => e.IdZone).HasColumnName("Zone de Commenataire").IsRequired();
-            builder.Property(e => e.signal).HasColumnName("Signalement");
-            builder.Property(e => e.DateCreation).HasColumnName("Date de creation");
+            builder.Property(e => e.signal).HasColumnName("Signalement").HasDefaultValue(0);
+            builder.Property(e => e.like).HasColumnName("Like").HasDefaultValue(0);
+            builder.Property(e => e.DateCreation).HasColumnType("SMALLDATETIME").HasColumnName("Date de creation");
             builder.HasOne(f => f.ZoneCommentary)
                 .WithMany(d => d.Commentaires)
                 .HasForeignKey(f => f.IdZone)

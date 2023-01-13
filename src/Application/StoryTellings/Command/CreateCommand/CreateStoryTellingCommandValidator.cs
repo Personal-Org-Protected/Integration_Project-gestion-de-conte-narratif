@@ -18,18 +18,28 @@ namespace Application.StoryTellings.Command.CreateCommand
             
             RuleFor(v => v.NameStory)
                 .NotEmpty().WithMessage("Name is required.")
-                .MaximumLength(40).WithMessage("Name must not exceed 100 characters.");
+                .MaximumLength(20).WithMessage("Name must not exceed 20 characters.");
+
             RuleFor(v => v.price)
                .NotEmpty().WithMessage("price is required.")
                .GreaterThanOrEqualTo(0)
                .WithMessage("can not be below 0");
 
+            RuleFor(v => v.url)
+             .MaximumLength(200)
+             .WithMessage("should allow between 0 and 200 characte");
+
+            RuleFor(v => v.synopsis)
+             .NotEmpty().WithMessage("synopsis is required.")
+             .MinimumLength(20)
+             .MaximumLength(300)
+             .WithMessage("should allow between 20 and 300 character");
+
             RuleFor(v => v.synopsis)
                .NotEmpty().WithMessage("synopsis is required.")
                .MaximumLength(400).WithMessage("synopsis must not exceed 400 characters.");
             RuleFor(v => v.idTag)
-             .NotEmpty().WithMessage("tag is required.")
-             .GreaterThan(0).WithMessage("need a existing tag");
+             .GreaterThanOrEqualTo(0).WithMessage("need a existing tag");
 
 
         }

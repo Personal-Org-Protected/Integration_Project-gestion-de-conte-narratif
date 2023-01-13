@@ -35,7 +35,6 @@ namespace Infrastructure.Persistence
         public DbSet<Transaction> Transactions { get; set; }
         public DbSet<StoryTellBox> storyTellBoxes { get; set; }
         //public DbSet<Library_stories> library_Stories { get; set; }
-        public DbSet<UserEntity> userEntities { get; set; }
         public DbSet<Roles_Users> Roles_Users { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<ZoneCommentary> ZoneComments { get; set; }
@@ -68,7 +67,6 @@ namespace Infrastructure.Persistence
             builder.ApplyConfiguration(new StoryTellingEntityTypeConfiguration());
             builder.ApplyConfiguration(new ChapitresEntityTypeConfiguration());
             builder.ApplyConfiguration(new UserIdentityTypeConfiguration());
-            builder.ApplyConfiguration(new UserEntityTypeConfiguration());
             builder.ApplyConfiguration(new IdeeEntityTypeConfiguration());
             builder.ApplyConfiguration(new CommentairesEntityTypeConfiguration());
             builder.ApplyConfiguration(new ForfaitEntityTypeConfiguration());

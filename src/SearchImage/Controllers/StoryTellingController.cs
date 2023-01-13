@@ -16,40 +16,104 @@ namespace SearchImage.Controllers
     [ApiController]
     public class StoryTellingController : ApiController
     {
-        //[Authorize("ReadAccess")]
+        //[Authorize("ReadContent")]
         [HttpGet]
         public async Task<PaginatedItems<StoryTellingDto>> Get([FromQuery] GetStoryTellingQueries getStoryTellingQueries)
         {
             return await Mediator.Send(getStoryTellingQueries);
         }
+
+
+        //[Authorize("ReadContent")]
+        [HttpGet("{id}")]
+        public async Task<StoryTellingDto> Get(int id)
+        {
+            return await Mediator.Send(new GetStoryTellByIdQueries(id));
+        }
+
+        //[Authorize("ReadContent")]
+        [HttpGet("hasBeenBought/{user_id}")]
+        public async Task<HasBeenBoughtDto> Get(string user_id)
+        {
+            return await Mediator.Send(new StoryHasBeenBoughtQueries(user_id));
+        }
+
+
+        //[Authorize("AuthorAccess")] a verifier
+        [HttpGet("user/{user_id}")]
+        public async Task<PaginatedItems<StoryTellingDto>> Get(string user_id,[FromQuery] int pgNumber)
+        {
+            return await Mediator.Send(new GetStoryByUserQueries(user_id,pgNumber));
+        }
+
+
+        //[Authorize("ReadContent")]
         [HttpGet("Store")]
-        public async Task<PaginatedItems<StoryTellingDto>> GetStore([FromQuery] StoreWindowQueries storeWindowQueries)
+        public async Task<PaginatedItems<FacadeDto>> GetStore([FromQuery] StoreWindowQueries storeWindowQueries)
         {
             return await Mediator.Send(storeWindowQueries);
         }
-        [HttpGet("read-book")]
-        public async Task<StoryTellBoxDto> GetStore([FromQuery] ReadStoryTellingQueries readStoryTellingQueries)
+
+
+        //[Authorize("ReadContent")]
+        [HttpGet("facade/{id}")]
+        public async Task<FacadeDto> Get1(int id)
         {
-            return await Mediator.Send(readStoryTellingQueries);
+            return await Mediator.Send(new GetStoryTellFacadeByIdQueries(id));
         }
-        //[Authorize("WriteAccess")]
+
+        //[Authorize("AuthorAccess")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateStoryTellingCommand createStoryTelling)
         {
             return await Mediator.Send(createStoryTelling);
         }
-       // [Authorize("WriteAccess")]
-        [HttpPut]
-        public async Task<ActionResult<Result>> Put(UpdateStoryTellingCommand updateStoryTelling)
+
+
+        //[Authorize("AuthorAccess")]
+        [HttpPut("{id}")]
+        public async Task<ActionResult<Result>> Put(int id,UpdateStoryTellingCommand updateStoryTelling)
         {
+
+            if (id != updateStoryTelling.Id)
+            {
+                return BadRequest();
+            }
             return await Mediator.Send(updateStoryTelling);
         }
-        [HttpPut("Stop-Reading")]
-        public async Task<ActionResult<Result>> Put(StopReadingBookCommand stopReadingBookCommand)
+
+
+        //[Authorize("AuthorAccess")]
+        [HttpPut("haveBeenBought/{id}")]
+        public async Task<ActionResult<Result>> Put(int id)
         {
-            return await Mediator.Send(stopReadingBookCommand);
+            return await Mediator.Send(new StoryHaveBeenBoughtCommand(id));
         }
-        // [Authorize("DeleteAccess")]
+
+
+        //[Authorize("AuthorAccess")]
+        [HttpPut("Stop-Reading/{id}")]
+        public async Task<ActionResult<Result>> Put(int id,[FromQuery]int order)
+        {
+
+            return await Mediator.Send(new StopReadingBookCommand(id, order));
+        }
+
+        //[Authorize("AuthorAccess")]
+        [HttpPut("Finish/{id}")]
+        public async Task<ActionResult<Result>> Put2(int id)
+        {
+            return await Mediator.Send(new FinishStoryCommand(id));
+        }
+
+        //[Authorize("AuthorAccess")]
+        [HttpPut("Ongoing/{id}")]
+        public async Task<ActionResult<Result>> Put3(int id)
+        {
+            return await Mediator.Send(new OngoingStoryCommand(id));
+        }
+
+        //[Authorize("AuthorAccess")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Result>> Delete(int id)
         {
