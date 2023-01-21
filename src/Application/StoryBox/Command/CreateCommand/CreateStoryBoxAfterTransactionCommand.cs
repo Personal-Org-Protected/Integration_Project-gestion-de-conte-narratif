@@ -34,7 +34,7 @@ namespace Application.StoryBox.Command.CreateCommand
             var entity = new StoryTellBox()
             {
                 IdStoryTell = request.storyTell,
-                lastPageChecked = 0,
+                lastPageChecked = 1,
                 IdLibrary = library.IdLibrary
             };
             _context.storyTellBoxes.Add(entity);

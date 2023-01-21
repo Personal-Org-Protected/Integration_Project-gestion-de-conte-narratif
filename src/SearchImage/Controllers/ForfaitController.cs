@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SearchImage.Controllers
 {
-    //[Authorize("ForfaitAccess")]
+    [Authorize("ForfaitAccess")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]

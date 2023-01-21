@@ -20,7 +20,7 @@ namespace SearchImage.Controllers
     public class SearchImage : ApiController
     {
 
-        //[Authorize("ReadContent")]
+        [Authorize("ReadContent")]
         [HttpGet]
         public async Task<ActionResult<PaginatedItems<ImageDto>>> Get([FromQuery] GetImageByOwnerQueries imageByOwnerQueries)
         {
@@ -40,21 +40,21 @@ namespace SearchImage.Controllers
             return await Mediator.Send(imagesQueries);
         }
 
-
+        [Authorize("ReadContent")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ImageDto>> GetById(int id)
         {
             return await Mediator.Send(new GetImagesByIdQueries(id));
         }
 
-       // [Authorize("AuthorAccess")]
+        [Authorize("authoraccess")]
         [HttpGet("alreadyHasChapter/{id}")]
         public async Task<AlreadyInChapter> GetById2(int id)
         {
             return await Mediator.Send(new ImageAlreadyInChapter(id));
         }
 
-      //  [Authorize("AuthorAccess")]
+        [Authorize("AuthorAccess")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateImageCommand createImageCommand)
         {
@@ -62,7 +62,7 @@ namespace SearchImage.Controllers
         }
 
 
-       // [Authorize("AuthorAccess")]
+        [Authorize("AuthorAccess")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Result>> Update(int id, UpdateImageCommand updateImagecommand)
         {
@@ -76,7 +76,7 @@ namespace SearchImage.Controllers
         }
 
 
-       // [Authorize("AuthorAccess")]
+        [Authorize("AuthorAccess")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Result>> Delete(int id)
         {

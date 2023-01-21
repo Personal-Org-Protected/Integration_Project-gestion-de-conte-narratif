@@ -15,7 +15,7 @@ namespace SearchImage.Controllers
     [ApiController]
     public class TagController : ApiController
     {
-        //[Authorize("ReadContent")]
+        [Authorize("ReadContent")]
         [HttpGet]
         public async Task<PaginatedItems<TagDto>> Get([FromQuery] GetTagQueries getTagQueries)
         {
@@ -23,7 +23,7 @@ namespace SearchImage.Controllers
         }
 
 
-        //[Authorize("ReadContent")]
+        [Authorize("ReadContent")]
         [HttpGet("{id}")]
         public async Task<TagDto> Get(int id)
         {
@@ -31,14 +31,14 @@ namespace SearchImage.Controllers
         }
 
 
-        // [Authorize("AdminAcces")]
+        [Authorize("AdminAcces")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateTagsCommand createTags)
         {
             return await Mediator.Send(createTags);
         }
 
-        // [Authorize("AdminAcces")]
+        [Authorize("AdminAcces")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Result>> Put(int id,UpdateTagCommand updateTags)
         {
@@ -51,7 +51,7 @@ namespace SearchImage.Controllers
 
 
 
-        // [Authorize("AdminAcces")]
+        [Authorize("AdminAcces")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Result>> Delete(int id)
         {

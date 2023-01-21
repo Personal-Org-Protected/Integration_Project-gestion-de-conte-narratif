@@ -1,13 +1,15 @@
 ﻿using Application.Common.Models;
 using Application.StoryBox.Command.CreateCommand;
+using Application.StoryBox.Command.UpdateCommand;
 using Application.StoryBox.Query;
 using Application.StoryBox.Query.Dto;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace SearchImage.Controllers
 {
-    //[Authorize("UserAccess")]
+    [Authorize("UserAccess")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -48,6 +50,14 @@ namespace SearchImage.Controllers
         public async Task<ActionResult<Result>> Post(CreateStoryBoxAfterTransactionCommand createStoryTelling)
         {
             return await Mediator.Send(createStoryTelling);
+        }
+
+
+        [HttpPut("Stop-Reading/{id}/{order}")]
+        public async Task<ActionResult<Result>> Put(int id,  int order)
+        {
+
+            return await Mediator.Send(new StopReadingBookCommand(id, order));
         }
     }
 }

@@ -19,21 +19,21 @@ namespace SearchImage.Controllers
     [ApiController]
     public class UserController : ApiController
     {
-        //[Authorize("AdminAcces")]
+        [Authorize("AdminAcces")]
         [HttpGet]
         public async Task<PaginatedItems<UserDisplay>> GetAsync([FromQuery] GetUserQueries getUserQueries)
         {
             return await Mediator.Send(getUserQueries);
         }
 
-        //[Authorize("AdminAcces")]
+        [Authorize("AdminAcces")]
         [HttpGet("{user_id}")]
         public async Task<UserDisplay> GetByIdAsync(string user_id)
         {
             return await Mediator.Send(new GetUserByIdQueries(user_id));
         }
 
-        //[Authorize("ReadContent")]
+        [Authorize("ReadContent")]
         [HttpGet("Simple/{user_id}")]
         public async Task<UserSimpleInfoDto> GetByIdAsync2(string user_id)
         {
@@ -41,10 +41,10 @@ namespace SearchImage.Controllers
         }
 
   
-        [HttpGet("GenerateId")]
-        public async Task<UserIdDto> GetAsync([FromQuery]GetUserIDQueries getUserIDQueries)
+        [HttpGet("GenerateId/{username}")]
+        public async Task<UserIdDto> GetAsync(string username)
         {
-            return await Mediator.Send(getUserIDQueries);
+            return await Mediator.Send(new GetUserIDQueries(username));
         }
 
 
@@ -56,7 +56,7 @@ namespace SearchImage.Controllers
 
 
 
-       // [Authorize("UpdateUser")]
+        [Authorize("UpdateUser")]
         [HttpPut("{user_id}")]
         public async Task<ActionResult<Result>> UpdateAsync(string user_id, UpdateUserCommand updateUserCommand)
         {

@@ -40,7 +40,9 @@ namespace Application.Users.Command.CreateCommand
                .WithMessage("Lower case Upper case and number needed");
             RuleFor(v=>v.phoneNumber)
                 .Length(10).WithMessage("must be 10 character")
-                .MustAsync((x, cancellationToken) => PhoneNumberdExist(x, cancellationToken)).WithMessage("phone already taken");
+                .Matches(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");
+            //.Matches("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
+            /*.MustAsync((x, cancellationToken) => PhoneNumberdExist(x, cancellationToken)).WithMessage("phone already taken")*/
 
             RuleFor(v => v.description)
          .MaximumLength(200).WithMessage("must be max 200  character");
@@ -61,10 +63,10 @@ namespace Application.Users.Command.CreateCommand
         {
             return DateTime.Now.Year - 18 >= birth.Year;
         }
-        private async Task<bool> PhoneNumberdExist(string phoneNumber, CancellationToken cancellationToken)
-        {
-            return ! await _context.Users
-                .AnyAsync(t => t.phoneNumber == phoneNumber, cancellationToken);
-        }
+        //private async Task<bool> PhoneNumberdExist(string phoneNumber, CancellationToken cancellationToken)
+        //{
+        //    return ! await _context.Users
+        //        .AnyAsync(t => t.phoneNumber == phoneNumber, cancellationToken);
+        //}
     }
 }

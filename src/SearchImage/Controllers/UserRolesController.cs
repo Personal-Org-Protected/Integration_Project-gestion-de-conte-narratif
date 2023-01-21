@@ -16,13 +16,12 @@ namespace SearchImage.Controllers
     public class UserRolesController : ApiController
     {
 
-        //[Authorize("AdminAcces")]
+        [Authorize("AdminAcces")]
         [HttpGet("{user_id}")]
         public async Task<UserRolesVM> GetAsync(string user_id)
         {
             return await Mediator.Send(new GetRolesOfUserQueries(user_id));
         }
-        
 
         [HttpPost("Default")]
         public async Task<ActionResult<Result>> CreateAsync(CreateDefaultRoleForUserCommand createDefaultRoleForUserCommand)
@@ -30,14 +29,14 @@ namespace SearchImage.Controllers
             return await Mediator.Send(createDefaultRoleForUserCommand);
         }
 
-        //  [Authorize("RoleAccess")]
+        [Authorize("RoleAccess")]
         [HttpPost("Author")]
         public async Task<ActionResult<Result>> CreateAsync(AddAuthorRoleForUserCommand addAuthorRoleForUserCommand)
         {
             return await Mediator.Send(addAuthorRoleForUserCommand);
         }
 
-        //  [Authorize("RoleAccess")]
+        [Authorize("RoleAccess")]
         [HttpPost("FormerAuthor")]
         public async Task<ActionResult<Result>> CreateAsync(AddFormerAuthorRoleForUserCommand addFormerAuthorRoleForUserCommand)
         {
@@ -46,7 +45,7 @@ namespace SearchImage.Controllers
 
 
 
-      //  [Authorize("Resilience")]
+        [Authorize("Resilience")]
         [HttpDelete("Resiliate/{user_id}")]
         public async Task<ActionResult<Result>> DeleteAsync(string user_id,[FromQuery]int roleId)
         {

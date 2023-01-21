@@ -3,6 +3,7 @@ using Application.UsersAuth.Command.CreateCommand;
 using Application.UsersAuth.Command.CreateCommand.CreateUserAuthCommand;
 using Application.UsersAuth.Command.DeleteCommand;
 using Application.UsersAuth.Command.UpdateCommand;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,23 +22,27 @@ namespace SearchImage.Controllers
             return await Mediator.Send(createUserAuthCommand);
         }
 
-
         [HttpPost("Default")]
         public async Task<ActionResult<Result>> CreateAsync(ConfigurationDefaultRole configurationDefaultRole)
         {
             return await Mediator.Send(configurationDefaultRole);
         }
+
+        [Authorize("RoleAccess")]
         [HttpPost("Author")]
         public async Task<ActionResult<Result>> CreateAsync(AddAuthorRoleAuthUserCommand addAuthorRoleAuthUserCommand)
         {
             return await Mediator.Send(addAuthorRoleAuthUserCommand);
         }
+
+        [Authorize("RoleAccess")]
         [HttpPost("FormerAuthor")]
         public async Task<ActionResult<Result>> CreateAsync(AddFormerAuthorRoleAuthUserCommand addFormerAuthorRoleAuthUserCommand)
         {
             return await Mediator.Send(addFormerAuthorRoleAuthUserCommand);
         }
 
+        [Authorize("UpdateUser")]
         [HttpPut("{user_id}")]
         public async Task<ActionResult<Result>> UpdateAsync(string user_id,UpdateUserAuthCommand updateUserAuthCommand)
         {
@@ -48,12 +53,14 @@ namespace SearchImage.Controllers
             return await Mediator.Send(updateUserAuthCommand);
         }
 
+        [Authorize("AdminAcces")]
         [HttpDelete("User/{user_id}")]
         public async Task<ActionResult<Result>> DeleteAsync(string user_id)
         {
             return await Mediator.Send(new DeleteUserAuthCommand(user_id));
         }
 
+        [Authorize("Resilience")]
         [HttpDelete("Resiliate/{user_id}")]
         public async Task<ActionResult<Result>> DeleteAsync2(string user_id,[FromQuery]int roleId)
         {

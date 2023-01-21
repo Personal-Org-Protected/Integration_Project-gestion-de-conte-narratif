@@ -17,7 +17,7 @@ namespace SearchImage.Controllers
     public class UserForfaitsController : ApiController
     {
 
-        //[Authorize("ForfaitAccess")]
+        [Authorize("ForfaitAccess")]
         [HttpGet("{user_id}")]
         public async Task<UserForfaitVM> GetAsync(string user_id)
         {
@@ -51,7 +51,7 @@ namespace SearchImage.Controllers
             return await Mediator.Send(createForfaitForDefaultUserCommand);
         }
 
-        //[Authorize("ForfaitAccess")]
+        [Authorize("ForfaitAccess")]
         [HttpPost("Standard")]
         public async Task<ActionResult<Result>> CreateAsync(AddForfaitCommand addForfaitLambdaCommand)
         {

@@ -46,8 +46,6 @@ namespace Application.DependencyInjections
                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "create:item-admin"));
                 policy.Requirements
                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:item-admin"));
-                //       policy.Requirements
-                //.Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:role_members"));
 
             });
 
@@ -65,10 +63,6 @@ namespace Application.DependencyInjections
 
             //user access
             options.AddPolicy("UserAccess", policy => {
-                policy.Requirements
-                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:user-item"));
-                policy.Requirements
-                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:user-item"));
                 policy.Requirements
                     .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "buy:book"));
 
@@ -122,13 +116,13 @@ namespace Application.DependencyInjections
                 });// a voir
 
 
-                //userIdentity
-                //options.AddPolicy("ReadIdentityUser", policy => {
-                //                                        policy.Requirements
-                //                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:users"));
-                //                                        policy.Requirements
-                //                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:user_idp_tokens"));
-                //});
+               // userIdentity
+                options.AddPolicy("ReadIdentityUser", policy =>
+                {
+                                                                    policy.Requirements
+                                                                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:users"));
+                                                                    
+                });
 
 
                 options.AddPolicy("UpdateUser", policy => {

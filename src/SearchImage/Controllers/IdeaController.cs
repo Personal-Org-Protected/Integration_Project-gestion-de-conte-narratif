@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace SearchImage.Controllers
 {
-   // [Authorize("AuthorAccess")]
+    [Authorize("AuthorAccess")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]

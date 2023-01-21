@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.UsersAuth.Command.CreateCommand.CreateUserAuthCommand
 {
-    public record CreateUserAuthCommand(string user_id,string email, string username, string password, string Location, DateTime BirthDate, string phoneNumber) : IRequest<Result>;
+    public record CreateUserAuthCommand(string user_id,string email, string username, string password, string Location, DateTime BirthDate, string phoneNumber,string description) : IRequest<Result>;
 
 
 

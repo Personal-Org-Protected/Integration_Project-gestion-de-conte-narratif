@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application.Chapitres.Queries.Dto
 {
-    public class ChapitresDto : IMapFrom<Chapitre>
+    public class ChapitreOrderDto : IMapFrom<Chapitre>
     {
         public int IdChapitre { get; set; }
         public int IdImage { get; set; }
@@ -17,12 +17,12 @@ namespace Application.Chapitres.Queries.Dto
         public int IdStoryTelling { get; set; }
         public int Order { get; set; }
 
-        //public ImageDto Image { get; set; }
-        //public StoryDto Story { get; set; }    
+        public bool hasPrevious { get; set; }
+        public bool hasNext { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Chapitre, ChapitresDto>();
+            profile.CreateMap<Chapitre, ChapitreOrderDto>();
         }
     }
 }

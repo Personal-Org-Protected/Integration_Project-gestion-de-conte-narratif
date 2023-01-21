@@ -16,27 +16,36 @@ namespace SearchImage.Controllers
     [ApiController]
     public class ChapitreController : ApiController
     {
-        //   [Authorize("ReadContent")]
+        [Authorize("ReadContent")]
         [HttpGet("{id}")]
        public async Task<ChapitresDto> GetById(int id)
         {
             return await Mediator.Send(new GetChapitresByIdQueries(id));
         }
-        //[Authorize("AuthorAccess")]
+        [Authorize("AuthorAccess")]
         [HttpGet("StoryTell/{id}")]
         public async Task<PaginatedItems<ChapitresDto>> GetByIdStoryTelling( int id,[FromQuery] int pgNumber)
         {
             return await Mediator.Send(new GetChapitresByIdStoryTellingQueries(id,pgNumber));
         }
 
-        //[Authorize("AuthorAccess")]
+        [Authorize("ReadContent")]
+        [HttpGet("Order/{idStoryTell}")]
+        public async Task<ChapitreOrderDto> GetByOrder(int idStoryTell, [FromQuery] int id)
+        {
+            return await Mediator.Send(new GetChapitreByOrderQueries(idStoryTell, id));
+        }
+
+
+
+        [Authorize("AuthorAccess")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateChapitresCommand createChapitres)
         {
             return await Mediator.Send(createChapitres);
         }
 
-        //[Authorize("AuthorAccess")]
+        [Authorize("AuthorAccess")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Result>> Put(int id,UpdateChapitreCommand updateChapitre)
         {
@@ -47,7 +56,7 @@ namespace SearchImage.Controllers
             return await Mediator.Send(updateChapitre);
         }
 
-        //[Authorize("AuthorAccess")]
+        [Authorize("AuthorAccess")]
         [HttpPut("order/{id}")]
         public async Task<ActionResult<Result>> Put2(int id, ChangeOrderCommand changeOrder)
         {
@@ -58,14 +67,14 @@ namespace SearchImage.Controllers
             return await Mediator.Send(changeOrder);
         }
 
-        //[Authorize("AuthorAccess")]
+        [Authorize("AuthorAccess")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Result>> Delete(int id)
         {
             return await Mediator.Send(new DeleteChapitresCommand(id));
         }
 
-        //[Authorize("AuthorAccess")]
+        [Authorize("AuthorAccess")]
         [HttpDelete("histoire/{id}")]
         public async Task<ActionResult<Result>> Delete2(int id)
         {
