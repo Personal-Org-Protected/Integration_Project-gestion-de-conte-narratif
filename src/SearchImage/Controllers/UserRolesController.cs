@@ -16,11 +16,18 @@ namespace SearchImage.Controllers
     public class UserRolesController : ApiController
     {
 
-        [Authorize("AdminAcces")]
+        [Authorize("RoleAccess")]
         [HttpGet("{user_id}")]
         public async Task<UserRolesVM> GetAsync(string user_id)
         {
             return await Mediator.Send(new GetRolesOfUserQueries(user_id));
+        }
+
+        [Authorize("RoleAccess")]
+        [HttpGet("isAdmin/{user_id}")]
+        public async Task<IsRoleDto> GetAdminRoleAsync(string user_id)
+        {
+            return await Mediator.Send(new IsUserAdminQueries(user_id));
         }
 
         [HttpPost("Default")]
@@ -41,6 +48,13 @@ namespace SearchImage.Controllers
         public async Task<ActionResult<Result>> CreateAsync(AddFormerAuthorRoleForUserCommand addFormerAuthorRoleForUserCommand)
         {
             return await Mediator.Send(addFormerAuthorRoleForUserCommand);
+        }
+
+        [Authorize("AdminAcces")]
+        [HttpPost("Admin")]
+        public async Task<ActionResult<Result>> CreateAdminAsync(AddAdminRoleForUserCommand addAdminRoleForUser)
+        {
+            return await Mediator.Send(addAdminRoleForUser);
         }
 
 

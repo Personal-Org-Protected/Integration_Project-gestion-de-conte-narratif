@@ -102,6 +102,8 @@ namespace Application.DependencyInjections
                 options.AddPolicy("RoleAccess", policy =>
                 {
                                                                 policy.Requirements
+                                                                  .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:role"));
+                                                                policy.Requirements
                                                                   .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "change:role"));
 
                 });

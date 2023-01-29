@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SearchImage.Controllers
 {
-    [Authorize("ForfaitAccess")]
+   
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -25,7 +25,7 @@ namespace SearchImage.Controllers
 
 
 
-
+        [Authorize("ForfaitAccess")]
         [HttpGet("{id}")]
         public async Task<ForfaitDto> Get(int id)
         {
@@ -34,7 +34,7 @@ namespace SearchImage.Controllers
 
 
 
-
+        [Authorize("ForfaitAccess")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateForfaitCommand createForfait)
         {
@@ -42,7 +42,7 @@ namespace SearchImage.Controllers
         }
 
 
-
+        [Authorize("ForfaitAccess")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Result>> Update(int id,UpdateForfaitCommand updateForfait)
         {
@@ -55,7 +55,7 @@ namespace SearchImage.Controllers
         }
 
 
-
+        [Authorize("ForfaitAccess")]
         [HttpDelete("{id}")]
         public async Task<ActionResult<Result>> Delete(int id)
         {

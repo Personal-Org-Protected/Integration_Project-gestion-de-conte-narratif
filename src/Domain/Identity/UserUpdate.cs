@@ -9,5 +9,6 @@ namespace Domain.Identity
     public class UserUpdate
     {
         public string username { get; set; }
+         public bool blocked { get; set; } 
     }
 }

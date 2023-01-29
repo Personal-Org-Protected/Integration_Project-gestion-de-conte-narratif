@@ -42,9 +42,29 @@ namespace SearchImage.Controllers
             return await Mediator.Send(addFormerAuthorRoleAuthUserCommand);
         }
 
+
+        [Authorize("RoleAccess")]
+        [HttpPost("Admin")]
+        public async Task<ActionResult<Result>> CreateAsync(AddAdminRoleAuthUserCommand adminRoleAuthUserCommand)
+        {
+            return await Mediator.Send(adminRoleAuthUserCommand);
+        }
+
+
         [Authorize("UpdateUser")]
         [HttpPut("{user_id}")]
         public async Task<ActionResult<Result>> UpdateAsync(string user_id,UpdateUserAuthCommand updateUserAuthCommand)
+        {
+            if (user_id != updateUserAuthCommand.user_id)
+            {
+                return BadRequest();
+            }
+            return await Mediator.Send(updateUserAuthCommand);
+        }
+
+        [Authorize("UpdateUser")]
+        [HttpPut("block/{user_id}")]
+        public async Task<ActionResult<Result>> UpdateAsync(string user_id, BlockUserAuthCommand updateUserAuthCommand)
         {
             if (user_id != updateUserAuthCommand.user_id)
             {

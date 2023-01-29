@@ -33,4 +33,3 @@ D:\VS2022\Examen\srcAvecCss\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.csp
 D:\VS2022\Examen\srcAvecCss\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.dll
 D:\VS2022\Examen\srcAvecCss\src\LogginLibrary\obj\Debug\net6.0\ref\LogginLibrary.dll
 D:\VS2022\Examen\srcAvecCss\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.pdb
-D:\VS2022\Examen\srcAvecCss\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.csproj.AssemblyReference.cache

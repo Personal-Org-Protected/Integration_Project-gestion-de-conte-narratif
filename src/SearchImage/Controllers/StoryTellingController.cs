@@ -57,9 +57,9 @@ namespace SearchImage.Controllers
 
         [Authorize("ReadContent")]
         [HttpGet("facade/{id}")]
-        public async Task<FacadeDto> Get1(int id)
+        public async Task<FacadeDto> Get1(int id,[FromQuery] string user_id)
         {
-            return await Mediator.Send(new GetStoryTellFacadeByIdQueries(id));
+            return await Mediator.Send(new GetStoryTellFacadeByIdQueries(id,user_id));
         }
 
         [Authorize("AuthorAccess")]

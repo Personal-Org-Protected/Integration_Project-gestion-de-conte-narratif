@@ -28,12 +28,20 @@ namespace Application.Common.Behaviours
     {//a voir si durant une raquette lid du use est passe aussi
         protected override Task HandleRequirementAsync(AuthorizationHandlerContext context, HasScopeRequirement requirement)
         {
-            if (!context.User.HasClaim(c => c.Type == "scope" && c.Issuer == requirement.Issuer))
+            //if (!context.User.HasClaim(c => c.Type == "scope" && c.Issuer == requirement.Issuer))
+            //    throw new ForbiddenAccessException("no scope found");
+
+            //var scopes = context.User.FindFirst(c => c.Type == "scope" && c.Issuer == requirement.Issuer).Value.Split(' ');
+
+            //if (scopes.Any(s => s == requirement.Scope))
+            //    context.Succeed(requirement);
+
+            if (!context.User.HasClaim(c => c.Type == "permissions" && c.Issuer == requirement.Issuer))
                 throw new ForbiddenAccessException("no scope found");
 
-            var scopes = context.User.FindFirst(c => c.Type == "scope" && c.Issuer == requirement.Issuer).Value.Split(' ');
+            var permissions = context.User.FindAll(c => c.Type == "permissions" && c.Issuer == requirement.Issuer).ToList();
 
-            if (scopes.Any(s => s == requirement.Scope))
+            if (permissions.Any(s => s.Value == requirement.Scope))
                 context.Succeed(requirement);
 
             return Task.CompletedTask;

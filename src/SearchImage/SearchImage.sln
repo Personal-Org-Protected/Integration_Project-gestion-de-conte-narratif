@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "..\Infras
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogginLibrary", "..\LogginLibrary\LogginLibrary.csproj", "{4F43B4EF-2511-4923-93DA-A938AB6D0AE5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorytellingWebApp", "..\StorytellingWebApp\StorytellingWebApp.csproj", "{4F3E3085-C7C3-49EC-BD13-80D62DD6049B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,10 +39,6 @@ Global
 		{4F43B4EF-2511-4923-93DA-A938AB6D0AE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F43B4EF-2511-4923-93DA-A938AB6D0AE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F43B4EF-2511-4923-93DA-A938AB6D0AE5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4F3E3085-C7C3-49EC-BD13-80D62DD6049B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4F3E3085-C7C3-49EC-BD13-80D62DD6049B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4F3E3085-C7C3-49EC-BD13-80D62DD6049B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4F3E3085-C7C3-49EC-BD13-80D62DD6049B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
