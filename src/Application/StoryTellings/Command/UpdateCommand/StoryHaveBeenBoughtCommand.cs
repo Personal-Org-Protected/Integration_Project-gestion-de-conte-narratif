@@ -28,6 +28,7 @@ namespace Application.StoryTellings.Command.UpdateCommand
                 ?? throw new NotFoundException();
 
             histoire.numberRef++;
+            _context.StoryTellings.Update(histoire);
             var result=await _context.SaveChangesAsync(cancellationToken);
             if (result > 0) return Result.Success("Book bought one more time");
             return Result.Failure("Book count buy is not updated", new List<string>());

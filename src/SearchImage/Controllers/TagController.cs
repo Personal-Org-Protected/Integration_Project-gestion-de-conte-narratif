@@ -24,6 +24,14 @@ namespace SearchImage.Controllers
 
 
         [Authorize("ReadContent")]
+        [HttpGet("All")]
+        public async Task<TagVM> Get()
+        {
+            return await Mediator.Send(new GetTagsQueries());
+        }
+
+
+        [Authorize("ReadContent")]
         [HttpGet("{id}")]
         public async Task<TagDto> Get(int id)
         {

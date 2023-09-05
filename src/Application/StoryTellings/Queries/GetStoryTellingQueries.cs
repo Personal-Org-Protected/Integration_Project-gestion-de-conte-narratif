@@ -19,7 +19,7 @@ namespace Application.StoryTellings.Queries
 
     public class GetStoryTellingQueriesHandler : IRequestHandler<GetStoryTellingQueries, PaginatedItems<StoryTellingDto>>
     {
-        private const int _pageSize = 50;
+        private const int _pageSize = 10;
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
 

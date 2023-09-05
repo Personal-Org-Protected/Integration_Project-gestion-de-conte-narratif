@@ -21,15 +21,18 @@ namespace Domain.Entities
         public bool Finished { get; set; }
         public int numberRef { get; set; }
         public int? idTag { get; set; }
+        public double? rating { get; set; }//nouveau
         public DateTime DateCreation { get; set; }
         public virtual User User { get; set; }
         public virtual Tag Tags { get; set; }
         public virtual ZoneCommentary ZoneCommentary { get; set; }//new
         public virtual ICollection<StoryTellBox> StoryTellBox { get; set; }
+        public virtual ICollection<BasketItems> Items { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }
         public virtual ICollection<Idees> Idees { get; set; }
         //public virtual ICollection<Commentaires> Commentaires { get; set; }//new
         public virtual ICollection<Chapitre> Chapitres { get; set; }
- 
+        public virtual ICollection<RatingInfos> Ratings { get; set; }//new
+
     }
 }

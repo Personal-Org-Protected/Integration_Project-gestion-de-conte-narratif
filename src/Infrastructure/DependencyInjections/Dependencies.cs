@@ -31,9 +31,9 @@ namespace Infrastructure.DependencyInjections
                     options.UseSqlServer(
                         sqlString,
                         b => b.MigrationsAssembly(typeof(ApplicationDbContext).Assembly.FullName)));
-            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());//avant c'etait scoped
             services.AddHttpContextAccessor();
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+           // services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddHttpClient<IAuth0Client<UserCreate>, Auth0Client<UserCreate>>();
             services.AddHttpClient<IAuth0Client<UserUpdate>, Auth0Client<UserUpdate>>();
             services.AddHttpClient<ITokenAuth0Client, TokenAuth0Client>();

@@ -22,6 +22,9 @@ namespace Application.StoryTellings.Queries.Dto
         public int IdZone { get; set; }
         public int numberRef { get; set; }
         public bool Finished { get; set; }
+        public DateTime DateCreation { get; set; }
+
+        public double? rating { get; set; }//nouveau
 
         public void Mapping(Profile profile)
         {

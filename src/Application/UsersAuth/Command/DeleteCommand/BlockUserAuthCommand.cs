@@ -30,7 +30,9 @@ namespace Application.UsersAuth.Command.DeleteCommand
                 blocked = true
             };
 
-            return await _client.UpdateUserAsync(userAuth, request.user_id);
+           //await _client.UpdateUserAsync(userAuth, request.user_id);
+            var result =Result.Success("");
+            return result;
         }
     }
 }

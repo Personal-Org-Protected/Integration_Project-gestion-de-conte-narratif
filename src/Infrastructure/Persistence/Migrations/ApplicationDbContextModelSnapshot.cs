@@ -22,6 +22,45 @@ namespace Infrastructure.Persistence.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Domain.Entities.Basket", b =>
+                {
+                    b.Property<string>("basket_id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<bool>("isEmpty")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("Panier vide");
+
+                    b.Property<string>("user_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("Proprietaire");
+
+                    b.HasKey("basket_id");
+
+                    b.HasIndex("user_id")
+                        .IsUnique();
+
+                    b.ToTable("Panier", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.BasketItems", b =>
+                {
+                    b.Property<int>("IdStoryTelling")
+                        .HasColumnType("int");
+
+                    b.Property<string>("basket_id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("IdStoryTelling", "basket_id");
+
+                    b.HasIndex("basket_id");
+
+                    b.ToTable("BasketItems", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Chapitre", b =>
                 {
                     b.Property<int>("IdChapitre")
@@ -255,6 +294,67 @@ namespace Infrastructure.Persistence.Migrations
                     b.ToTable("Bibliotheque", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Notification", b =>
+                {
+                    b.Property<int>("idNotification")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idNotification"), 1L, 1);
+
+                    b.Property<DateTime>("created")
+                        .HasColumnType("date")
+                        .HasColumnName("date de notif");
+
+                    b.Property<string>("message")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("message");
+
+                    b.Property<bool>("read")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false)
+                        .HasColumnName("Lu");
+
+                    b.Property<string>("title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("title");
+
+                    b.Property<string>("user_id")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)")
+                        .HasColumnName("target");
+
+                    b.HasKey("idNotification");
+
+                    b.HasIndex("user_id");
+
+                    b.ToTable("Notification", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.RatingInfos", b =>
+                {
+                    b.Property<string>("user_id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("storyTellId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("note")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasDefaultValue(0)
+                        .HasColumnName("note");
+
+                    b.HasKey("user_id", "storyTellId");
+
+                    b.HasIndex("storyTellId");
+
+                    b.ToTable("Notes", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.Story", b =>
                 {
                     b.Property<int>("IdStory")
@@ -357,6 +457,10 @@ namespace Infrastructure.Persistence.Migrations
                     b.Property<double>("price")
                         .HasColumnType("float")
                         .HasColumnName("Prix");
+
+                    b.Property<double?>("rating")
+                        .HasColumnType("float")
+                        .HasColumnName("Popularite");
 
                     b.Property<string>("url")
                         .HasColumnType("nvarchar(max)")
@@ -517,6 +621,9 @@ namespace Infrastructure.Persistence.Migrations
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Region");
 
+                    b.Property<string>("avatar")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("description")
                         .HasColumnType("nvarchar(max)")
                         .HasColumnName("Description");
@@ -545,6 +652,36 @@ namespace Infrastructure.Persistence.Migrations
                     b.HasKey("user_id");
 
                     b.ToTable("User", (string)null);
+                });
+
+            modelBuilder.Entity("Domain.Entities.Basket", b =>
+                {
+                    b.HasOne("Domain.Identity.User", "User")
+                        .WithOne("Basket")
+                        .HasForeignKey("Domain.Entities.Basket", "user_id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.BasketItems", b =>
+                {
+                    b.HasOne("Domain.Entities.StoryTelling", "StoryTelling")
+                        .WithMany("Items")
+                        .HasForeignKey("IdStoryTelling")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Basket", "Basket")
+                        .WithMany("Items")
+                        .HasForeignKey("basket_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Basket");
+
+                    b.Navigation("StoryTelling");
                 });
 
             modelBuilder.Entity("Domain.Entities.Chapitre", b =>
@@ -659,6 +796,36 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Owner");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Notification", b =>
+                {
+                    b.HasOne("Domain.Identity.User", "User")
+                        .WithMany("Notification")
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Domain.Entities.RatingInfos", b =>
+                {
+                    b.HasOne("Domain.Entities.StoryTelling", "StoryTell")
+                        .WithMany("Ratings")
+                        .HasForeignKey("storyTellId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Identity.User", "User")
+                        .WithMany("Ratings")
+                        .HasForeignKey("user_id")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("StoryTell");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Domain.Entities.StoryTellBox", b =>
                 {
                     b.HasOne("Domain.Entities.Library", "StoryTellLibrary")
@@ -742,6 +909,11 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.Basket", b =>
+                {
+                    b.Navigation("Items");
+                });
+
             modelBuilder.Entity("Domain.Entities.ForfaitClient", b =>
                 {
                     b.Navigation("ForfaitUser");
@@ -768,6 +940,10 @@ namespace Infrastructure.Persistence.Migrations
                     b.Navigation("Chapitres");
 
                     b.Navigation("Idees");
+
+                    b.Navigation("Items");
+
+                    b.Navigation("Ratings");
 
                     b.Navigation("StoryTellBox");
 
@@ -798,12 +974,19 @@ namespace Infrastructure.Persistence.Migrations
 
             modelBuilder.Entity("Domain.Identity.User", b =>
                 {
+                    b.Navigation("Basket")
+                        .IsRequired();
+
                     b.Navigation("ForfaitUser");
 
                     b.Navigation("Images");
 
                     b.Navigation("Library")
                         .IsRequired();
+
+                    b.Navigation("Notification");
+
+                    b.Navigation("Ratings");
 
                     b.Navigation("Stories");
 

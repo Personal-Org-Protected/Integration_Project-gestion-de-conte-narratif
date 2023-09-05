@@ -15,12 +15,9 @@ namespace Application.Libraries.Command.CreateCommand
         public CreateLibraryCommandValidator(IApplicationDbContext context)
         {
             _context = context;
-            RuleFor(v=>v.NameLibrary)
+            RuleFor(v=>v.user_id)
                 .NotEmpty()
-                .WithMessage("Need a name for the library");
-            RuleFor(v => v.user_id)
-                .NotEmpty()
-                .WithMessage("This library must belong to someone");
+                .WithMessage("Need a user_id for the library");
         }
 
 

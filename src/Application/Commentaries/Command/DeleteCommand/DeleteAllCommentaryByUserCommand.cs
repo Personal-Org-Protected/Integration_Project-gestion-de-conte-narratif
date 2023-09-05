@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.Commentaries.Command.DeleteCommand
 {
-    public record DeleteAllCommentaryByUserCommand(string user_id):IRequest<Result>;
+    public record DeleteAllCommentaryByUserCommand(int idZone):IRequest<Result>;
 
     public class DeleteCommentaryByUserCommandHandler : IRequestHandler<DeleteAllCommentaryByUserCommand, Result>
     {
@@ -25,7 +25,7 @@ namespace Application.Commentaries.Command.DeleteCommand
         public async Task<Result> Handle(DeleteAllCommentaryByUserCommand request, CancellationToken cancellationToken)
         {
             var Commentaries = await _context.Commentaries
-                .Where(t=>t.user_id == request.user_id)
+                .Where(t=>t.IdZone == request.idZone)
                 .ToListAsync() ?? throw new NotFoundException();
             _context.Commentaries.RemoveRange(Commentaries);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);

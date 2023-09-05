@@ -20,9 +20,9 @@ namespace SearchImage.Controllers
     public class SearchImage : ApiController
     {
 
-        [Authorize("ReadContent")]
+        [Authorize("Read-author")]
         [HttpGet]
-        public async Task<ActionResult<PaginatedItems<ImageDto>>> Get([FromQuery] GetImageByOwnerQueries imageByOwnerQueries)
+        public async Task<ActionResult<PaginatedItems<ImageDto>>> Get([FromQuery] GetImageByOwnerQueries imageByOwnerQueries)//modified
         {
             return await Mediator.Send(imageByOwnerQueries);
         }
@@ -40,6 +40,7 @@ namespace SearchImage.Controllers
             return await Mediator.Send(imagesQueries);
         }
 
+        //native
         [Authorize("ReadContent")]
         [HttpGet("{id}")]
         public async Task<ActionResult<ImageDto>> GetById(int id)
@@ -47,7 +48,9 @@ namespace SearchImage.Controllers
             return await Mediator.Send(new GetImagesByIdQueries(id));
         }
 
-        [Authorize("authoraccess")]
+     
+
+        [Authorize("AuthorAccess")]
         [HttpGet("alreadyHasChapter/{id}")]
         public async Task<AlreadyInChapter> GetById2(int id)
         {
@@ -56,7 +59,7 @@ namespace SearchImage.Controllers
 
         [Authorize("AuthorAccess")]
         [HttpPost]
-        public async Task<ActionResult<Result>> Post(CreateImageCommand createImageCommand)
+        public async Task<ActionResult<Result>> Post(CreateImageCommand createImageCommand)//modified
         {
            return  await Mediator.Send(createImageCommand);
         }

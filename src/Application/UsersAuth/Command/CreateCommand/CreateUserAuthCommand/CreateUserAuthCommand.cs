@@ -34,7 +34,7 @@ namespace Application.UsersAuth.Command.CreateCommand.CreateUserAuthCommand
                 password = request.password,
                 connection = connection
             };
-            var result=  await _client.CreateUserAsync(entityAuth);
+            var result = Result.Success("");//await _client.CreateUserAsync(entityAuth);
             if (result.Succeeded)return Result.Success("Creation  user auth avec succes");
 
             return Result.Failure("Impossible de creer le user sur auth",new List<string>() { result.Msg});

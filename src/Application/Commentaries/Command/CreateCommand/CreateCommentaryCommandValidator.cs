@@ -14,8 +14,6 @@ namespace Application.Commentaries.Command.CreateCommand
             RuleFor(v => v.Commentaire)
                 .NotEmpty().WithMessage("Commentary must be written")
                 .MaximumLength(200).WithMessage("must not exceed 200 characters");
-            RuleFor(v => v.user_id)
-                .NotEmpty().WithMessage("commentary must have an owner");
             RuleFor(v => v.IdZone)
                .NotEmpty().WithMessage("this commentary must be linked to a storyTell");
         }

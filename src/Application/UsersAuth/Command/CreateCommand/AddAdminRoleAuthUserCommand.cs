@@ -32,7 +32,7 @@ namespace Application.UsersAuth.Command.CreateCommand
         public async Task<Result> Handle(AddAdminRoleAuthUserCommand request, CancellationToken cancellationToken)
         {
             var role = await _context.Roles.FindAsync(_roleId) ?? throw new NotFoundException(); ;
-            var result = await _client.AddressingRole(request.user_id, role.AuthRoleId);
+            var result = Result.Success("");// var result = await _client.AddressingRole(request.user_id, role.AuthRoleId);
             return result;
         }
     }

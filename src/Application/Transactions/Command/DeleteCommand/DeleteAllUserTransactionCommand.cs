@@ -12,20 +12,24 @@ using System.Threading.Tasks;
 
 namespace Application.Transactions.Command.DeleteCommand
 {
-    public record DeleteAllUserTransactionCommand(string user_id):IRequest<Result>;
+    public record DeleteAllUserTransactionCommand():IRequest<Result>;
 
     public class DeleteAllUserTransactionCommandHandler : IRequestHandler<DeleteAllUserTransactionCommand, Result>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
 
-        public DeleteAllUserTransactionCommandHandler(IApplicationDbContext context)
+        public DeleteAllUserTransactionCommandHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
+
         }
         public async Task<Result> Handle(DeleteAllUserTransactionCommand request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
             var transactions = await _context.Transactions
-                .Where(t => t.user_id ==request.user_id)
+                .Where(t => t.user_id ==user_id)
                 .ToListAsync() ?? throw new NotFoundException();
             _context.Transactions.RemoveRange(transactions);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);

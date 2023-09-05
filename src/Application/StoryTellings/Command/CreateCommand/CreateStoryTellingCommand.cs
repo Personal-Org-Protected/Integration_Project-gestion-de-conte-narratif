@@ -16,7 +16,6 @@ namespace Application.StoryTellings.Command.CreateCommand
     {
         public string? url { get; set; }//new
         public string NameStory { get; set; }
-        public string user_id { get; set; }
         public double price { get; set; }
         public string synopsis { get; set; }
         public int idTag { get; set; }
@@ -26,25 +25,29 @@ namespace Application.StoryTellings.Command.CreateCommand
     {
 
         private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
 
-        public CreateStoryTellingCommandHandler(IApplicationDbContext context)
+        public CreateStoryTellingCommandHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
         public async Task<Result> Handle(CreateStoryTellingCommand request, CancellationToken cancellationToken)
         {
+            var user_id = _user.getUserId();
             var zoneCommentaire = await CreateZoneComm(cancellationToken);
             var tag = await getDefaultTag(request.idTag);
             var entity = new StoryTelling()
             {
                 NameStory = request.NameStory,
                 url = request.url,
-                user_id=request.user_id,
+                user_id=user_id,
                 DateCreation=DateTime.Now,
                 price = request.price,
                 Sypnopsis=request.synopsis,
                 IdZone= zoneCommentaire,
                 idTag=tag,
+                rating=0
             };
             _context.StoryTellings.Add(entity);
             await changeTagCount(tag);

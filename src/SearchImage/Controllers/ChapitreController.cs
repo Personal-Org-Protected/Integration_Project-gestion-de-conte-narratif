@@ -16,12 +16,14 @@ namespace SearchImage.Controllers
     [ApiController]
     public class ChapitreController : ApiController
     {
+        //native
         [Authorize("ReadContent")]
         [HttpGet("{id}")]
        public async Task<ChapitresDto> GetById(int id)
         {
             return await Mediator.Send(new GetChapitresByIdQueries(id));
         }
+
         [Authorize("AuthorAccess")]
         [HttpGet("StoryTell/{id}")]
         public async Task<PaginatedItems<ChapitresDto>> GetByIdStoryTelling( int id,[FromQuery] int pgNumber)
@@ -29,6 +31,7 @@ namespace SearchImage.Controllers
             return await Mediator.Send(new GetChapitresByIdStoryTellingQueries(id,pgNumber));
         }
 
+        //native
         [Authorize("ReadContent")]
         [HttpGet("Order/{idStoryTell}")]
         public async Task<ChapitreOrderDto> GetByOrder(int idStoryTell, [FromQuery] int id)

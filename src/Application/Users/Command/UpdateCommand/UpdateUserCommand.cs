@@ -13,25 +13,26 @@ using System.Threading.Tasks;
 
 namespace Application.Users.Command.UpdateCommand
 {
-    public record UpdateUserCommand(string user_id, string username, string Location, string phoneNumber, string description) : IRequest<Result>;
+    public record UpdateUserCommand( string Location, string phoneNumber, string description) : IRequest<Result>;
 
 
     public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Result>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
 
-        public UpdateUserCommandHandler(IApplicationDbContext context)
+        public UpdateUserCommandHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
-
+            _user = user;
         }
         public async Task<Result> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
+            var user_id = _user.getUserId();
             var Entity = await _context.Users
-                .FindAsync(request.user_id) ?? throw new NotFoundException();
+                .FindAsync(user_id) ?? throw new NotFoundException();
 
             Entity.Location = request.Location;
-            Entity.username = request.username;
             Entity.phoneNumber = request.phoneNumber;
             Entity.description = request.description;
             _context.Users.Update(Entity);

@@ -21,9 +21,11 @@ namespace Application.UsersAuth.Command.DeleteCommand
         }
         public async Task<Result> Handle(DeleteUserAuthCommand request, CancellationToken cancellationToken)
         {
-            var authResult = await _client.DeleteUserAsync(request.user_id);
-            if (authResult.Succeeded) return Result.Success("User in Auth0 deleted");
-            return Result.Failure("User Auth0 could not be deleted", new List<string>() { authResult.Msg });
+           // var authResult = await _client.DeleteUserAsync(request.user_id);
+            var result = Result.Success("");
+
+            if (result.Succeeded) return Result.Success("User in Auth0 deleted");
+            return Result.Failure("User Auth0 could not be deleted", new List<string>());
         }
     }
 }

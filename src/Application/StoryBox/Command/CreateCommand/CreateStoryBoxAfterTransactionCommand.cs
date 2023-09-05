@@ -12,23 +12,24 @@ using System.Threading.Tasks;
 
 namespace Application.StoryBox.Command.CreateCommand
 {
-    public record CreateStoryBoxAfterTransactionCommand(string user_id,int storyTell) : IRequest<Result>;
+    public record CreateStoryBoxAfterTransactionCommand(int storyTell) : IRequest<Result>;
 
 
     public class CreateStoryBoxAfterTransactionCommandHandler : IRequestHandler<CreateStoryBoxAfterTransactionCommand, Result>
     {
         private readonly IApplicationDbContext _context;
-
-        public CreateStoryBoxAfterTransactionCommandHandler(IApplicationDbContext context)
+        private readonly IUser _user;
+        public CreateStoryBoxAfterTransactionCommandHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
 
         public async Task<Result> Handle(CreateStoryBoxAfterTransactionCommand request, CancellationToken cancellationToken)
         {
-
+            var user_id=_user.getUserId();
             var library = await _context.Libraries
-           .Where(t => t.user_id == request.user_id)
+           .Where(t => t.user_id == user_id)
            .FirstOrDefaultAsync() ?? throw new NotFoundException();
 
             var entity = new StoryTellBox()

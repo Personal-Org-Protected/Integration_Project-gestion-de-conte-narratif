@@ -22,7 +22,7 @@ namespace Application.Users.Query
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
-        private const int _pageSize = 50;
+        private const int _pageSize = 8;
 
         public GetUserQueriesHandler(IApplicationDbContext context, IMapper mapper)
         {

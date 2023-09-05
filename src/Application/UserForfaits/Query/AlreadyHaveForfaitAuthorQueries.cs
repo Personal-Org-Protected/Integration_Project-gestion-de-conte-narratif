@@ -11,22 +11,25 @@ using System.Threading.Tasks;
 
 namespace Application.UserForfaits.Query
 {
-    public record AlreadyHaveForfaitAuthorQueries(string user_id):IRequest<HaveForfaitDto>;
+    public record AlreadyHaveForfaitAuthorQueries():IRequest<HaveForfaitDto>;
 
     public class AlreadyHaveForfeitAuthorQueriessHandler : IRequestHandler<AlreadyHaveForfaitAuthorQueries, HaveForfaitDto>
     {
 
         private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
 
-        public AlreadyHaveForfeitAuthorQueriessHandler(IApplicationDbContext context)
+        public AlreadyHaveForfeitAuthorQueriessHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
 
         public async Task<HaveForfaitDto> Handle(AlreadyHaveForfaitAuthorQueries request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
             var user_forfaits = await _context.Forfait_Users
-                .Where(t => t.user_id == request.user_id)
+                .Where(t => t.user_id == user_id)
                 .ToListAsync();//a enlever la verification sur les auteurs
             return await checkAuthorForfait(user_forfaits);
         }

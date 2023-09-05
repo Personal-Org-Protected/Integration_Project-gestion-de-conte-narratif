@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Application.UserForfaits.Query
 {
-    public record AlreadyHaveForfaitLambdaQueries(string user_id) : IRequest<HaveForfaitDto>;
+    public record AlreadyHaveForfaitLambdaQueries() : IRequest<HaveForfaitDto>;
 
 
     public class AlreadyHaveForfeitLambdaQueriesHandler : IRequestHandler<AlreadyHaveForfaitLambdaQueries, HaveForfaitDto>
@@ -19,16 +19,18 @@ namespace Application.UserForfaits.Query
         private readonly int idDefaultForfait = 1;
 
         private readonly IApplicationDbContext _context;
-
-        public AlreadyHaveForfeitLambdaQueriesHandler(IApplicationDbContext context)
+        private readonly IUser _user;
+        public AlreadyHaveForfeitLambdaQueriesHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
 
         public async Task<HaveForfaitDto> Handle(AlreadyHaveForfaitLambdaQueries request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
             var user_forfaits = await _context.Forfait_Users
-                .Where(t => t.user_id ==request.user_id/* && t.IdForfait!= idDefaultForfait*/)
+                .Where(t => t.user_id ==user_id/* && t.IdForfait!= idDefaultForfait*/)
                 .ToListAsync();
 
          return await checkLambdaForfait(user_forfaits);

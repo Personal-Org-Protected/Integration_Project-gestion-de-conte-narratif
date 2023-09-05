@@ -26,8 +26,9 @@ namespace Application.UsersAuth.Command.DeleteCommand
 
         public async Task<Result> Handle(ResiliateAuthRoleCommand request, CancellationToken cancellationToken)
         {
-            var role = await _context.Roles.FindAsync(request.roleId) ?? throw new NotFoundException(); 
-            var result=await _client.DeleteRoleFromUser(request.user_id, role.AuthRoleId);
+            var role = await _context.Roles.FindAsync(request.roleId) ?? throw new NotFoundException();
+            //var result=await _client.DeleteRoleFromUser(request.user_id, role.AuthRoleId);
+            var result = Result.Success("");
             return result;
         }
     }

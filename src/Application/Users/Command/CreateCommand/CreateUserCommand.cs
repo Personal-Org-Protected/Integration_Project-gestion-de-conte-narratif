@@ -38,6 +38,7 @@ namespace Application.Users.Command.CreateCommand
                 BirthDate = request.BirthDate,
                 phoneNumber = request.phoneNumber,
                 description = request.description,
+                avatar=""
             };
             _context.Users.Add(entity);
             var result= await _context.SaveChangesAsync(cancellationToken);

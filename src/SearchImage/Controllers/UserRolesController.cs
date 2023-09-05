@@ -24,11 +24,41 @@ namespace SearchImage.Controllers
         }
 
         [Authorize("RoleAccess")]
+        [HttpGet]
+        public async Task<UserRolesVM> GetAsync()
+        {
+            return await Mediator.Send(new GetOwnRolesQueries());
+        }
+
+        [Authorize("AdminAcces")]
         [HttpGet("isAdmin/{user_id}")]
         public async Task<IsRoleDto> GetAdminRoleAsync(string user_id)
         {
-            return await Mediator.Send(new IsUserAdminQueries(user_id));
+            return await Mediator.Send(new UserIsAdminQueries(user_id));
         }
+
+        [Authorize("RoleAccess")]
+        [HttpGet("isAdmin")]
+        public async Task<IsRoleDto> GetAdminRoleAsync()
+        {
+            return await Mediator.Send(new IsUserAdminQueries());
+        }
+
+
+        [Authorize("RoleAccess")]
+        [HttpGet("isAuthor")]
+        public async Task<IsRoleDto> GetAuthorRoleAsync()
+        {
+            return await Mediator.Send(new IsUserAuthorQueries());
+        }
+
+        [Authorize("RoleAccess")]
+        [HttpGet("isFormer")]
+        public async Task<IsRoleDto> GetFormerRoleAsync( )
+        {
+            return await Mediator.Send(new IsUserFormerQueries());
+        }
+
 
         [HttpPost("Default")]
         public async Task<ActionResult<Result>> CreateAsync(CreateDefaultRoleForUserCommand createDefaultRoleForUserCommand)
@@ -36,18 +66,25 @@ namespace SearchImage.Controllers
             return await Mediator.Send(createDefaultRoleForUserCommand);
         }
 
+        [HttpPost("Role")]
+        public async Task<ActionResult<Result>> CreateRoleAsync(AddOwnRoleCommand addOwnRole)
+        {
+            return await Mediator.Send(addOwnRole);
+        }
+
+
         [Authorize("RoleAccess")]
         [HttpPost("Author")]
-        public async Task<ActionResult<Result>> CreateAsync(AddAuthorRoleForUserCommand addAuthorRoleForUserCommand)
+        public async Task<ActionResult<Result>> CreateAuthorAsync()//modified
         {
-            return await Mediator.Send(addAuthorRoleForUserCommand);
+            return await Mediator.Send(new AddAuthorRoleForUserCommand());
         }
 
         [Authorize("RoleAccess")]
         [HttpPost("FormerAuthor")]
-        public async Task<ActionResult<Result>> CreateAsync(AddFormerAuthorRoleForUserCommand addFormerAuthorRoleForUserCommand)
+        public async Task<ActionResult<Result>> CreateFormerAsync()//modified
         {
-            return await Mediator.Send(addFormerAuthorRoleForUserCommand);
+            return await Mediator.Send(new AddFormerAuthorRoleForUserCommand());
         }
 
         [Authorize("AdminAcces")]
@@ -59,11 +96,18 @@ namespace SearchImage.Controllers
 
 
 
-        [Authorize("Resilience")]
+        [Authorize("AdminAcces")]//modified
         [HttpDelete("Resiliate/{user_id}")]
         public async Task<ActionResult<Result>> DeleteAsync(string user_id,[FromQuery]int roleId)
         {
             return await Mediator.Send(new DeleteUserRoleCommand(user_id, roleId));
+        }
+
+        [Authorize("Resilience")]
+        [HttpDelete("Resiliate/Own/{id}")]
+        public async Task<ActionResult<Result>> DeleteAsync( int id)//modified
+        {
+            return await Mediator.Send(new DeleteOwnUserRoleCommand(id));
         }
 
 

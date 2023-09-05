@@ -16,29 +16,33 @@ using System.Threading.Tasks;
 
 namespace Application.StoryTellings.Queries
 {
-    public record StoreWindowQueries(int idTag,string user_id,int pgNumber) :IRequest<PaginatedItems<FacadeDto>>;
+    public record StoreWindowQueries(int idTag,int pgNumber, string? search=" ", bool? rate=false,bool? price=false) :IRequest<PaginatedItems<FacadeDto>>;
 
     public class StoreWindowQueriesHandler : IRequestHandler<StoreWindowQueries, PaginatedItems<FacadeDto>>
     {
-        private const int _pageSize = 10;
+        private const int _pageSize = 8;
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly int _roleId=2;
+        private readonly IUser _user;
 
-        public StoreWindowQueriesHandler(IApplicationDbContext context, IMapper mapper)
+        public StoreWindowQueriesHandler(IApplicationDbContext context, IMapper mapper,IUser user)
         {
             _context = context;
             _mapper = mapper;
+            _user = user;
         }
         public async Task<PaginatedItems<FacadeDto>> Handle(StoreWindowQueries request, CancellationToken cancellationToken)
         {
+            var user_id =_user.getUserId();
             var tag = await getDefaultTag(request.idTag);
-            var histoire = await _context.StoryTellings
-                .Where(d=>d.idTag == tag && d.Finished) //changer ici
+            var histoire = await GetBooks(request,tag,cancellationToken); 
+            /* await _context.StoryTellings
+                .Where(d => d.idTag == tag && d.Finished) //changer ici
                 .ProjectTo<FacadeDto>(_mapper.ConfigurationProvider)
                 .OrderBy(t => t.price)
-                .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken) ?? throw new NotFoundException("there is no book like that");
-            return await ApplyForfaitReduction(request.user_id, histoire);
+                .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken);*/
+            return await ApplyForfaitReduction(user_id, histoire);
          
         }
 
@@ -48,7 +52,7 @@ namespace Application.StoryTellings.Queries
             {
                 await implementAuthor(item);
                 var price = item.price;
-                item.price=await CalculPrice(user_id,price);
+                item.ForfaitPrice = verifyFree(await CalculPrice(user_id,price));
             }
             return paginatedItems;
         }//si tu rajoute des tags et autre parametres dans forfait alors tu devras en prendre compte ici et dans transaction
@@ -107,6 +111,88 @@ namespace Application.StoryTellings.Queries
             facade.author = _mapper.Map<AuthorDto>(user);
 
         }
+        private async Task<PaginatedItems<FacadeDto>> GetBooks(StoreWindowQueries request ,int tag,CancellationToken cancellationToken)
+        {
+            if(request.search!=null && request.search.Count() > 0 && tag > await getDefaultTag(0)) {
+               return await getResearchTag(request, tag, cancellationToken);
+            }
+            else if(request.search != null && request.search.Count() > 0)
+            {
+                return await getResearch(request, cancellationToken);
+            }
+            var histoires = await _context.StoryTellings
+                .Where(d => d.Finished) //changer ici
+                .ProjectTo<FacadeDto>(_mapper.ConfigurationProvider)
+                .OrderBy(t => t.DateCreation)
+                .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken);
+            return histoires;
+        }
+
+        private async Task<PaginatedItems<FacadeDto>> getResearchTag(StoreWindowQueries request, int tag, CancellationToken cancellationToken)
+        {
+            if (request.rate.Value)
+            {
+                var rated = await _context.StoryTellings
+                   .Where(d => d.idTag == tag && d.Finished && d.NameStory.Contains(request.search)) //changer ici
+                   .ProjectTo<FacadeDto>(_mapper.ConfigurationProvider)
+                   .OrderBy(t => t.rating)
+                   .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken);
+                return rated;
+            }
+            else if (request.price.Value)
+            {
+                var prices = await _context.StoryTellings
+                   .Where(d => d.idTag == tag && d.Finished && d.NameStory.Contains(request.search)) //changer ici
+                   .ProjectTo<FacadeDto>(_mapper.ConfigurationProvider)
+                   .OrderBy(t => t.price)
+                   .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken);
+                return prices;
+            }
+
+            var researches = await _context.StoryTellings
+                   .Where(d => d.idTag == tag && d.Finished && d.NameStory.Contains(request.search)) //changer ici
+                   .ProjectTo<FacadeDto>(_mapper.ConfigurationProvider)
+                   .OrderBy(t => t.DateCreation)
+                   .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken);
+            return researches;
+        }
+
+        private async Task<PaginatedItems<FacadeDto>> getResearch(StoreWindowQueries request, CancellationToken cancellationToken)
+        {
+            if (request.rate.Value)
+            {
+                var rated = await _context.StoryTellings
+                   .Where(d => d.Finished && d.NameStory.Contains(request.search)) //changer ici
+                   .ProjectTo<FacadeDto>(_mapper.ConfigurationProvider)
+                   .OrderBy(t => t.rating)
+                   .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken);
+                return rated;
+            }
+            else if (request.price.Value)
+            {
+                var prices = await _context.StoryTellings
+                   .Where(d =>  d.Finished && d.NameStory.Contains(request.search)) //changer ici
+                   .ProjectTo<FacadeDto>(_mapper.ConfigurationProvider)
+                   .OrderBy(t => t.price)
+                   .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken);
+                return prices;
+            }
+
+            var researches = await _context.StoryTellings
+                   .Where(d => d.Finished && d.NameStory.Contains(request.search)) //changer ici
+                   .ProjectTo<FacadeDto>(_mapper.ConfigurationProvider)
+                   .OrderBy(t => t.DateCreation)
+                   .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken);
+            return researches;
+        }
+
+        private double verifyFree(double alteredValue)
+        {
+            if (alteredValue < 0)
+                return 0;
+            else return alteredValue;
+        }
+
     }
 
 

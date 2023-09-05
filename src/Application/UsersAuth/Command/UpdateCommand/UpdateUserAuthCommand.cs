@@ -11,27 +11,31 @@ using System.Threading.Tasks;
 namespace Application.UsersAuth.Command.UpdateCommand
 {
 
-    public record UpdateUserAuthCommand(string user_id, string username/*, string Location, string phoneNumber*/) : IRequest<Result>;
+    public record UpdateUserAuthCommand(string username/*, string Location, string phoneNumber*/) : IRequest<Result>;
 
 
     public class UpdateUserAuthCommandHandler : IRequestHandler<UpdateUserAuthCommand, Result>
     {
         private readonly IAuth0Client<UserUpdate> _client;
+        private readonly IUser _user;
 
-        public UpdateUserAuthCommandHandler(IApplicationDbContext context, IAuth0Client<UserUpdate> auth0Client)
+        public UpdateUserAuthCommandHandler(IApplicationDbContext context, IAuth0Client<UserUpdate> auth0Client,IUser user)
         {
             _client = auth0Client;
+            _user = user;
         }
 
         public async Task<Result> Handle(UpdateUserAuthCommand request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
             var userAuth = new UserUpdate()
             {
                 username = request.username,
             };
 
-            return await _client.UpdateUserAsync(userAuth, request.user_id);
-       
+           // return await _client.UpdateUserAsync(userAuth, user_id);
+            var result = Result.Success("");
+            return result;
         }
     }
 

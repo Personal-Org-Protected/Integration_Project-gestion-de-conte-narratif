@@ -15,11 +15,27 @@ namespace Infrastructure.Persistence
 {
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
+
+        private bool disposed = false;
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
+            ChangeTracker.QueryTrackingBehavior =
+            QueryTrackingBehavior.NoTracking;
+            this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
+        public ApplicationDbContext()
+        {
+            ChangeTracker.QueryTrackingBehavior =
+            QueryTrackingBehavior.NoTracking;
+            this.ChangeTracker.LazyLoadingEnabled = false;
+        }
+
+        /// <summary>
+        /// cette partier n'est plsu necessaire le boulot est passé à l'unit of work
+        /// </summary>
         public DbSet<Image> Images { get; set; }
 
         public DbSet<Story> Stories { get; set; }
@@ -38,24 +54,51 @@ namespace Infrastructure.Persistence
         public DbSet<Roles_Users> Roles_Users { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<ZoneCommentary> ZoneComments { get; set; }
-        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        public DbSet<Basket> Basket { get; set; }
+        public DbSet<BasketItems> Basket_items { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
+        public DbSet<RatingInfos> Ratings { get; set; }
+
+
+        public async override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
         {
             //Todo add code for auditableEntity
-            return base.SaveChangesAsync(cancellationToken);
+            return await base.SaveChangesAsync(cancellationToken);
         }
 
-        public async Task beginTransaction()
+        public async Task beginTransactionAsync()
         {
            await base.Database.BeginTransactionAsync();
         }
-        public async Task commitTransaction()
+        public async Task commitTransactionAsync()
         {
             await base.Database.CommitTransactionAsync();
         }
-        public async Task rollbackTransaction()
+        public async Task rollbackTransactionAsync()
         {
             await base.Database.RollbackTransactionAsync();
         }
+
+        protected async virtual Task Dispose(bool disposing)
+        {
+            if (!this.disposed)
+            {
+                if (disposing)
+                {
+                    await base.DisposeAsync();
+                }
+            }
+            this.disposed = true;
+        }
+
+
+        public async Task Dispose()
+        {
+            await Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             //builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -77,7 +120,12 @@ namespace Infrastructure.Persistence
             builder.ApplyConfiguration(new Roles_UsersEntityTypeConfiguration());
             builder.ApplyConfiguration(new ForfaitUserEntityTypeConfiguration());
             builder.ApplyConfiguration(new ZoneCommentaryEntityTypeConfiguration());
+            builder.ApplyConfiguration(new BasketEntityTypeConfiguration());
+            builder.ApplyConfiguration(new BasketItemEntityTypeConfiguration());
+            builder.ApplyConfiguration(new NotificationsEntityTypeConfiguration());
+            builder.ApplyConfiguration(new RatingEntityTypeConfiguration());
 
         }
+
     }
 }

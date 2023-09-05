@@ -14,7 +14,6 @@ namespace Application.Commentaries.Command.CreateCommand
 {
     public class CreateCommentaryCommand : IRequest<Result>
     {
-        public string user_id { get; set; }
         public string Commentaire { get; set; }
         public int IdZone { get; set; }
     }
@@ -22,17 +21,20 @@ namespace Application.Commentaries.Command.CreateCommand
     public class CreateCommentaryCommandHandler : IRequestHandler<CreateCommentaryCommand, Result>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
 
-        public CreateCommentaryCommandHandler(IApplicationDbContext context)
+        public CreateCommentaryCommandHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
         public async Task<Result> Handle(CreateCommentaryCommand request, CancellationToken cancellationToken)
         {
+            var user_id = _user.getUserId();
             var entity = new Commentaires
             {
                 Commentaire = request.Commentaire,
-                user_id =request.user_id,
+                user_id =user_id,
                 IdZone =request.IdZone,
                 DateCreation=DateTime.Now,
                 signal=0

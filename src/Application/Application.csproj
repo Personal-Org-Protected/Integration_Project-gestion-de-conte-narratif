@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Baskets\Command\UpdateCommand\" />
     <Folder Include="UserRoles\Command\UpdateCommand\" />
   </ItemGroup>
 

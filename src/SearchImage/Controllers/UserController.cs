@@ -26,11 +26,18 @@ namespace SearchImage.Controllers
             return await Mediator.Send(getUserQueries);
         }
 
-        [Authorize("AdminAcces")]
+        [Authorize("ReadContent")]
         [HttpGet("{user_id}")]
         public async Task<UserDisplay> GetByIdAsync(string user_id)
         {
             return await Mediator.Send(new GetUserByIdQueries(user_id));
+        }
+
+        [Authorize("ReadContent")]
+        [HttpGet("Own")]
+        public async Task<UserDisplay> GetByIdAsync()
+        {
+            return await Mediator.Send(new GetUserByOwnIdQueries());
         }
 
         [Authorize("ReadContent")]
@@ -57,14 +64,17 @@ namespace SearchImage.Controllers
 
 
         [Authorize("UpdateUser")]
-        [HttpPut("{user_id}")]
-        public async Task<ActionResult<Result>> UpdateAsync(string user_id, UpdateUserCommand updateUserCommand)
+        [HttpPut]
+        public async Task<ActionResult<Result>> UpdateAsync(UpdateUserCommand updateUserCommand)//modified
         {
-            if (user_id != updateUserCommand.user_id)
-            {
-                return BadRequest();
-            }
             return  await Mediator.Send(updateUserCommand);
+        }
+
+        [Authorize("UpdateUser")]
+        [HttpPut("avatar")]
+        public async Task<ActionResult<Result>> UpdateAsync(ModifyAvatarCommand updateUserCommand)//modified
+        {
+            return await Mediator.Send(updateUserCommand);
         }
 
 

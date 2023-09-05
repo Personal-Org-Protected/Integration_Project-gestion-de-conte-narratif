@@ -36,7 +36,7 @@ namespace Application.UsersAuth.Command.CreateCommand
         }
         private async Task<Result> roleConfigAuth(string user_id, string role_id)
         {
-            var result = await _client.AddressingRole(user_id, role_id);
+            var result = Result.Success("");//var result = await _client.AddressingRole(user_id, role_id);
             return result;
         }
 

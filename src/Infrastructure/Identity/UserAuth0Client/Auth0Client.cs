@@ -49,7 +49,7 @@ namespace Infrastructure.Identity.UserAuth0Client
             if(DateTime.Now>=time)return true;
             return false;
         }
-        public async Task<Result> CreateUserAsync(T user)
+        public async Task CreateUserAsync(T user)
         {
             try
             {
@@ -58,17 +58,16 @@ namespace Infrastructure.Identity.UserAuth0Client
                 var responses = await _UserClient.PostAsync(url, new StringContent(userdata, Encoding.Default, "application/json"));
                 responses.EnsureSuccessStatusCode();
                 var data = await responses.Content.ReadAsStringAsync();
-                return Result.Success(data);
             }
             catch (Exception ex)
             {
-                var errors = ex.Data.Values.Cast<string>();
-                return Result.Failure("Creation auth FAILDED",errors);
+                var message = $"Type Error : {ex.GetType().FullName}, Messasge : {ex.Message}";
+                throw;
             }
         }
 
 
-        public async Task<Result> UpdateUserAsync(T user,string user_id)
+        public async Task UpdateUserAsync(T user,string user_id)
         {
             try
             {
@@ -78,17 +77,17 @@ namespace Infrastructure.Identity.UserAuth0Client
                 var responses = await _UserClient.PatchAsync(url + $"/{id}", new StringContent(userdata, Encoding.Default, "application/json"));
                 responses.EnsureSuccessStatusCode();
                 var data = await responses.Content.ReadAsStringAsync();
-                return Result.Success(data);
 
             }
             catch (Exception ex)
             {
-                var errors = ex.Data.Values.Cast<string>();
-                return Result.Failure("Update auth FAILDED", errors);
+                var message = $"Type Error : {ex.GetType().FullName}, Messasge : {ex.Message}";
+                throw;
+
             }
 
         }
-        public async Task<Result> DeleteUserAsync(string userId)
+        public async Task DeleteUserAsync(string userId)
         {
             try
             {
@@ -97,17 +96,17 @@ namespace Infrastructure.Identity.UserAuth0Client
                 var responses = await _UserClient.DeleteAsync(url + $"/{id}");
                 responses.EnsureSuccessStatusCode();
                 var data = await responses.Content.ReadAsStringAsync();
-                return Result.Success(data);
             }
             catch (Exception ex)
             {
-                var errors = ex.Data.Values.Cast<string>();
-                return Result.Failure("Delete auth FAILDED", errors);
+                var message = $"Type Error : {ex.GetType().FullName}, Messasge : {ex.Message}";
+                throw;
+
             }
         }
 
 
-        public async Task<Result> AddressingRole(string user_id, string RoleId)
+        public async Task AddressingRole(string user_id, string RoleId)
         {
             var newUrl = url.Replace("users", "roles");
             var baseUrl = newUrl + $"/{RoleId}/users";
@@ -118,12 +117,12 @@ namespace Infrastructure.Identity.UserAuth0Client
                 var responses = await _UserClient.PostAsync(baseUrl, new StringContent(userdata, Encoding.Default, "application/json"));
                 responses.EnsureSuccessStatusCode();
                 var data = await responses.Content.ReadAsStringAsync();
-                return Result.Success(data);
             }
             catch (Exception ex)
             {
-                var errors = ex.Data.Values.Cast<string>();
-                return Result.Failure("addressing role auth FAILDED", errors);
+                var message = $"Type Error : {ex.GetType().FullName}, Messasge : {ex.Message}";
+                throw;
+
             }
         }
 
@@ -138,7 +137,7 @@ namespace Infrastructure.Identity.UserAuth0Client
             return userAssigned;
         }
         /*{"roles":["rol_leIr5SqIBpMcjGn2"]}*/
-        public async Task<Result> DeleteRoleFromUser(string user_id,string role_id)
+        public async Task DeleteRoleFromUser(string user_id,string role_id)
         {
             var userAuthId = "auth0|" + user_id;
             var baseUrl = url + $"/{userAuthId}/roles";
@@ -149,12 +148,12 @@ namespace Infrastructure.Identity.UserAuth0Client
                 var responses = await _UserClient.SendAsync(configRequest(baseUrl, userdata)); //_UserClient.DeleteAsync(baseUrl, new StringContent(userdata, Encoding.Default, "application/json"));
                 responses.EnsureSuccessStatusCode();
                 var data = await responses.Content.ReadAsStringAsync();
-                return Result.Success(data);
             }
             catch (Exception ex)
             {
-                var errors = ex.Data.Values.Cast<string>();
-                return Result.Failure("Deleting role auth from user FAILDED", errors);
+                var message = $"Type Error : {ex.GetType().FullName}, Messasge : {ex.Message}";
+                throw ;
+
             }
         }
         

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Application.StoryTellings.Queries
 {
-    public record StoryHasBeenBoughtQueries(string user_id):IRequest<HasBeenBoughtDto>;
+    public record StoryHasBeenBoughtQueries(int id):IRequest<HasBeenBoughtDto>;
 
     public class StoryHasBeenBoughtQueriesHandler:IRequestHandler<StoryHasBeenBoughtQueries, HasBeenBoughtDto>
     {
@@ -25,20 +25,17 @@ namespace Application.StoryTellings.Queries
 
         public async Task<HasBeenBoughtDto> Handle(StoryHasBeenBoughtQueries request, CancellationToken cancellationToken)
         {
-            var stories = await _context.StoryTellings
-                .Where(t=>t.user_id ==request.user_id)
-                .ToListAsync()?? throw new NotFoundException();
+            var stories = await _context.StoryTellings.FindAsync(request.id)?? throw new NotFoundException();
 
             return check(stories);
         }
 
-        private HasBeenBoughtDto check(List<StoryTelling> storyTellings)
+        private HasBeenBoughtDto check(StoryTelling storyTelling)
         {
             var result = new HasBeenBoughtDto();
-            foreach (var storyTelling in storyTellings)
-            {
-                if (storyTelling.numberRef > 0) { result.IsBought = true; return result; }
-            }
+
+                if (storyTelling.numberRef > 0) { result.IsBought=true; }
+                else result.IsBought=false;
             return result;
         }
     }

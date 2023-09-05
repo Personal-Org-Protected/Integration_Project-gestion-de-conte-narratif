@@ -12,23 +12,26 @@ using System.Threading.Tasks;
 
 namespace Application.UserForfaits.Command.CreateCommand
 {
-    public record AddForfaitCommand(string user_id,int idForfait) :IRequest<Result>;
+    public record AddForfaitCommand(int idForfait) :IRequest<Result>;
 
     public class AddForfaitCommandHandler : IRequestHandler<AddForfaitCommand, Result>
     {
 
         private readonly IApplicationDbContext _context;
-        public AddForfaitCommandHandler(IApplicationDbContext context)
+        private readonly IUser _user;
+        public AddForfaitCommandHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
         public async Task<Result> Handle(AddForfaitCommand request, CancellationToken cancellationToken)
         {
-            await isPreviousForfait(request.idForfait,request.user_id);
+            var user_id=_user.getUserId();
+            await isPreviousForfait(request.idForfait,user_id);
             var newForfaitsUser = new Forfait_UserIntern()
             {
                 IdForfait = request.idForfait,
-                user_id = request.user_id,
+                user_id = user_id,
             };
             _context.Forfait_Users.Add(newForfaitsUser);
    

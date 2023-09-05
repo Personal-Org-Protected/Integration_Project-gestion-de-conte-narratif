@@ -16,7 +16,6 @@ namespace Application.Transactions.Command.CreateCommand
     {
         public string NameBook { get; set; }
         public double price { get; set; }
-        public string user_id { get; set; }
         public int StoryTellId { get; set; }
         //public string IdLibrary { get; set; }
     }
@@ -24,13 +23,16 @@ namespace Application.Transactions.Command.CreateCommand
     public class CreateTransactionsCommandHandler : IRequestHandler<CreateTransactionsCommand, Result>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
 
-        public CreateTransactionsCommandHandler(IApplicationDbContext context)
+        public CreateTransactionsCommandHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
         public async Task<Result> Handle(CreateTransactionsCommand request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
 
             //verufy if thte user has a forfeit
             var entity = new Transaction()
@@ -38,7 +40,7 @@ namespace Application.Transactions.Command.CreateCommand
                 NameBook = request.NameBook,
                 price = request.price,
                 DateTransaction = DateTime.Now,
-                user_id = request.user_id,
+                user_id = user_id,
                 StoryTellId = request.StoryTellId,
             };
 

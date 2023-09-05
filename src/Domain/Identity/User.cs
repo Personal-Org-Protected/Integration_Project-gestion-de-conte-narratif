@@ -18,22 +18,17 @@ namespace Domain.Identity
         public DateTime BirthDate { get; set; }
         public string phoneNumber { get; set; }
         public string? description { get; set; }//new  
+        public string? avatar { get; set; }//new  
         public virtual Library Library { get; set; }
-        public ICollection<Roles_Users> UsersRoles { get; set; }//new
+        public virtual Basket Basket { get; set; }
+        public virtual ICollection<Notification> Notification { get; set; }
+        public virtual ICollection<Roles_Users> UsersRoles { get; set; }//new
+        public virtual ICollection<RatingInfos> Ratings { get; set; }//new
         public virtual ICollection<Forfait_UserIntern> ForfaitUser { get; set; }
         public virtual ICollection<Transaction> Transactions { get; set; }//new
         public virtual ICollection<Image> Images { get; set; }
         public virtual ICollection<StoryTelling> Stories { get; set; }
     }
 
-    /*{
-  "user_id": "admin_46634467-be58-45b1-9aa3-e9b42897fa17",
-  "email": "adminuser@gmail.com",
-  "username": "admin_user",
-  "password": "admin_user98*",
-  "location": "Bruxelles",
-  "birthDate": "1998-12-18",
-  "phoneNumber": "0486256235",
-  "description": "The admin server"
-}*/
+
 }

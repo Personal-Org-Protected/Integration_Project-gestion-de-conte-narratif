@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.Common.Interfaces
 {
-    public interface IApplicationDbContext
+    public interface IApplicationDbContext:IDisposable
     {
         DbSet<Image> Images { get; set; }
 
@@ -35,9 +35,17 @@ namespace Application.Common.Interfaces
         DbSet<Forfait_UserIntern> Forfait_Users { get; set; }
         DbSet<ZoneCommentary> ZoneComments { get; set; }
 
+         DbSet<Basket> Basket { get; set; }
+         DbSet<BasketItems> Basket_items { get; set; }
+         DbSet<Notification> Notifications { get; set; }
+        DbSet<RatingInfos> Ratings { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
-        Task beginTransaction();
-        Task commitTransaction();
-        Task rollbackTransaction();
+        Task commitTransactionAsync();
+        Task beginTransactionAsync();
+        Task rollbackTransactionAsync();
+        Task Dispose();
+
+
     }
 }

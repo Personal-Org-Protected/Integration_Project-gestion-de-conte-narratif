@@ -18,12 +18,16 @@ namespace SearchImage.Controllers
     public class StoryController : ApiController
     {
 
+        //native
         [Authorize("ReadContent")]
         [HttpGet("{id}")]
         public async Task<StoryDto> GetById(int id)
         {
             return await Mediator.Send(new GetStoriesByIdQueries(id));
         }
+
+    
+
         [Authorize("AuthorAccess")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateStoriesCommand createStories)

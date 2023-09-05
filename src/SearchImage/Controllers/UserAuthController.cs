@@ -28,6 +28,14 @@ namespace SearchImage.Controllers
             return await Mediator.Send(configurationDefaultRole);
         }
 
+        [HttpPost("Role")]
+        public async Task<ActionResult<Result>> CreateAsync(AddRoleAuthUserCommand configurationDefaultRole)
+        {
+            return await Mediator.Send(configurationDefaultRole);
+        }
+
+
+
         [Authorize("RoleAccess")]
         [HttpPost("Author")]
         public async Task<ActionResult<Result>> CreateAsync(AddAuthorRoleAuthUserCommand addAuthorRoleAuthUserCommand)
@@ -52,17 +60,13 @@ namespace SearchImage.Controllers
 
 
         [Authorize("UpdateUser")]
-        [HttpPut("{user_id}")]
-        public async Task<ActionResult<Result>> UpdateAsync(string user_id,UpdateUserAuthCommand updateUserAuthCommand)
+        [HttpPut]
+        public async Task<ActionResult<Result>> UpdateAsync( UpdateUserAuthCommand updateUserAuthCommand)
         {
-            if (user_id != updateUserAuthCommand.user_id)
-            {
-                return BadRequest();
-            }
             return await Mediator.Send(updateUserAuthCommand);
         }
 
-        [Authorize("UpdateUser")]
+        [Authorize("AdminAcces")]//modified
         [HttpPut("block/{user_id}")]
         public async Task<ActionResult<Result>> UpdateAsync(string user_id, BlockUserAuthCommand updateUserAuthCommand)
         {
@@ -73,18 +77,25 @@ namespace SearchImage.Controllers
             return await Mediator.Send(updateUserAuthCommand);
         }
 
-        [Authorize("AdminAcces")]
-        [HttpDelete("User/{user_id}")]
-        public async Task<ActionResult<Result>> DeleteAsync(string user_id)
-        {
-            return await Mediator.Send(new DeleteUserAuthCommand(user_id));
-        }
+        //[Authorize("AdminAcces")]
+        //[HttpDelete("User/{user_id}")]
+        //public async Task<ActionResult<Result>> DeleteAsync(string user_id)
+        //{
+        //    return await Mediator.Send(new DeleteUserAuthCommand(user_id));
+        //}
 
-        [Authorize("Resilience")]
+        [Authorize("AdminAcces")]
         [HttpDelete("Resiliate/{user_id}")]
         public async Task<ActionResult<Result>> DeleteAsync2(string user_id,[FromQuery]int roleId)
         {
             return await Mediator.Send(new ResiliateAuthRoleCommand(user_id, roleId));
+        }
+
+        [Authorize("Resilience")]
+        [HttpDelete("Resiliate/Own/{id}")]
+        public async Task<ActionResult<Result>> DeleteAsync3(int id)//modified
+        {
+            return await Mediator.Send(new ResiliateOwnAuthRoleCommand(id));
         }
 
         //[HttpDelete("FormerAuthor/{user_id}")]

@@ -1,8 +1,10 @@
 ﻿using Application.Common.Exceptions;
 using Application.Common.Interfaces;
+using Application.Common.Methods;
 using Application.StoryTellings.Queries.Dto;
 using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +21,10 @@ namespace Application.StoryTellings.Queries
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
 
+
         public GetStoryTellByIdQueriesHandler(IApplicationDbContext context, IMapper mapper)
         {
+
             _context = context;
             _mapper = mapper;
         }

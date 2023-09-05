@@ -32,10 +32,10 @@ namespace Application.Chapitres.Queries
         public async Task<PaginatedItems<ChapitresDto>> Handle(GetChapitresByIdStoryTellingQueries request, CancellationToken cancellationToken)
         {
             var chapitres = await _context.Chapitres
-                .Where(d=>d.IdStoryTelling==request.idStoryTell)
+                .Where(d => d.IdStoryTelling == request.idStoryTell)
                 .ProjectTo<ChapitresDto>(_mapper.ConfigurationProvider)
                 .OrderBy(t => t.Order)
-                .PaginatedListAsync(request.pgNumber, _pageSize,cancellationToken) ?? throw new NotFoundException("there is no Chapter available");
+                .PaginatedListAsync(request.pgNumber, _pageSize, cancellationToken);
 
             //await implementImage(chapitres);
             //await implementStory(chapitres);

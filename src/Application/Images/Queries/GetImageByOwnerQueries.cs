@@ -15,26 +15,28 @@ using System.Threading.Tasks;
 
 namespace Application.Images.Queries
 {
-    public record GetImageByOwnerQueries(string user_id,int pgNumber, int idTag) :IRequest<PaginatedItems<ImageDto>>;
+    public record GetImageByOwnerQueries(int pgNumber, int idTag) :IRequest<PaginatedItems<ImageDto>>;
 
     public class GetImageByOwnerQueriesHandler : IRequestHandler<GetImageByOwnerQueries, PaginatedItems<ImageDto>>
     {
         private const int _pageSize = 4;
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
-
-        public GetImageByOwnerQueriesHandler(IApplicationDbContext context, IMapper mapper)
+        private readonly IUser _user;
+        public GetImageByOwnerQueriesHandler(IApplicationDbContext context, IMapper mapper,IUser user)
         {
             _context = context;
             _mapper = mapper;
+            _user = user;
         }
         public async Task<PaginatedItems<ImageDto>> Handle(GetImageByOwnerQueries request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
             if (request.idTag != 0)
-                return await getSpec(request.user_id, request.idTag, request.pgNumber, cancellationToken);
+                return await getSpec(user_id, request.idTag, request.pgNumber, cancellationToken);
 
 
-            return await getAll(request.user_id, request.pgNumber, cancellationToken);
+            return await getAll(user_id, request.pgNumber, cancellationToken);
               
         }
 

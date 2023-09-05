@@ -17,7 +17,8 @@ namespace SearchImage.Controllers
     public class UserForfaitsController : ApiController
     {
 
-        [Authorize("ForfaitAccess")]
+
+        [Authorize("AdminAcces")]//modified
         [HttpGet("{user_id}")]
         public async Task<UserForfaitVM> GetAsync(string user_id)
         {
@@ -25,23 +26,33 @@ namespace SearchImage.Controllers
         }
 
 
+   
+
+        [Authorize("ForfaitAccess")]
+        [HttpGet]
+        public async Task<UserForfaitVM> GetAsync()//modified
+        {
+            return await Mediator.Send(new GetOwnUserForfaitsQueries());
+        }
+
+
         [HttpGet("HaveThisForfait/{user_id}")]
-        public async Task<HaveForfaitDto> GetAsync(string user_id,int idForfait)
+        public async Task<HaveForfaitDto> GetAsync(int idForfait)//modified
         {
-            return await Mediator.Send(new AlreadyHaveThisForfaitQueries(user_id,idForfait));
+            return await Mediator.Send(new AlreadyHaveThisForfaitQueries(idForfait));
         }
 
 
-        [HttpGet("HaveForfaitLambda/{user_id}")]
-        public async Task<HaveForfaitDto> GetAsync3(string user_id)
+        [HttpGet("HaveForfaitLambda")]
+        public async Task<HaveForfaitDto> GetAsync3()//modified
         {
-            return await Mediator.Send(new AlreadyHaveForfaitLambdaQueries(user_id));
+            return await Mediator.Send(new AlreadyHaveForfaitLambdaQueries());
         }
 
-        [HttpGet("HaveForfaitAuthor/{user_id}")]
-        public async Task<HaveForfaitDto> GetAsync2(string user_id)
+        [HttpGet("HaveForfaitAuthor")]
+        public async Task<HaveForfaitDto> GetAsync2()//modified
         {
-            return await Mediator.Send(new AlreadyHaveForfaitAuthorQueries(user_id));
+            return await Mediator.Send(new AlreadyHaveForfaitAuthorQueries());
         }
 
 
@@ -53,7 +64,7 @@ namespace SearchImage.Controllers
 
         [Authorize("ForfaitAccess")]
         [HttpPost("Standard")]
-        public async Task<ActionResult<Result>> CreateAsync(AddForfaitCommand addForfaitLambdaCommand)
+        public async Task<ActionResult<Result>> CreateAsync(AddForfaitCommand addForfaitLambdaCommand)//modified
         {
             return await Mediator.Send(addForfaitLambdaCommand);
         }
@@ -65,17 +76,18 @@ namespace SearchImage.Controllers
         //    return await Mediator.Send(changeForfaitCommand);
         //}
 
-        //[HttpDelete("User/{user_id}")]
-        //public async Task<ActionResult<Result>> DeleteAsync(string user_id)
-        //{
-        //    return await Mediator.Send(new DeleteUserAndHisForfaitsCommand(user_id));
-        //}
-
-        //[Authorize("Resilience")]
-        [HttpDelete("{user_id}")]
-        public async Task<ActionResult<Result>> DeleteAsync(string user_id,[FromQuery]int idForfait)
+        [Authorize("AdminAcces")]
+        [HttpDelete("{idForfait}")]
+        public async Task<ActionResult<Result>> DeleteAdminAsync(int idForfait)
         {
-            return await Mediator.Send(new ResiliateForfaitCommand(user_id,idForfait));
+            return await Mediator.Send(new DeleteUserForfait(idForfait));
+        }
+
+        [Authorize("Resilience")]
+        [HttpDelete("Resiliate/{idForfait}")]
+        public async Task<ActionResult<Result>> DeleteAsync(int idForfait)//modified
+        {
+            return await Mediator.Send(new ResiliateForfaitCommand(idForfait));
         }
 
     }

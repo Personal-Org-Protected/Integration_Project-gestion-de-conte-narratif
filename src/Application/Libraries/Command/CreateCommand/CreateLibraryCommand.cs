@@ -13,8 +13,8 @@ namespace Application.Libraries.Command.CreateCommand
 {
     public class CreateLibraryCommand :IRequest<Result>
     {
-        public string NameLibrary { get; set; }
         public string user_id { get; set; }
+
     }
 
     public class CreateLibraryCommandHandler : IRequestHandler<CreateLibraryCommand, Result>
@@ -30,7 +30,7 @@ namespace Application.Libraries.Command.CreateCommand
             var entity = new Library()
             {
                 IdLibrary= "Library_"+request.user_id,
-                NameLibrary = request.NameLibrary,
+                NameLibrary = "Library of " + request.user_id,
                 user_id = request.user_id,
 
             };

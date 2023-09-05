@@ -20,20 +20,22 @@ namespace Application.Images.Command.CreateCommand
         public string descriptionImage { get; set; }
         public int IdTag { get; set; }
         public string Uri { get; set; }
-        public string user_id { get; set; }
 
     }
 
     public class CreateImageCommandHandler : IRequestHandler<CreateImageCommand, Result>
     {
+        private readonly IUser _user;
         private readonly IApplicationDbContext _context;
 
-        public CreateImageCommandHandler(IApplicationDbContext context)
+        public CreateImageCommandHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
         public async Task<Result> Handle(CreateImageCommand request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
             var tag = await getDefaultTag(request.IdTag);
             //var format = request.Uri[request.Uri.LastIndexOf('.')..];
             var entity = new Image()
@@ -44,7 +46,7 @@ namespace Application.Images.Command.CreateCommand
                 IdTag= tag,
                 Uri=request.Uri,
                 DateCreation=DateTime.Now,
-                user_id=request.user_id
+                user_id=user_id
             };
             _context.Images.Add(entity);
            await  changeTagCount(tag);

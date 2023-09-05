@@ -10,24 +10,25 @@ using System.Threading.Tasks;
 
 namespace Application.UserRoles.Command.CreateCommand
 {
-    public record AddAuthorRoleForUserCommand(string user_id):IRequest<Result>;
+    public record AddAuthorRoleForUserCommand():IRequest<Result>;
 
     public class AddAuthorRoleForUserHandler : IRequestHandler<AddAuthorRoleForUserCommand, Result>
     {
         private readonly int idRole = 3;
         private readonly IApplicationDbContext _context;
-
-        public AddAuthorRoleForUserHandler(IApplicationDbContext context)
+        private readonly IUser _user;
+        public AddAuthorRoleForUserHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
         public async Task<Result> Handle(AddAuthorRoleForUserCommand request, CancellationToken cancellationToken)
         {
-
+            var user_id=_user.getUserId();
             var role_user = new Roles_Users()
             {
                 idRole = idRole,
-                user_id = request.user_id
+                user_id = user_id
             };
             _context.Roles_Users.Add(role_user);
             var result = await _context.SaveChangesAsync(cancellationToken);

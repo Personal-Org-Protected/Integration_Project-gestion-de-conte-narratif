@@ -21,7 +21,7 @@ namespace Application.Users.Query.Dto_s
         public DateTime BirthDate { get; set; }
         public string phoneNumber { get; set; }
         public string description { get; set; }
-
+        public string? avatar { get; set; }//new 
         public void Mapping(Profile profile)
         {
             profile.CreateMap<User, UserDisplay>();

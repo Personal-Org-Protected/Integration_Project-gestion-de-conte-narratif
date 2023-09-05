@@ -11,22 +11,24 @@ using System.Threading.Tasks;
 
 namespace Application.UserForfaits.Command.DeleteCommand
 {
-    public record ResiliateForfaitCommand(string user_id,int idForfait):IRequest<Result>;
+    public record ResiliateForfaitCommand(int idForfait):IRequest<Result>;
 
 
     public class ResiliateForfaitCommandHandler : IRequestHandler<ResiliateForfaitCommand, Result>
     {
         private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
 
-        public ResiliateForfaitCommandHandler(IApplicationDbContext context)
+        public ResiliateForfaitCommandHandler(IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
         public async Task<Result> Handle(ResiliateForfaitCommand request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
 
-
-            var result = await UpdateUserForfait(request.user_id,request.idForfait, cancellationToken);
+            var result = await UpdateUserForfait(user_id,request.idForfait, cancellationToken);
             if (result > 0) return Result.Success("all the user forfait have been deleted");
 
             return Result.Failure("user forfait could not be deleted", new List<string>() { "maybe user does not have this package" });

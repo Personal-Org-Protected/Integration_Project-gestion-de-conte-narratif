@@ -16,20 +16,20 @@ namespace SearchImage.Controllers
     public class TransactionsController  : ApiController
     {
         [HttpGet]
-        public async Task<PaginatedItems<TransactionsDto>> GetByUser([FromQuery]GetTransactionQueries getTransaction)
+        public async Task<PaginatedItems<TransactionsDto>> GetByUser([FromQuery]GetTransactionQueries getTransaction)//modified
         {
             return await Mediator.Send(getTransaction);
         }
 
         [HttpPost]
-        public async Task<ActionResult<Result>> PostAsync(CreateTransactionsCommand createTransactions)
+        public async Task<ActionResult<Result>> PostAsync(CreateTransactionsCommand createTransactions)//modified
         {
             return await Mediator.Send(createTransactions);
         }
-        [HttpDelete("user/{user_id}")]
-        public async Task<ActionResult<Result>> DeleteAsync( string user_id)
+        [HttpDelete("user")]
+        public async Task<ActionResult<Result>> DeleteAsync()//modified
         {
-            return await Mediator.Send(new DeleteAllUserTransactionCommand(user_id));
+            return await Mediator.Send(new DeleteAllUserTransactionCommand());
         }
 
 

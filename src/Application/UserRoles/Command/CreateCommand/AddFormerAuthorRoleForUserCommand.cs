@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Application.UserRoles.Command.CreateCommand
 {
-    public record AddFormerAuthorRoleForUserCommand(string user_id) :IRequest<Result>;
+    public record AddFormerAuthorRoleForUserCommand() :IRequest<Result>;
 
     public class AddFormerAuthorRoleForUserCommandHandler : IRequestHandler<AddFormerAuthorRoleForUserCommand, Result>
     {
@@ -18,17 +18,20 @@ namespace Application.UserRoles.Command.CreateCommand
 
         private readonly IApplicationDbContext _context;
         private readonly int _roleId=4;
-        public AddFormerAuthorRoleForUserCommandHandler( IApplicationDbContext context)
+        private readonly IUser _user;
+        public AddFormerAuthorRoleForUserCommandHandler( IApplicationDbContext context,IUser user)
         {
             _context = context;
+            _user = user;
         }
 
         public async Task<Result> Handle(AddFormerAuthorRoleForUserCommand request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
             var role = new Roles_Users()
             {
                 idRole = _roleId,
-                user_id = request.user_id
+                user_id = user_id
             };
 
             _context.Roles_Users.Add(role);

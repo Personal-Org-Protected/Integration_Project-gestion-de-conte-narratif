@@ -3,6 +3,7 @@ using Application.Common.Interfaces;
 using Application.Common.Models;
 using Domain.Entities;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 namespace Application.Chapitres.Command.UpdateCommand
 {
 
-    public record ChangeOrderCommand(int idChapitre, int order) : IRequest<Result>;
+    public record ChangeOrderCommand(int idStory,int idChapitre, int order) : IRequest<Result>;
     public class ChangeOrderCommandHandler : IRequestHandler<ChangeOrderCommand, Result>
     {
 
@@ -25,11 +26,14 @@ namespace Application.Chapitres.Command.UpdateCommand
 
         public async Task<Result> Handle(ChangeOrderCommand request, CancellationToken cancellationToken)
         {
+            var formerChapter=await _context.Chapitres
+                .SingleOrDefaultAsync(t=>t.IdStoryTelling==request.idStory && t.Order==request.order) ?? throw new NotFoundException(nameof(Chapitre), request.idChapitre);
+
             var chapitre = await _context.Chapitres.FindAsync(request.idChapitre)
                 ?? throw new NotFoundException(nameof(Chapitre), request.idChapitre);
-
+            formerChapter.Order = chapitre.Order;
             chapitre.Order = request.order;
-            _context.Chapitres.Update(chapitre);
+            _context.Chapitres.UpdateRange(new List<Chapitre>() { chapitre, formerChapter });
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0)

@@ -15,27 +15,30 @@ namespace Application.StoryTellings.Queries
 {
 
 
-    public record GetStoryTellFacadeByIdQueries(int idStoryTell,string user_id) : IRequest<FacadeDto>;
+    public record GetStoryTellFacadeByIdQueries(int idStoryTell) : IRequest<FacadeDto>;
 
     public class GetStoryTellFacadeByIdQueriesHandler : IRequestHandler<GetStoryTellFacadeByIdQueries, FacadeDto>
     {
         private readonly IApplicationDbContext _context;
         private readonly IMapper _mapper;
         private readonly int _roleId = 2;
+        private readonly IUser _user;
 
-        public GetStoryTellFacadeByIdQueriesHandler(IApplicationDbContext context, IMapper mapper)
+        public GetStoryTellFacadeByIdQueriesHandler(IApplicationDbContext context, IMapper mapper,IUser user)
         {
             _context = context;
             _mapper = mapper;
+            _user = user;
         }
 
         public async Task<FacadeDto> Handle(GetStoryTellFacadeByIdQueries request, CancellationToken cancellationToken)
         {
+            var user_id = _user.getUserId();
             var storyTells = await _context.StoryTellings.FindAsync(request.idStoryTell);
             var facade = _mapper.Map<FacadeDto>(storyTells);
             await implementAuthor(facade);
             var price = facade.price;
-            facade.price = await CalculPrice(request.user_id, price);
+            facade.price = await CalculPrice(user_id, price);
             return  facade;
         }
 

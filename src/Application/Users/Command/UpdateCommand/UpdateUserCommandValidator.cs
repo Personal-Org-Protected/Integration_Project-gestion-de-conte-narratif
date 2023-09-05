@@ -15,15 +15,8 @@ namespace Application.Users.Command.UpdateCommand
         public UpdateUserCommandValidator(IApplicationDbContext context)
         {
             _context = context;
-            RuleFor(v => v.user_id)
-                .NotEmpty().WithMessage("a user must have an id");
             RuleFor(v => v.Location)
                 .NotEmpty().WithMessage("A location must be given");
-            RuleFor(v => v.username)
-                .MaximumLength(15)
-                .MinimumLength(5)
-                .WithMessage("user name should be between 5 and 15 char")
-                .NotEmpty().WithMessage("Username required");
             //    .MustAsync((x, cancellationToken) => UserIdExist(x, cancellationToken)).WithMessage("username already taken ");
             //RuleFor(v => v.phoneNumber)
             //    .NotEmpty()

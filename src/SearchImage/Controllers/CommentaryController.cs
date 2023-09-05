@@ -35,15 +35,15 @@ namespace SearchImage.Controllers
 
 
 
-        [HttpGet("user/{user_id}")]
-        public async Task<CommentaryVM> GetSignaledComm(string user_id)
+        [HttpGet("user")]
+        public async Task<CommentaryVM> GetSignaledComm()//modified
         {
-            return await Mediator.Send(new GetCommentairesByUserQueries(user_id));
+            return await Mediator.Send(new GetCommentairesByUserQueries());
         }
 
 
         [HttpPost]
-        public async Task<ActionResult<Result>> Post(CreateCommentaryCommand createCommentary)
+        public async Task<ActionResult<Result>> Post(CreateCommentaryCommand createCommentary)//modified
         {
             return await Mediator.Send(createCommentary);
         }
@@ -81,10 +81,10 @@ namespace SearchImage.Controllers
 
 
 
-        [HttpDelete("user/{user_id}")]
-        public async Task<ActionResult<Result>> Delete(string user_id)
+        [HttpDelete("user/{idZone}")]
+        public async Task<ActionResult<Result>> DeleteAll(int idZone)
         {
-            return await Mediator.Send(new DeleteAllCommentaryByUserCommand(user_id));
+            return await Mediator.Send(new DeleteAllCommentaryByUserCommand(idZone));
         }
     }
 }

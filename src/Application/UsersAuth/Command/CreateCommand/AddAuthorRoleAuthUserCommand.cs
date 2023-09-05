@@ -12,27 +12,30 @@ using System.Threading.Tasks;
 namespace Application.UsersAuth.Command.CreateCommand
 {
 
-    public record AddAuthorRoleAuthUserCommand(string user_id) : IRequest<Result>;
+    public record AddAuthorRoleAuthUserCommand() : IRequest<Result>;
 
 
 
-    public class AddRoleAuthUserCommandHandler : IRequestHandler<AddAuthorRoleAuthUserCommand, Result>
+    public class AddAuthorRoleAuthUserCommandHandler : IRequestHandler<AddAuthorRoleAuthUserCommand, Result>
     {
 
 
         private readonly IAuth0Client<UserCreate> _client;
         private readonly IApplicationDbContext _context;
+        private readonly IUser _user;
         private readonly int _roleId=3;
-        public AddRoleAuthUserCommandHandler(IAuth0Client<UserCreate> auth0Client, IApplicationDbContext context)
+        public AddAuthorRoleAuthUserCommandHandler(IAuth0Client<UserCreate> auth0Client, IApplicationDbContext context,IUser user)
         {
             _context = context;
             _client = auth0Client;
+            _user = user;
         }
 
         public async Task<Result> Handle(AddAuthorRoleAuthUserCommand request, CancellationToken cancellationToken)
         {
+            var user_id=_user.getUserId();
             var role = await _context.Roles.FindAsync(_roleId) ?? throw new NotFoundException(); ;
-            var result=await _client.AddressingRole(request.user_id, role.AuthRoleId);
+            var result = Result.Success("");//var result=await _client.AddressingRole(user_id, role.AuthRoleId);
             return result;
         }
     }
