@@ -8,19 +8,19 @@
     "net6.0": []
   },
   "packageFolders": {
-    "C:\\Users\\m-ayi\\.nuget\\packages\\": {}
+    "C:\\Users\\MAICQ97\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\VS2022\\Examen\\srcAvecCss\\src\\Domain\\Domain.csproj",
+      "projectUniqueName": "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\Domain\\Domain.csproj",
       "projectName": "Domain",
-      "projectPath": "D:\\VS2022\\Examen\\srcAvecCss\\src\\Domain\\Domain.csproj",
-      "packagesPath": "C:\\Users\\m-ayi\\.nuget\\packages\\",
-      "outputPath": "D:\\VS2022\\Examen\\srcAvecCss\\src\\Domain\\obj\\",
+      "projectPath": "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\Domain\\Domain.csproj",
+      "packagesPath": "C:\\Users\\MAICQ97\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\Domain\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\m-ayi\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\MAICQ97\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -61,7 +61,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.413\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
       }
     }
   }

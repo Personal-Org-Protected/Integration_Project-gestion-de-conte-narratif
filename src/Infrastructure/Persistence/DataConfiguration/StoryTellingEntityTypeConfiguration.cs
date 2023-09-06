@@ -24,6 +24,7 @@ namespace Infrastructure.Persistence.DataConfiguration
             builder.Property(e => e.DateCreation).HasColumnType("date").HasColumnName("Date de creation de l'Histoire");//new
             builder.Property(e => e.Finished).HasColumnName("Vendable").HasDefaultValue(false);
             builder.Property(e => e.numberRef).HasColumnName("nombre de vente").HasDefaultValue(0);
+            builder.Property(e => e.Signal).HasColumnName("nombre de signalement").HasDefaultValue(0);
             builder.HasOne(f => f.User)
                 .WithMany(d => d.Stories)
                 .HasForeignKey(e => e.user_id);
