@@ -23,6 +23,7 @@ namespace Domain.Entities
         public int? idTag { get; set; }
         public double? rating { get; set; }//nouveau
         public DateTime DateCreation { get; set; }
+        public int Signal { get; set; } 
         public virtual User User { get; set; }
         public virtual Tag Tags { get; set; }
         public virtual ZoneCommentary ZoneCommentary { get; set; }//new

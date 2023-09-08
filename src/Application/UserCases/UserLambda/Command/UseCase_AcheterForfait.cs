@@ -44,13 +44,11 @@ namespace Application.UserCases.UserLambda.Command
                 await process(forfait, user_id);
                 result =  await _context.SaveChangesAsync(cancellationToken);
                 await _context.commitTransactionAsync();
-                
             }
             catch (Exception ex)
             {
                await _context.rollbackTransactionAsync();
                 return ManageResult.result(result, "Forfait_Change", null);
-
             }
             finally
             {
