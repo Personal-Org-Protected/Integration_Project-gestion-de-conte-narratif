@@ -38,7 +38,7 @@ namespace Application.Chapitres.Command.CreateCommand
                 Order = await GetLastIndex(request.IdStoryTelling,request.Order),
             };
 
-            _context.Chapitres.Add(entity);
+            await _context.Chapitres.AddAsync(entity);
             var resultTask=await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0) return Result.Success("Chapitre added with success");
@@ -50,10 +50,10 @@ namespace Application.Chapitres.Command.CreateCommand
             var chapters = await _context.Chapitres
                 .Where(t => t.IdStoryTelling == storyTell)
                 .ToListAsync();
-            if (order!=0&&!OrderAlredayPicked(chapters,order)) return order;
+            if (order!=0&&!OrderAlreadyPicked(chapters,order)) return order;
             return chapters.Count+1;
         }
-        private bool OrderAlredayPicked(List<Chapitre> chapitres,int order)
+        private bool OrderAlreadyPicked(List<Chapitre> chapitres,int order)
         {
             return chapitres.Any(t => t.Order == order);
         } 

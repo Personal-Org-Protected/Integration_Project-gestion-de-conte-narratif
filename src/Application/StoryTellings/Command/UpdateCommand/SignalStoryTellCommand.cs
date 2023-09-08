@@ -1,4 +1,5 @@
-﻿using Application.Common.Models;
+﻿using Application.Common.Interfaces;
+using Application.Common.Models;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,12 @@ namespace Application.StoryTellings.Command.UpdateCommand
     public record SignalStoryTellCommand() :IRequest<Result>;
     public class SignalStoryTellCommandHandler : IRequestHandler<SignalStoryTellCommand, Result>
     {
+        private readonly IApplicationDbContext _context;
+
+        public SignalStoryTellCommandHandler(IApplicationDbContext context)
+        {
+            _context = context;
+        }
         public Task<Result> Handle(SignalStoryTellCommand request, CancellationToken cancellationToken)
         {
             throw new NotImplementedException();
