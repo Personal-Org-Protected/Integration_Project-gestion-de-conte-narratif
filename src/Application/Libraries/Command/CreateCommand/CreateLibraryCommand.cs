@@ -34,7 +34,7 @@ namespace Application.Libraries.Command.CreateCommand
                 user_id = request.user_id,
 
             };
-            _context.Libraries.Add(entity);
+            await _context.Libraries.AddAsync(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0)

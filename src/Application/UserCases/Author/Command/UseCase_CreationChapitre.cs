@@ -68,7 +68,7 @@ namespace Application.UserCases.Author.Command
                 Order = lastIndex,
             };
 
-            _context.Chapitres.Add(entity);
+            await _context.Chapitres.AddAsync(entity);
         }
 
         private async Task<int> GetLastIndex(int storyTell, int order)
@@ -93,7 +93,7 @@ namespace Application.UserCases.Author.Command
                 TextStory = text
             };
 
-            var story=_context.Stories.Add(entity);
+            var story= await _context.Stories.AddAsync(entity);
             return story.Entity.IdStory;
         }
 

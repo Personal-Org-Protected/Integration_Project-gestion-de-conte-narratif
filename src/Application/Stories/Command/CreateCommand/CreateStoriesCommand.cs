@@ -34,7 +34,7 @@ namespace Application.Stories.Command.CreateCommand
                 TextStory = request.TextStory,
                 DateCreation= DateTime.Now
             };
-            _context.Stories.Add(entity);
+            await _context.Stories.AddAsync(entity);
             var resultTask=await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0) return Result.Success("Story added with success",entity.IdStory);

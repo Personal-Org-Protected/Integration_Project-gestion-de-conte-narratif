@@ -84,7 +84,7 @@ namespace Application.UserCases.UserLambda.Command
                 IdForfait = idForfait,
                 user_id = user_id,
             };
-            _context.Forfait_Users.Add(newForfaitsUser);
+            await _context.Forfait_Users.AddAsync(newForfaitsUser);
         }
 
         private async Task removeForfait(int idForfait, string user_id)
@@ -121,7 +121,7 @@ namespace Application.UserCases.UserLambda.Command
                 idRole = _roleAuthor,
                 user_id = user_id
             };
-            _context.Roles_Users.Add(role_user);
+            await _context.Roles_Users.AddAsync(role_user);
         }
 
         private async Task removeRole(string user_id)

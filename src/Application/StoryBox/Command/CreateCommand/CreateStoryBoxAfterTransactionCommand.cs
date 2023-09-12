@@ -38,7 +38,8 @@ namespace Application.StoryBox.Command.CreateCommand
                 lastPageChecked = 1,
                 IdLibrary = library.IdLibrary
             };
-            _context.storyTellBoxes.Add(entity);
+            
+            await _context.storyTellBoxes.AddAsync(entity);
             var resulTask = await _context.SaveChangesAsync(cancellationToken);
             if (resulTask > 0) { return Result.Success("StoryBox added with success", entity.IdBox); }
             return Result.Failure("Action Failed : StoryBox could not be added", new List<string>());

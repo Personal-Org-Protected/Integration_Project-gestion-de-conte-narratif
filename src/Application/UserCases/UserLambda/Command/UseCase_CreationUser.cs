@@ -84,7 +84,7 @@ namespace Application.UserCases.UserLambda.Command
                 description = description,
                 avatar = ""
             };
-            _context.Users.Add(entity);
+            await _context.Users.AddAsync(entity);
         }
         private async Task userAuthCreation(string user_id, string email, string username, string password)
         {
@@ -106,7 +106,7 @@ namespace Application.UserCases.UserLambda.Command
                 IdForfait = idForfait,
                 user_id = user_id,
             };
-            _context.Forfait_Users.Add(newForfaitsUser);
+            await _context.Forfait_Users.AddAsync(newForfaitsUser);
         }
 
         private async Task defaultRole(string user_id)
@@ -116,7 +116,7 @@ namespace Application.UserCases.UserLambda.Command
                 idRole = idRole,
                 user_id = user_id
             };
-            _context.Roles_Users.Add(role_User);
+           await _context.Roles_Users.AddAsync(role_User);
         }
 
         private async Task defaultRoleAuth(Roles role,string user_id)
@@ -133,7 +133,7 @@ namespace Application.UserCases.UserLambda.Command
                 user_id = user_id,
 
             };
-            _context.Libraries.Add(entity);
+            await _context.Libraries.AddAsync(entity);
         }
 
 

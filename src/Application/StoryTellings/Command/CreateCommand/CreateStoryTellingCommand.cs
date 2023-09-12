@@ -49,7 +49,7 @@ namespace Application.StoryTellings.Command.CreateCommand
                 idTag=tag,
                 rating=0
             };
-            _context.StoryTellings.Add(entity);
+            await _context.StoryTellings.AddAsync(entity);
             await changeTagCount(tag);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 

@@ -75,7 +75,7 @@ namespace Application.UserCases.UserLambda.Command
                 lastPageChecked = 1,
                 IdLibrary = library.IdLibrary
             };
-            _context.storyTellBoxes.Add(entity);
+            await _context.storyTellBoxes.AddAsync(entity);
         }
 
         private async Task createTransaction(string user_id, int idStoryTell,string nameBook,double price)
@@ -89,7 +89,7 @@ namespace Application.UserCases.UserLambda.Command
                 StoryTellId = idStoryTell,
             };
 
-            _context.Transactions.Add(entity);
+            await _context.Transactions.AddAsync(entity);
         }
 
 

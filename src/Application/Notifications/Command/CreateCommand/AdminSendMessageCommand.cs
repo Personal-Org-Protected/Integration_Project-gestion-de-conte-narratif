@@ -37,7 +37,7 @@ namespace Application.Notifications.Command.CreateCommand
 
 
             };
-            _context.Notifications.Add(entity);
+            await _context.Notifications.AddAsync(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0)

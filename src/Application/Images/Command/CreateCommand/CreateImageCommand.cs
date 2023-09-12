@@ -48,7 +48,7 @@ namespace Application.Images.Command.CreateCommand
                 DateCreation=DateTime.Now,
                 user_id=user_id
             };
-            _context.Images.Add(entity);
+           await _context.Images.AddAsync(entity);
            await  changeTagCount(tag);
             var resultTask=await _context.SaveChangesAsync(cancellationToken);
             

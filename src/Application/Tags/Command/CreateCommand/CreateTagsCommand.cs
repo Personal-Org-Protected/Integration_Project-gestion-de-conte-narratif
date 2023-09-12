@@ -29,7 +29,7 @@ namespace Application.Tags.Command.CreateCommand
             {
                 NameTag = request.NameTag  
             };
-            _context.Tag.Add(entity);
+            await _context.Tag.AddAsync(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0) return Result.Success("Tag added with success");
