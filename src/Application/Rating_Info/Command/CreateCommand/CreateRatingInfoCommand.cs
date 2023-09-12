@@ -33,7 +33,7 @@ namespace Application.Rating_Info.Command.CreateCommand
                 user_id = user_id,
                 note = request.rate
             };
-            _context.Ratings.Add(rateConf);
+            await _context.Ratings.AddAsync(rateConf);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0) return Result.Success("StoryTellings updated with success");

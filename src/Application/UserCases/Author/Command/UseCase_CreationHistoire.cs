@@ -72,7 +72,7 @@ namespace Application.UserCases.Author.Command
                 idTag = idTag,
                 rating = 0
             };
-            _context.StoryTellings.Add(entity);
+            await _context.StoryTellings.AddAsync(entity);
         }
 
         private async Task changeTagCount(int idTag)
@@ -85,7 +85,7 @@ namespace Application.UserCases.Author.Command
 
         private async Task<int> CreateZoneComm()
         {
-            var ZoneComm = _context.ZoneComments.Add(new ZoneCommentary());
+            var ZoneComm = await _context.ZoneComments.AddAsync(new ZoneCommentary());
             return ZoneComm.Entity.IdZone;
         }
     }

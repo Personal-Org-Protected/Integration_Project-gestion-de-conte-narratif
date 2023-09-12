@@ -40,7 +40,7 @@ namespace Application.Commentaries.Command.CreateCommand
                 signal=0
             };
 
-            _context.Commentaries.Add(entity);
+            await _context.Commentaries.AddAsync(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0) return Result.Success("Commentary added with success");

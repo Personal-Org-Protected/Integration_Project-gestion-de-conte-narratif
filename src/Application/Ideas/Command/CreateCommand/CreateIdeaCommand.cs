@@ -30,7 +30,7 @@ namespace Application.Ideas.Command.CreateCommand
                 IdStoryTelling = request.StoryId
                 
             };
-            _context.Ideas.Add(entity);
+            await _context.Ideas.AddAsync(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0)

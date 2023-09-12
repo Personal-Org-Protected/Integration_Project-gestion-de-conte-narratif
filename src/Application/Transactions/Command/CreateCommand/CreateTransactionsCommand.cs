@@ -44,7 +44,7 @@ namespace Application.Transactions.Command.CreateCommand
                 StoryTellId = request.StoryTellId,
             };
 
-            _context.Transactions.Add(entity);
+            await _context.Transactions.AddAsync(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
             //var forfait = await verifyForfeit(user);
 

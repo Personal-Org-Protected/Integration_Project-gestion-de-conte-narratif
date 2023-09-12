@@ -33,11 +33,6 @@ namespace Application.DependencyInjections
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviours<,>));
             services.AddScoped<IAuthorizationHandler, HasScopeHandler>();
             services.AddScoped<IReadOnlyPolicyRegistry<string>>(s => PolicyRegistries.GetRegistries());
-            services.AddHttpClient<IImageSearchClient, HttpClientConfigure>(opt =>
-            {
-                opt.DefaultRequestHeaders.Add("X-RapidAPI-Host", "contextualwebsearch-websearch-v1.p.rapidapi.com");
-                opt.DefaultRequestHeaders.Add("X-RapidAPI-Key", "c19b5fc326msh13c0592f3f85e79p1d62abjsn4e14621bbb92");
-            });
 
             services.AddAuthorization(options => {
 

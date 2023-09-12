@@ -40,7 +40,7 @@ namespace Application.Forfaits.Command.CreateCommand
                 
             };
 
-            _context.Forfaits.Add(entity);
+            await _context.Forfaits.AddAsync(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0) return Result.Success("Forfait added with success");

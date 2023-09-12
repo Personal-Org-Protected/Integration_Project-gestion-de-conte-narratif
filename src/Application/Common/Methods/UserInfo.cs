@@ -24,24 +24,24 @@ namespace Application.Common.Methods
             return process();
         }
 
-       private bool checkAudience()
-        {
-           var audience= _httpContextAccessor.HttpContext.Request.Headers.SingleOrDefault(t => t.Key == "audience");
-            if (audience.Value!="Flutter") return false;
+       //private bool checkAudience()
+       // {
+       //    var audience= _httpContextAccessor.HttpContext.Request.Headers.SingleOrDefault(t => t.Key == "audience");
+       //     if (audience.Value!="Flutter") return false;
 
-            return true;
-        }
+       //     return true;
+       // }
 
         private string process()
         {
             var user_id = "";
-            if (checkAudience()) { user_id = "auth0|UserLambda_270b7c19-1968-4920-970a-e3deed612cb3";/*_httpContextAccessor.HttpContext.Request.Headers.SingleOrDefault(t => t.Key == "user").Value;*/ }
-            else
-            {
+            //if (checkAudience()) { user_id = "auth0|UserLambda_270b7c19-1968-4920-970a-e3deed612cb3";/*_httpContextAccessor.HttpContext.Request.Headers.SingleOrDefault(t => t.Key == "user").Value;*/ }
+            //else
+            //{
                 var claims = _httpContextAccessor.HttpContext.User.Claims ?? throw new ForbiddenAccessException("no user found");
                 var userInfo = claims.SingleOrDefault(t => t.Type == _type);
                 user_id = userInfo.Value.Replace(_user_prefix, "");
-            }
+            //}
             user_id = user_id.Replace(_user_prefix, "");
             return user_id;
 

@@ -33,7 +33,7 @@ namespace Application.Baskets.Command.CreateCommand
                 user_id = request.user_id,
 
             };
-            _context.Basket.Add(entity);
+            await _context.Basket.AddAsync(entity);
             var resultTask = await _context.SaveChangesAsync(cancellationToken);
 
             if (resultTask > 0)
