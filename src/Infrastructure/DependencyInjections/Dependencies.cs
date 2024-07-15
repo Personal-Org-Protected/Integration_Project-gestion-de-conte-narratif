@@ -1,8 +1,6 @@
 ﻿using Application.Common.Interfaces;
 using Application.Common.Mappings;
 using AutoMapper;
-using Domain.Identity;
-using Infrastructure.Identity.UserAuth0Client;
 using Infrastructure.Persistence;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Data.SqlClient;
@@ -24,7 +22,7 @@ namespace Infrastructure.DependencyInjections
         {
             var sqlString = new SqlConnectionStringBuilder(configuration.GetConnectionString("ConnectionSecurity"))
             {
-                Password=configuration.GetSection("StoryTell_DB_Password").Value
+                Password="Mouhsine1998*"
             }.ConnectionString;
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddDbContext<ApplicationDbContext>(options =>
@@ -34,9 +32,6 @@ namespace Infrastructure.DependencyInjections
             services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());//avant c'etait scoped
             services.AddHttpContextAccessor();
            // services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-            services.AddHttpClient<IAuth0Client<UserCreate>, Auth0Client<UserCreate>>();
-            services.AddHttpClient<IAuth0Client<UserUpdate>, Auth0Client<UserUpdate>>();
-            services.AddHttpClient<ITokenAuth0Client, TokenAuth0Client>();
             return services;
         }
     }

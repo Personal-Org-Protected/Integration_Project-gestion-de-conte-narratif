@@ -37,7 +37,6 @@ namespace Application.StoryTellings.Command.UpdateCommand
 
             entity.NameStory = request.NameStory;
             entity.url = request.url;
-            entity.price = request.price;
             entity.Sypnopsis= request.synopsis;
             entity.idTag = await getDefaultTag(request.idTag);
 

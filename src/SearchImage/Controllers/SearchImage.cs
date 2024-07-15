@@ -4,7 +4,6 @@ using Application.Images.Command.DeleteCommand;
 using Application.Images.Command.UpdateCommand;
 using Application.Images.Queries;
 using Application.Images.Queries.Dto;
-using Application.ImagesClient.Queries;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -28,17 +27,6 @@ namespace SearchImage.Controllers
         }
 
 
-
-        /// <summary>
-        /// appelle l'api externe pour selectionner une serie d'image selon certains criteres
-        /// </summary>
-        /// <param name="imagesQueries"></param>
-        /// <returns></returns>
-        [HttpGet("ImageClient")]
-        public async Task<ImageClientVM> GetImageClient([FromQuery] ImagesClientQueries imagesQueries)
-        {
-            return await Mediator.Send(imagesQueries);
-        }
 
         //native
         [Authorize("ReadContent")]

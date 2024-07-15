@@ -4,12 +4,5 @@
         <name>SearchImage</name>
     </assembly>
     <members>
-        <member name="M:SearchImage.Controllers.SearchImage.GetImageClient(Application.ImagesClient.Queries.ImagesClientQueries)">
-            <summary>
-            appelle l'api externe pour selectionner une serie d'image selon certains criteres
-            </summary>
-            <param name="imagesQueries"></param>
-            <returns></returns>
-        </member>
     </members>
 </doc>

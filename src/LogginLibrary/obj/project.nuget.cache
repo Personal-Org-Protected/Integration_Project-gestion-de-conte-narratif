@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "iyn2jTBOYhPjRN2TQ2BZJqmRCXXRH0jRN+df+QwCWkr38gSNJF1Er1YE/mIIY6aTKyB2R4OP3tFkN75zDD00Xw==",
+  "dgSpecHash": "zhAaVPEbdKsLJ27NbgA/D3jgRoVGpZdnraBbjeVJCWP8jUR04sLe+f22OSzO25yllSmBUgebEE2cDehwgCElLw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\LogginLibrary\\LogginLibrary.csproj",
+  "projectFilePath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\LogginLibrary\\LogginLibrary.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MAICQ97\\.nuget\\packages\\mediatr\\10.0.1\\mediatr.10.0.1.nupkg.sha512",
     "C:\\Users\\MAICQ97\\.nuget\\packages\\mediatr.contracts\\1.0.1\\mediatr.contracts.1.0.1.nupkg.sha512",

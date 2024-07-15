@@ -18,7 +18,6 @@ namespace Infrastructure.Persistence.DataConfiguration
             builder.Property(e => e.NameStory).HasColumnName("Nom Histoire");
             builder.Property(e => e.url).HasColumnName("image vignette").IsRequired(false);
             builder.Property(e => e.user_id).HasColumnName("Proprietaire");//new
-            builder.Property(e => e.price).HasColumnName("Prix");//new
             builder.Property(e => e.rating).HasColumnName("Popularite");//new
             builder.Property(e => e.Sypnopsis).HasColumnName("Resume");//new
             builder.Property(e => e.DateCreation).HasColumnType("date").HasColumnName("Date de creation de l'Histoire");//new

@@ -66,7 +66,6 @@ namespace Application.UserCases.Author.Command
                 url = url,
                 user_id = user_id,
                 DateCreation = DateTime.Now,
-                price = price,
                 Sypnopsis = synopsis,
                 IdZone = zoneId,
                 idTag = idTag,

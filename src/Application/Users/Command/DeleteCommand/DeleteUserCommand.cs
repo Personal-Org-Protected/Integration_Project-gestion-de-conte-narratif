@@ -18,13 +18,11 @@ namespace Application.Users.Command.DeleteCommand
 
     public class DeleteUserCommandResponseHandler : IRequestHandler<DeleteUserCommand, Result>
     {
-        private readonly IAuth0Client<UserUpdate> _client;
         private readonly IApplicationDbContext _context;
 
-        public DeleteUserCommandResponseHandler(IApplicationDbContext context,IAuth0Client<UserUpdate> auth0Client)
+        public DeleteUserCommandResponseHandler(IApplicationDbContext context)
         {
             _context = context;
-            _client = auth0Client;
         }
         public async Task<Result> Handle(DeleteUserCommand request, CancellationToken cancellationToken)
         {

@@ -2,8 +2,6 @@
 using Application.Common.Interfaces;
 using Application.Common.Methods;
 using Application.Common.RetryPolicies;
-using Application.ImagesClient;
-using Application.ImagesClient.Queries;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;

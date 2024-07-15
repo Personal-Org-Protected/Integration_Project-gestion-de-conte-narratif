@@ -12,17 +12,6 @@ namespace SearchImage.Controllers
     public class UseCaseUserController : ApiController
     {
         
-        [HttpPost("achat-forfait")]
-        public async Task<ActionResult<Result>> PostAchatForfaitAsync(UseCase_AcheterForfait useCase_AcheterForfait)//modified
-        {
-            return await Mediator.Send(useCase_AcheterForfait);
-        }
-
-        [HttpPost("resilier-forfait")]
-        public async Task<ActionResult<Result>> PostResiliserAsync(UseCase_ResilierForfait useCase_Resilier)//modified
-        {
-            return await Mediator.Send(useCase_Resilier);
-        }
 
         [HttpPost("creation-user")]
         public async Task<ActionResult<Result>> PostCreationUserAsync(UseCase_CreationUser useCase_Creation)//modified

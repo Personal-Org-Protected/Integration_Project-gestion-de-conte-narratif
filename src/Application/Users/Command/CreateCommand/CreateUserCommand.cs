@@ -33,11 +33,6 @@ namespace Application.Users.Command.CreateCommand
                 user_id = request.user_id,
                 email = request.email,
                 username = request.username,
-                Location = request.Location,
-                password = request.password,
-                BirthDate = request.BirthDate,
-                phoneNumber = request.phoneNumber,
-                description = request.description,
                 avatar=""
             };
             _context.Users.Add(entity);

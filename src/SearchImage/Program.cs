@@ -82,7 +82,6 @@ builder.Services.AddSwaggerGen(opt =>
 //cors policy
 builder.Services.AddCors(option =>
 {
-
     option.AddPolicy(name: configuration["CorsPolicy:Angular:name"],
                       policy =>
                       {
@@ -119,7 +118,7 @@ builder.Services.AddAuthentication(options =>
 }).AddJwtBearer(options =>
 {//using jwt bearer configuration
     options.Authority = configuration["Auth0:Authority"];
-   // options.Audience = configuration["Auth0:Audience:MyApi"];
+    //options.Audience = configuration["Auth0:Audience:MyApi"];
     options.TokenValidationParameters = new TokenValidationParameters//modfied
     {
         ValidateIssuer = true,
@@ -128,7 +127,7 @@ builder.Services.AddAuthentication(options =>
         {
             configuration["Auth0:Audience:MyApi"],
             configuration["Auth0:Audience:NativeApi"]
-}
+        }
     };
 });
 

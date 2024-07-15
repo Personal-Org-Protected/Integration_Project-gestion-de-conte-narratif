@@ -34,3 +34,16 @@ D:\VS2022\Examen\srcAvecCss\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.dll
 D:\VS2022\Examen\srcAvecCss\src\LogginLibrary\obj\Debug\net6.0\ref\LogginLibrary.dll
 D:\VS2022\Examen\srcAvecCss\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.pdb
 D:\VS2022\Examen\srcAvecCss\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.csproj.AssemblyReference.cache
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\bin\Debug\net6.0\LogginLibrary.deps.json
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\bin\Debug\net6.0\LogginLibrary.dll
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\bin\Debug\net6.0\LogginLibrary.pdb
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.csproj.AssemblyReference.cache
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.AssemblyInfoInputs.cache
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.AssemblyInfo.cs
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.csproj.CoreCompileInputs.cache
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.sourcelink.json
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.dll
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\refint\LogginLibrary.dll
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\LogginLibrary.pdb
+C:\Users\MAICQ97\source\repos\StoryTelling_BackEnd\Integration_Project-gestion-de-conte-narratif\src\LogginLibrary\obj\Debug\net6.0\ref\LogginLibrary.dll

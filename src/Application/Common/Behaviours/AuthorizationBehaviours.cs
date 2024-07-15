@@ -37,7 +37,7 @@ namespace Application.Common.Behaviours
             //    context.Succeed(requirement);
 
             if (!context.User.HasClaim(c => c.Type == "permissions" && c.Issuer == requirement.Issuer))
-                throw new ForbiddenAccessException("no scope found");
+                context.Fail();
 
             var permissions = context.User.FindAll(c => c.Type == "permissions" && c.Issuer == requirement.Issuer).ToList();
 

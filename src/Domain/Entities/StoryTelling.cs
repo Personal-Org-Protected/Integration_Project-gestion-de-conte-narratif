@@ -15,7 +15,6 @@ namespace Domain.Entities
         public string? url { get; set; }//new
         public string NameStory { get; set; }
         public string user_id { get; set; }
-        public double price { get; set; }
         public string Sypnopsis { get; set; }
         public int IdZone { get; set; }//new
         public bool Finished { get; set; }

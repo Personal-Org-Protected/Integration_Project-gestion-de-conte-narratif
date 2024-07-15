@@ -1511,11 +1511,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\Application\\Application.csproj",
+      "projectUniqueName": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\Application\\Application.csproj",
       "projectName": "Application",
-      "projectPath": "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\Application\\Application.csproj",
+      "projectPath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\Application\\Application.csproj",
       "packagesPath": "C:\\Users\\MAICQ97\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\Application\\obj\\",
+      "outputPath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\Application\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\MAICQ97\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -1532,8 +1532,8 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\Domain\\Domain.csproj": {
-              "projectPath": "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\Domain\\Domain.csproj"
+            "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\Domain\\Domain.csproj": {
+              "projectPath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\Domain\\Domain.csproj"
             }
           }
         }
@@ -1542,6 +1542,11 @@
         "warnAsError": [
           "NU1605"
         ]
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -1617,7 +1622,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.204\\RuntimeIdentifierGraph.json"
       }
     }
   }

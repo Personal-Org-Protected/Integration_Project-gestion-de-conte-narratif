@@ -68,7 +68,6 @@ namespace Application.UserCases.Admin.Command
         private async Task checkUserData(string user_id,string admin)
         {
             await checkUserLambda(user_id);
-            await checkAuthor(user_id,admin);
         }
 
         private async Task checkUserLambda(string user_id)
@@ -77,14 +76,6 @@ namespace Application.UserCases.Admin.Command
             var books = await _context.storyTellBoxes.Where(t => t.IdLibrary == library.IdLibrary).ToListAsync();
             if(books.Count!=0)
             _context.storyTellBoxes.RemoveRange(books);
-        }
-        private async Task checkAuthor(string user_id,string admin)
-        {
-           var user= await _context.Roles_Users.SingleOrDefaultAsync(t => t.user_id == user_id && t.idRole == _roleAuthor);
-            if (user == null) return;
-            var books=await _context.StoryTellings.Where(t=>t.user_id== user_id).ToListAsync();
-            await changeOwner(books,admin);
-            _context.StoryTellings.UpdateRange(books);
         }
 
         private async Task changeOwner(List<StoryTelling> stories,string admin)

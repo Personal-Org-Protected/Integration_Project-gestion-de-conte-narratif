@@ -15,7 +15,6 @@ namespace Application.StoryTellings.Queries.Dto
         public string NameStory { get; set; }
         public string url { get; set; }
         public string user_id { get; set; }
-        public double price { get; set; }
         public double ForfaitPrice { get; set; }
         public string Sypnopsis { get; set; }
         public int? idTag { get; set; }

@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "zaSaG7kfqZ0P89A58ubuI0yXsPyRn//z/CPpqdGdI+K7XAHl0EuffH6hi6t4ycvQ4oJwlssIhQs4wb0O6vlcmA==",
+  "dgSpecHash": "g906GFI1EK16E3bdBiMuNBKNqtmCxbUXdio8ZW3GmeK3ofpxEV3FKsMiUpOxuozNYL6QrwQ4RbriBtS9fCHn3Q==",
   "success": true,
-  "projectFilePath": "C:\\Users\\MAICQ97\\source\\repos\\First_Project\\Personnal-Project\\Integration_Project-gestion-de-conte-narratif\\src\\SearchImage\\SearchImage.csproj",
+  "projectFilePath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\SearchImage\\SearchImage.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MAICQ97\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
     "C:\\Users\\MAICQ97\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",

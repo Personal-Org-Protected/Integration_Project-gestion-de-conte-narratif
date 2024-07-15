@@ -32,9 +32,7 @@ namespace Application.Users.Command.UpdateCommand
             var Entity = await _context.Users
                 .FindAsync(user_id) ?? throw new NotFoundException();
 
-            Entity.Location = request.Location;
-            Entity.phoneNumber = request.phoneNumber;
-            Entity.description = request.description;
+    
             _context.Users.Update(Entity);
             var result= await _context.SaveChangesAsync(cancellationToken);
 

@@ -43,7 +43,6 @@ namespace Application.StoryTellings.Command.CreateCommand
                 url = request.url,
                 user_id=user_id,
                 DateCreation=DateTime.Now,
-                price = request.price,
                 Sypnopsis=request.synopsis,
                 IdZone= zoneCommentaire,
                 idTag=tag,
