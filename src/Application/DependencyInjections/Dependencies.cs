@@ -25,11 +25,12 @@ namespace Application.DependencyInjections
         {
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
             services.AddHttpContextAccessor();
             services.AddScoped<IUser, UserInfo>();
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviours<,>));
             services.AddScoped<IAuthorizationHandler, HasScopeHandler>();
+            services.AddScoped<IAuthorizationHandler, IsAdminHandler>();
             services.AddScoped<IReadOnlyPolicyRegistry<string>>(s => PolicyRegistries.GetRegistries());
 
             services.AddAuthorization(options => {
@@ -37,49 +38,44 @@ namespace Application.DependencyInjections
             //admin access
             options.AddPolicy("AdminAcces", policy => {
                 policy.Requirements
-                       .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:item-admin"));
-                policy.Requirements
-                       .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "create:item-admin"));
-                policy.Requirements
-                       .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:item-admin"));
-                policy.Requirements
-                     .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "write:notification"));
-
+                       .Add(new IsAdminRequirement(configuration["Azure:Issuer"]));
+                //policy.Requirements
+                //      .Add(new IsAdminRequirement(configuration["access_as_user"]));
             });
 
             //author access
             options.AddPolicy("AuthorAccess", policy => {//modified 
                         policy.Requirements
-                           .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:Author-item"));
+                           .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "read:Author-item"));
                         policy.Requirements
-                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "write:Author-item"));
+                            .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "write:Author-item"));
                         policy.Requirements
-                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:Author-item"));
+                            .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "update:Author-item"));
                         policy.Requirements
-                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:Author-item"));
+                            .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "delete:Author-item"));
 
             });
 
             options.AddPolicy("Read-author", policy => {//modified
                         policy.Requirements
-                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:Author-item"));
+                            .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "read:Author-item"));
             });
 
 
                 //user access
                 options.AddPolicy("UserAccess", policy => {
                         policy.Requirements
-                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "buy:book"));
+                            .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "buy:book"));
 
             });
 
                 options.AddPolicy("BasketAccess", policy => {
                     policy.Requirements
-                      .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:basket"));
+                      .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "read:basket"));
                     policy.Requirements
-                      .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "write:basket"));
+                      .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "write:basket"));
                     policy.Requirements
-                      .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:basket"));
+                      .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "delete:basket"));
 
                 });
 
@@ -87,20 +83,22 @@ namespace Application.DependencyInjections
                 options.AddPolicy("ReadContent", policy =>
                                                          {
                                                                 policy.Requirements
-                                                                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:item"));
-                                                   });
+                                                                    .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "read:item"));
+                                                             policy.Requirements
+                                                                    .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "access_as_user"));//access_as_user
+                                                         });
 
 
             //commentary Interactions
             options.AddPolicy("CommentaryAccess", policy => {
                                                                 policy.Requirements
-                                                                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:commentary"));
+                                                                    .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "update:commentary"));
                                                                 policy.Requirements
-                                                                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:commentary"));
+                                                                    .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "delete:commentary"));
                                                                 policy.Requirements
-                                                                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:commentary"));
+                                                                    .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "read:commentary"));
                                                                 policy.Requirements
-                                                                    .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "create:commentary"));
+                                                                    .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "create:commentary"));
 
 
 
@@ -109,9 +107,9 @@ namespace Application.DependencyInjections
 
                 options.AddPolicy("NotificationAccess", policy => {
                     policy.Requirements
-                         .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "delete:notification"));
+                         .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "delete:notification"));
                     policy.Requirements
-                         .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:notification"));
+                         .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "update:notification"));
 
                 });
 
@@ -121,9 +119,9 @@ namespace Application.DependencyInjections
                 options.AddPolicy("ForfaitAccess", policy =>
                 {
                                                                 policy.Requirements
-                                                                   .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:forfait"));
+                                                                   .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "read:forfait"));
                                                                 policy.Requirements
-                                                                  .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "change:forfait"));
+                                                                  .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "change:forfait"));
 
                 });
 
@@ -131,17 +129,17 @@ namespace Application.DependencyInjections
                 options.AddPolicy("RoleAccess", policy =>
                 {
                                                                 policy.Requirements
-                                                                  .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:role"));
+                                                                  .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "read:role"));
                                                                 policy.Requirements
-                                                                  .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "change:role"));
+                                                                  .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "change:role"));
 
                 });
 
                 options.AddPolicy("Resilience", policy => {
                                                                     policy.Requirements
-                                                                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "stop:forfait"));
+                                                                            .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "stop:forfait"));
                                                                     policy.Requirements
-                                                                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "stop:role"));
+                                                                            .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "stop:role"));
 
 
                 });// a voir
@@ -151,14 +149,14 @@ namespace Application.DependencyInjections
                 options.AddPolicy("ReadIdentityUser", policy =>
                 {
                                                                     policy.Requirements
-                                                                            .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "read:users"));
+                                                                            .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "read:users"));
                                                                     
                 });
 
 
                 options.AddPolicy("UpdateUser", policy => {
                                                         policy.Requirements
-                                                        .Add(new HasScopeRequirement(configuration["Auth0:Authority"], "update:users"));
+                                                        .Add(new HasScopeRequirement(configuration["Azure:Issuer"], "update:users"));
                      
                 });
             });

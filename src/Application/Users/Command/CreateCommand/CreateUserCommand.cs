@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Application.Users.Command.CreateCommand
 {
 
-    public record CreateUserCommand(string user_id,string email, string username, string password, string Location, DateTime BirthDate, string phoneNumber, string description) : IRequest<Result>;
+    public record CreateUserCommand(string user_id,string email, string username,string b2cObjId, string userRole) : IRequest<Result>;
 
 
     public class CreateUserCommandResponseHandler : IRequestHandler<CreateUserCommand, Result>
@@ -33,9 +33,11 @@ namespace Application.Users.Command.CreateCommand
                 user_id = request.user_id,
                 email = request.email,
                 username = request.username,
-                avatar=""
+                avatar="",
+                userRole = request.userRole,
+                b2cObjId =request.b2cObjId
             };
-            _context.Users.Add(entity);
+            await _context.Users.AddAsync(entity);
             var result= await _context.SaveChangesAsync(cancellationToken);
 //creer library apres la creation de user
 

@@ -18,6 +18,9 @@ namespace Infrastructure.Persistence.DataConfiguration
             builder.HasKey(item => item.user_id);
             builder.Property(e => e.username).HasColumnName("UserName").IsRequired().HasMaxLength(15);
             builder.Property(e => e.email).HasColumnName("Email").IsRequired();
+            builder.Property(e => e.avatar).HasColumnName("Profile Image");
+            builder.Property(e => e.b2cObjId).HasColumnName("Azure Id").IsRequired();
+            builder.Property(e => e.userRole).HasColumnName("Role of user").HasDefaultValue("member");
             builder.HasOne(f => f.Library)
                  .WithOne(d => d.Owner)
                  .HasForeignKey<Library>(e => e.user_id)

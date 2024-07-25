@@ -14,6 +14,9 @@ namespace Domain.Identity
         public string email { get; set; }
         public string username { get; set; }
         public string? avatar { get; set; }//new  
+        public string b2cObjId { get; set; }
+        public string userRole { get; set; }// a voir
+
         public virtual Library Library { get; set; }
         public virtual Basket Basket { get; set; }
         public virtual ICollection<Notification> Notification { get; set; }

@@ -22,8 +22,8 @@ namespace Infrastructure.DependencyInjections
         {
             var sqlString = new SqlConnectionStringBuilder(configuration.GetConnectionString("ConnectionSecurity"))
             {
-                Password="Mouhsine1998*"
-            }.ConnectionString;
+                Password= Environment.GetEnvironmentVariable("StoryTell_DB_Password")
+        }.ConnectionString;
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(

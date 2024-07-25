@@ -15,40 +15,29 @@ namespace Application.Users.Command.CreateCommand
         public CreateUserCommandValidator(IApplicationDbContext context)
         {//adapte a auth rule
             _context = context;
-            RuleFor(v => v.Location)
-                .NotNull()
-                .NotEmpty().WithMessage("A location must be given");
             RuleFor(v => v.username)
                 .NotNull()
                 .NotEmpty().WithMessage("Username required")
                 .MaximumLength(15).WithMessage("too much character")
-                .MustAsync((x, cancellationToken) => UserIdExist(x, cancellationToken)).WithMessage("username already taken "); 
-            RuleFor(v => v.BirthDate)
-                .NotNull()
-               .NotEmpty().WithMessage("Birthdate required")
-               .MustAsync((x, cancellation) => isMajeur(x)).WithMessage("ce user n'est pas majeur");
+                .MustAsync((x, cancellationToken) => UserIdExist(x, cancellationToken)).WithMessage("username already taken ");
             RuleFor(v => v.email)
-                .NotNull()
-               .NotEmpty().WithMessage("email required")
-               .MustAsync((x, cancellationToken) => EmailExist(x,cancellationToken)).WithMessage("email existe");
-            RuleFor(v => v.password)
-               .NotNull()
-               .NotEmpty().WithMessage("password is necessarry")
-               .MaximumLength(15).WithMessage("too long")
-               .MinimumLength(5).WithMessage("need more than that as password")
-               .Matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
-               .WithMessage("Lower case Upper case and number needed");
-            RuleFor(v=>v.phoneNumber)
-                .Length(10).WithMessage("must be 10 character")
-                .Matches(@"^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$");
-            //.Matches("^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$");
-            /*.MustAsync((x, cancellationToken) => PhoneNumberdExist(x, cancellationToken)).WithMessage("phone already taken")*/
+              .NotNull()
+              .NotEmpty().WithMessage("email required")
+              .MaximumLength(15).WithMessage("too much character")
+              .MustAsync((x, cancellationToken) => EmailExist(x, cancellationToken)).WithMessage("email already taken ");
+            RuleFor(v => v.userRole)
+              .NotNull()
+              .NotEmpty().WithMessage("userRole required")
+              .Must((x)=>IsStandardRole(x)).WithMessage("the role can only be member or admin");
 
-            RuleFor(v => v.description)
-         .MaximumLength(200).WithMessage("must be max 200  character");
 
         }
 
+        private bool IsStandardRole(string role)
+        {
+            if (role != "member" || role!= "admin") return false;
+            return true;
+        }
         private async Task<bool> EmailExist(string email,CancellationToken cancellationToken)
         {
             return ! await _context.Users
