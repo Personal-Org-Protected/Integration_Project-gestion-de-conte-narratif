@@ -10,6 +10,8 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
+using Microsoft.Identity.Web.Resource;
 
 namespace SearchImage.Controllers
 {
@@ -19,10 +21,12 @@ namespace SearchImage.Controllers
     [ApiController]
     public class UserController : ApiController
     {
-        [Authorize("AdminAcces")]
+        [Authorize(AuthenticationSchemes = "BearerAdmin", Policy = "AdminAcces")]
         [HttpGet]
         public async Task<PaginatedItems<UserDisplay>> GetAsync([FromQuery] GetUserQueries getUserQueries)
         {
+            string[] scopeRequiredByApi = ["access_as_user", "access_as_admin"];
+            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             return await Mediator.Send(getUserQueries);
         }
 

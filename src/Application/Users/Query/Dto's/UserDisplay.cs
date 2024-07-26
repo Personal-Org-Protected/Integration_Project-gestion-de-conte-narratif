@@ -15,12 +15,6 @@ namespace Application.Users.Query.Dto_s
         public string user_id { get; set; }
         public string email { get; set; }
         public string username { get; set; }
-        public string Location { get; set; }
-        [DisplayFormat(DataFormatString = "{yyyy-MM-dd}", ApplyFormatInEditMode = true)]
-        [DataType(DataType.Date)]
-        public DateTime BirthDate { get; set; }
-        public string phoneNumber { get; set; }
-        public string description { get; set; }
         public string? avatar { get; set; }//new 
         public void Mapping(Profile profile)
         {
