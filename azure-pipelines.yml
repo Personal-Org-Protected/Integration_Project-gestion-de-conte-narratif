@@ -44,6 +44,31 @@ stages:
     - publish: $(Build.ArtifactStagingDirectory)
       artifact: drop
 
+- stage: Create_Ressource
+  jobs:
+  - job: AppService
+    displayName: Create azure app service
+    steps:
+      - task: AzureCLI@2
+        inputs:
+          azureSubscription: 'Visual Studio Professional Subscription(0f7a3b62-c1a4-4aa9-97c3-3bf5f497b5ab)'
+          scriptType: 'batch'
+          scriptLocation: 'inlineScript'
+          inlineScript: |
+            RESOURCE_GROUP=$1
+            APP_NAME=$2
+            PLAN_NAME=$3
+            
+            # Create App Service Plan if it doesn't exist
+            az appservice plan show --name $PLAN_NAME --resource-group $RESOURCE_GROUP > /dev/null 2>&1 || \
+            az appservice plan create --name $PLAN_NAME --resource-group $RESOURCE_GROUP --sku B1
+            
+            # Create App Service if it doesn't exist
+            az webapp show --name $APP_NAME --resource-group $RESOURCE_GROUP > /dev/null 2>&1 || \
+            az webapp create --name $APP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime "DOTNETCORE|8.0"
+          arguments: '--resource-group "talesandtale-europe-rg" --app-name "talesatale-wa-eu" --plan "talestale-as-eu"'
+
+
 - stage: Deploy
   dependsOn: Build
   jobs:
