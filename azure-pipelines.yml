@@ -62,12 +62,12 @@ stages:
             PLAN_NAME=$3
             
             # Create App Service Plan if it doesn't exist
-            az appservice plan show --name $PLAN_NAME --resource-group $RESOURCE_GROUP > /dev/null 2>&1 || \
-            az appservice plan create --name $PLAN_NAME --resource-group $RESOURCE_GROUP --sku B1
+            az appservice plan show --name $(PLAN_NAME) --resource-group $(RESOURCE_GROUP) > /dev/null 2>&1 || \
+            az appservice plan create --name $(PLAN_NAME) --resource-group $(RESOURCE_GROUP) --sku B1
             
             # Create App Service if it doesn't exist
-            az webapp show --name $APP_NAME --resource-group $RESOURCE_GROUP > /dev/null 2>&1 || \
-            az webapp create --name $APP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime "DOTNETCORE|8.0"
+            az webapp show --name $(APP_NAME) --resource-group $(RESOURCE_GROUP) > /dev/null 2>&1 || \
+            az webapp create --name $(APP_NAME) --resource-group $(RESOURCE_GROUP) --plan $(PLAN_NAME) --runtime "DOTNETCORE|8.0"
           arguments: --resource-group 'talesandtale-europe-rg' --app-name 'talesatale-wa-eu' --plan 'talestale-as-eu'
 
 
