@@ -68,7 +68,7 @@ stages:
             # Create App Service if it doesn't exist
             az webapp show --name $APP_NAME --resource-group $RESOURCE_GROUP > /dev/null 2>&1 || \
             az webapp create --name $APP_NAME --resource-group $RESOURCE_GROUP --plan $PLAN_NAME --runtime "DOTNETCORE|8.0"
-          arguments: '--resource-group "talesandtale-europe-rg" --app-name "talesatale-wa-eu" --plan "talestale-as-eu"'
+          arguments: --resource-group 'talesandtale-europe-rg' --app-name 'talesatale-wa-eu' --plan 'talestale-as-eu'
 
 
 - stage: Deploy
