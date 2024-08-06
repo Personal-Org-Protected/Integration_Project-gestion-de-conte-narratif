@@ -93,6 +93,6 @@ stages:
             inputs:
               azureSubscription: 'Visual Studio Professional Subscription(0f7a3b62-c1a4-4aa9-97c3-3bf5f497b5ab)'
               appType: 'webApp'
-              appName: 'StoryTellingApi'
-              resourceGroupName: 'talesandtale-europe-rg'
+              appName: $(appName)
+              resourceGroupName: $(resourceGroup)
               package: '$(Pipeline.Workspace)/drop'
