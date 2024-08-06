@@ -68,7 +68,7 @@ stages:
             
             # Create App Service if it doesn't exist
             az webapp show --name $(appName) --resource-group $(resourceGroup) > /dev/null 2>&1 || \
-            az webapp create --name $(appName) --resource-group $(resourceGroup) --plan $(planName) --runtime "DOTNETCORE|8.0"
+            az webapp create --name $(appName) -g $(resourceGroup) --plan $(planName) --runtime dotnet:8
 
 
 - stage: Deploy
