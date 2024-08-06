@@ -45,6 +45,8 @@ stages:
       artifact: drop
 
 - stage: Create_Ressource
+  displayName: Creating azure web resource for deploypment
+  dependsOn: Build
   jobs:
   - job: AppService
     displayName: Create azure app service
