@@ -72,7 +72,7 @@ stages:
 
 
 - stage: Deploy
-  dependsOn: Build
+  dependsOn: Create_Ressource
   jobs:
   - deployment: DeployWebApp
     environment: 'production'
