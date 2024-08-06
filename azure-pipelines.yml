@@ -6,6 +6,10 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  resourceGroup: 'talesandtale-europe-rg'
+  appName: 'talesatale-wa-eu'
+  planName: 'talesatale-as-eu'
+
 
 stages:
 - stage: Build
@@ -57,18 +61,14 @@ stages:
           scriptType: 'batch'
           scriptLocation: 'inlineScript'
           inlineScript: |
-            RESOURCE_GROUP=$1
-            APP_NAME=$2
-            PLAN_NAME=$3
-            
+
             # Create App Service Plan if it doesn't exist
-            az appservice plan show --name $(PLAN_NAME) --resource-group $(RESOURCE_GROUP) > /dev/null 2>&1 || \
-            az appservice plan create --name $(PLAN_NAME) --resource-group $(RESOURCE_GROUP) --sku B1
+            az appservice plan show --name $(resourceGroup) --resource-group $(resourceGroup) > /dev/null 2>&1 || \
+            az appservice plan create --name $(planName) --resource-group $(resourceGroup) --sku B1
             
             # Create App Service if it doesn't exist
-            az webapp show --name $(APP_NAME) --resource-group $(RESOURCE_GROUP) > /dev/null 2>&1 || \
-            az webapp create --name $(APP_NAME) --resource-group $(RESOURCE_GROUP) --plan $(PLAN_NAME) --runtime "DOTNETCORE|8.0"
-          arguments: --resource-group 'talesandtale-europe-rg' --app-name 'talesatale-wa-eu' --plan 'talestale-as-eu'
+            az webapp show --name $(appName) --resource-group $(resourceGroup) > /dev/null 2>&1 || \
+            az webapp create --name $(appName) --resource-group $(resourceGroup) --plan $(planName) --runtime "DOTNETCORE|8.0"
 
 
 - stage: Deploy
