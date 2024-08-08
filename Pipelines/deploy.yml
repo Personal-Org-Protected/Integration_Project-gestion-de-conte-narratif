@@ -1,0 +1,25 @@
+- stage: Deploy
+  dependsOn: Create_Ressource
+  jobs:
+  - deployment: DeployWebApp
+    environment: 'production'
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - download: current
+            artifact: drop
+
+          - task: UseDotNet@2
+            inputs:
+              packageType: 'sdk'
+              version: '8.x'
+              installationPath: $(Agent.ToolsDirectory)/dotnet
+
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'Visual Studio Professional Subscription(0f7a3b62-c1a4-4aa9-97c3-3bf5f497b5ab)'
+              appType: 'webApp'
+              appName: $(appName)
+              resourceGroupName: $(resourceGroup)
+              package: '$(Pipeline.Workspace)/drop'
