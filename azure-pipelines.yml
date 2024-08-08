@@ -35,15 +35,24 @@ stages:
 
     - task: DotNetCoreCLI@2
       inputs:
-        command: 'test'
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration) --no-build'
+        command: 'custom'
+        custom: 'tool'
+        arguments: 'update --global dotnet-ef'
+      displayName: 'Intall Dotnet Ef Tools'
+
+    - task: DotNetCoreCLI@2
+      inputs:
+        command: 'custom'
+        custom: 'ef'
+        arguments: 'migrations script --no-build --idempotent --context ApplicationDbContext --configuration $(buildConfiguration) --project $(databaseProjectLocation)/UniversityManagementBackend.Database.csproj --startup-project $(mainProjectLocation)/UniversityManagementBackend.API.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/universityBackendScript.sql'
+      displayName: 'Generate Migration Script' 
 
     - task: DotNetCoreCLI@2
       inputs:
         command: 'publish'
         projects: '**/*.csproj'
         arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+        
 
     - publish: $(Build.ArtifactStagingDirectory)
       artifact: drop
