@@ -1,44 +1,45 @@
-- stage: Build
-  jobs:
-  - job: Build
-    steps:
-    - task: UseDotNet@2
-      inputs:
-        packageType: 'sdk'
-        version: '8.x'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
+stages:
+  - stage: Build
+    jobs:
+    - job: Build
+      steps:
+      - task: UseDotNet@2
+        inputs:
+          packageType: 'sdk'
+          version: '8.x'
+          installationPath: $(Agent.ToolsDirectory)/dotnet
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'restore'
-        projects: '**/*.csproj'
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'restore'
+          projects: '**/*.csproj'
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'build'
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration)'
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+          projects: '**/*.csproj'
+          arguments: '--configuration $(buildConfiguration)'
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'custom'
-        custom: 'tool'
-        arguments: 'update --global dotnet-ef'
-      displayName: 'Intall Dotnet Ef Tools'
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'custom'
+          custom: 'tool'
+          arguments: 'update --global dotnet-ef'
+        displayName: 'Intall Dotnet Ef Tools'
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'custom'
-        custom: 'ef'
-        arguments: 'migrations script --no-build --idempotent --context ApplicationDbContext --configuration $(buildConfiguration) --project $(databaseProjectLocation)/UniversityManagementBackend.Database.csproj --startup-project $(mainProjectLocation)/UniversityManagementBackend.API.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/universityBackendScript.sql'
-      displayName: 'Generate Migration Script' 
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'custom'
+          custom: 'ef'
+          arguments: 'migrations script --no-build --idempotent --context ApplicationDbContext --configuration $(buildConfiguration) --project $(databaseProjectLocation)/UniversityManagementBackend.Database.csproj --startup-project $(mainProjectLocation)/UniversityManagementBackend.API.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/universityBackendScript.sql'
+        displayName: 'Generate Migration Script' 
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'publish'
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-        zipAfterPublish: true
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'publish'
+          projects: '**/*.csproj'
+          arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+          zipAfterPublish: true
 
-    - publish: $(Build.ArtifactStagingDirectory)
-      artifact: drop
+      - publish: $(Build.ArtifactStagingDirectory)
+        artifact: drop
