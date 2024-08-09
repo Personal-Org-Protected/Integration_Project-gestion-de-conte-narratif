@@ -1,3 +1,11 @@
+parameters:
+  - name: stage
+    type: string
+  - name: application
+    type: string
+  - name: repo
+    type: string
+
 stages:
   - stage: Build
     jobs:
