@@ -21,28 +21,16 @@ parameters:
 variables:
   - group: ${{ parameters.variableGroup }}
   - name: version
-    value: 002
+    value: 001
   - name: rgName
     value: "rg-$(companyShort)-$(domainShort)-$(appShort)-$(locationAbbr)-${{ parameters.environment }}-$(version)"
 
 stages:
   - template: "./Pipelines/build.yml@self"
     parameters:
-      stage: StageProvisionInfrastructureLogAnalytics
-      resource: "Log Analytics"
-      serviceConnection: "${{ parameters.serviceConnection }}"
-      rgName: "$(rgName)"
-      infraPath: "infra/loganalytics"
-      location: "$(location)"
-      owner: "$(owner)"
-      costCenter: "$(costCenter)"
+      stage: "StageBuild$(application)"
       application: "$(application)"
-      desc: "$(descp)"
       repo: "$(repo)"
-      appShort: "$(appShort)"
-      domainShort: "$(domainShort)"
-      version: "$(version)"
-      env: "${{ parameters.environment }}"
 
   - template: "./Pipelines/azure_resources.yml@self"
     parameters:
