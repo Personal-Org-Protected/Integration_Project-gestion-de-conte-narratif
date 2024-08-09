@@ -4,104 +4,84 @@ trigger:
 pool:
   vmImage: 'windows-latest'
 
-variables:
-  buildConfiguration: 'Release'
-  resourceGroup: 'talesandtale-europe-rg'
-  appName: 'talesatale-wa-eu'
-  planName: 'talesatale-as-eu'
+parameters:
+  - name: variableGroup
+    type: string
+    default: vg-pfu-infrastructure
+  - name: serviceConnection
+    type: string
+    default: Visual Studio Professional Subscription(0f7a3b62-c1a4-4aa9-97c3-3bf5f497b5ab)
+  - name: environment
+    type: string
+    values:
+      - dev
+      - acc
+      - prod
 
+variables:
+  - group: ${{ parameters.variableGroup }}
+  - name: version
+    value: 002
+  - name: rgName
+    value: "rg-$(companyShort)-$(domainShort)-$(appShort)-$(locationAbbr)-${{ parameters.environment }}-$(version)"
 
 stages:
-- stage: Build
-  jobs:
-  - job: Build
-    steps:
-    - task: UseDotNet@2
-      inputs:
-        packageType: 'sdk'
-        version: '8.x'
-        installationPath: $(Agent.ToolsDirectory)/dotnet
+  - template: "./Pipelines/build.yml@self"
+    parameters:
+      stage: StageProvisionInfrastructureLogAnalytics
+      resource: "Log Analytics"
+      serviceConnection: "${{ parameters.serviceConnection }}"
+      rgName: "$(rgName)"
+      infraPath: "infra/loganalytics"
+      location: "$(location)"
+      owner: "$(owner)"
+      costCenter: "$(costCenter)"
+      application: "$(application)"
+      desc: "$(descp)"
+      repo: "$(repo)"
+      appShort: "$(appShort)"
+      domainShort: "$(domainShort)"
+      version: "$(version)"
+      env: "${{ parameters.environment }}"
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'restore'
-        projects: '**/*.csproj'
+  - template: "./Pipelines/azure_resources.yml@self"
+    parameters:
+      stage: StageProvisionInfrastructureDataFactory
+      dependsOn:
+        - StageProvisionInfrastructureLogAnalytics
+      condition: succeeded()
+      resource: "Data Factory"
+      serviceConnection: "${{ parameters.serviceConnection }}"
+      rgName: "$(rgName)"
+      infraPath: "infra/data-factory"
+      location: "$(location)"
+      owner: "$(owner)"
+      costCenter: "$(costCenter)"
+      application: "$(application)"
+      desc: "$(desc)"
+      repo: "$(repo)"
+      appShort: "$(appShort)"
+      domainShort: "$(domainShort)"
+      version: "$(version)"
+      env: "${{ parameters.environment }}"
 
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'build'
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration)'
-
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'custom'
-        custom: 'tool'
-        arguments: 'update --global dotnet-ef'
-      displayName: 'Intall Dotnet Ef Tools'
-
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'custom'
-        custom: 'ef'
-        arguments: 'migrations script --no-build --idempotent --context ApplicationDbContext --configuration $(buildConfiguration) --project $(databaseProjectLocation)/UniversityManagementBackend.Database.csproj --startup-project $(mainProjectLocation)/UniversityManagementBackend.API.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/universityBackendScript.sql'
-      displayName: 'Generate Migration Script' 
-
-    - task: DotNetCoreCLI@2
-      inputs:
-        command: 'publish'
-        projects: '**/*.csproj'
-        arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
-        zipAfterPublish: true
-
-    - publish: $(Build.ArtifactStagingDirectory)
-      artifact: drop
-
-- stage: Create_Ressource
-  displayName: Creating azure web resource for deploypment
-  dependsOn: Build
-  jobs:
-  - job: AppService
-    displayName: Create azure app service
-    steps:
-      - task: AzureCLI@2
-        inputs:
-          azureSubscription: 'Visual Studio Professional Subscription(0f7a3b62-c1a4-4aa9-97c3-3bf5f497b5ab)'
-          scriptType: 'batch'
-          scriptLocation: 'inlineScript'
-          inlineScript: |
-
-            # Create App Service Plan if it doesn't exist
-            az appservice plan show --name $(resourceGroup) --resource-group $(resourceGroup) > /dev/null 2>&1 || \
-            az appservice plan create --name $(planName) --resource-group $(resourceGroup) --sku B1
-            
-            # Create App Service if it doesn't exist
-            az webapp show --name $(appName) --resource-group $(resourceGroup) > /dev/null 2>&1 || \
-            az webapp create --name $(appName) -g $(resourceGroup) --plan $(planName) --runtime dotnet:8
-
-
-- stage: Deploy
-  dependsOn: Create_Ressource
-  jobs:
-  - deployment: DeployWebApp
-    environment: 'production'
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - download: current
-            artifact: drop
-
-          - task: UseDotNet@2
-            inputs:
-              packageType: 'sdk'
-              version: '8.x'
-              installationPath: $(Agent.ToolsDirectory)/dotnet
-
-          - task: AzureWebApp@1
-            inputs:
-              azureSubscription: 'Visual Studio Professional Subscription(0f7a3b62-c1a4-4aa9-97c3-3bf5f497b5ab)'
-              appType: 'webApp'
-              appName: $(appName)
-              resourceGroupName: $(resourceGroup)
-              package: '$(Pipeline.Workspace)/drop'
+  - template: "./Pipelines/deploy.yml@self"
+    parameters:
+      stage: StageProvisionInfrastructureDataFactory
+      dependsOn:
+        - StageProvisionInfrastructureLogAnalytics
+      condition: succeeded()
+      resource: "Data Factory"
+      serviceConnection: "${{ parameters.serviceConnection }}"
+      rgName: "$(rgName)"
+      infraPath: "infra/data-factory"
+      location: "$(location)"
+      owner: "$(owner)"
+      costCenter: "$(costCenter)"
+      application: "$(application)"
+      desc: "$(desc)"
+      repo: "$(repo)"
+      appShort: "$(appShort)"
+      domainShort: "$(domainShort)"
+      version: "$(version)"
+      env: "${{ parameters.environment }}"
