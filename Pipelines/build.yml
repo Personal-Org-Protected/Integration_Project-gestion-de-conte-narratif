@@ -3,7 +3,11 @@ parameters:
     type: string
   - name: application
     type: string
-  - name: repo
+  - name: apiProjectLocation
+    type: string
+  - name: dbProjectLocation
+    type: string
+  - name: buildConfig
     type: string
 
 stages:
@@ -26,7 +30,7 @@ stages:
         inputs:
           command: 'build'
           projects: '**/*.csproj'
-          arguments: '--configuration $(buildConfiguration)'
+          arguments: '--configuration $(buildConfig)'
 
       - task: DotNetCoreCLI@2
         inputs:
@@ -39,14 +43,14 @@ stages:
         inputs:
           command: 'custom'
           custom: 'ef'
-          arguments: 'migrations script --no-build --idempotent --context ApplicationDbContext --configuration $(buildConfiguration) --project $(databaseProjectLocation)/UniversityManagementBackend.Database.csproj --startup-project $(mainProjectLocation)/UniversityManagementBackend.API.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/universityBackendScript.sql'
+          arguments: 'migrations script --no-build --idempotent --context ApplicationDbContext --configuration $(buildConfig) --project $(databaseProjectLocation)/Infrastructure.csproj --startup-project $(mainProjectLocation)/StoryTellingApi.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/storyTellScript.sql'
         displayName: 'Generate Migration Script' 
 
       - task: DotNetCoreCLI@2
         inputs:
           command: 'publish'
           projects: '**/*.csproj'
-          arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+          arguments: '--configuration $(buildConfig) --output $(Build.ArtifactStagingDirectory)'
           zipAfterPublish: true
 
       - publish: $(Build.ArtifactStagingDirectory)
