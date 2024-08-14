@@ -50,11 +50,11 @@ stages:
 
       - task: AzurePowerShell@5
         inputs:
-          azureSubscription: $(connectionPrincipal)
+          azureSubscription: ${{ parameters.connectionPrincipal }}
           scriptType: filePath
           scriptPath: $(System.DefaultWorkingDirectory)/update-appsettings.ps1
           scriptArguments:
-            -filePath  "$(mainProjectLocation)/appsettings.json" `
+            -filePath  "${{ parameters.apiProjectLocation }}/appsettings.json" `
             -connectionString ${{ parameters.connectionString }} `
           azurePowerShellVersion: latestVersion
           pwsh: true
