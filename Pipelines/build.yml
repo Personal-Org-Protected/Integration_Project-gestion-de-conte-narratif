@@ -48,23 +48,22 @@ stages:
           arguments: 'update --global dotnet-ef'
         displayName: 'Intall Dotnet Ef Tools'
       
-      - task: AzurePowerShell@5
-        displayName: "Change settings"
-        inputs:
-          azureSubscription: ${{ parameters.connectionPrincipal }}
-          preferredAzurePowerShellVersion: "3.1.0"
-          ScriptType: "InlineScript"
-          workingDirectory: $(System.DefaultWorkingDirectory)
-          pwsh: true
-          Inline: |
-            Write-Host "Change of setting process...."
-            $pathToJson = "./src/StoryTellingApi/appsettings.json"
-            $a = Get-Content $pathToJson | ConvertFrom-Json
-            $a.ConnectionStrings.ConnectionSecurity = "${{ parameters.connectionString }}"
-            $a | ConvertTo-Json | set-content $pathToJson
+      # - task: AzurePowerShell@5
+      #   displayName: "Change settings"
+      #   inputs:
+      #     azureSubscription: ${{ parameters.connectionPrincipal }}
+      #     preferredAzurePowerShellVersion: "3.1.0"
+      #     ScriptType: "InlineScript"
+      #     workingDirectory: $(System.DefaultWorkingDirectory)
+      #     pwsh: true
+      #     Inline: |
+      #       Write-Host "Change of setting process...."
+      #       $pathToJson = "./src/StoryTellingApi/appsettings.json"
+      #       $a = Get-Content $pathToJson | ConvertFrom-Json
+      #       $a.ConnectionStrings.ConnectionSecurity = "${{ parameters.connectionString }}"
+      #       $a | ConvertTo-Json | set-content $pathToJson
 
-            Write-Host $a.ConnectionStrings
-            Write-Host "setting changed"
+      #       Write-Host "setting changed"
 
       - task: DotNetCoreCLI@2
         inputs:
