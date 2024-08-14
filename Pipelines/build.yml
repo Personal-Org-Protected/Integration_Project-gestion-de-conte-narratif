@@ -11,6 +11,8 @@ parameters:
     type: string
   - name: connectionString
     type: string
+  - name: connectionPrincipal
+    type: string
 
 
 stages:
@@ -48,7 +50,7 @@ stages:
 
       - task: AzurePowerShell@5
         inputs:
-          azureSubscription: my-arm-service-connection
+          azureSubscription: $(connectionPrincipal)
           scriptType: filePath
           scriptPath: $(System.DefaultWorkingDirectory)/update-appsettings.ps1
           scriptArguments:

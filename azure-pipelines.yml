@@ -41,6 +41,7 @@ stages:
       dbProjectLocation: "$(databaseProjectLocation)"
       buildConfig: "$(buildConfiguration)"
       connectionString: "$(connectionString)"
+      connectionPrincipal: "${{ parameters.serviceConnection }}"
 
   # - template: "./Pipelines/azure_resources.yml@self"
   #   parameters:
