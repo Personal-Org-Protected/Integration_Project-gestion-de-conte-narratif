@@ -63,14 +63,14 @@ stages:
             $a.ConnectionStrings.ConnectionSecurity = "${{ parameters.connectionString }}"
             $a | ConvertTo-Json | set-content $pathToJson
 
-            Write-Host $a.ConnectionStrings
+            Write-Host $a.ConnectionStrings.ConnectionSecurity
             Write-Host "setting changed"
 
       - task: DotNetCoreCLI@2
         inputs:
           command: 'custom'
           custom: 'ef'
-          arguments: 'migrations script --no-build --idempotent --context ApplicationDbContext --configuration $(buildConfig) --project $(databaseProjectLocation)/Infrastructure.csproj --startup-project $(mainProjectLocation)/StoryTellingApi.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/storyTellScript.sql'
+          arguments: 'migrations script --no-build --idempotent --configuration $(buildConfig) --project $(databaseProjectLocation)/Infrastructure.csproj --startup-project $(mainProjectLocation)/StoryTellingApi.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/storyTellScript.sql'
         displayName: 'Generate Migration Script' 
  
       - task: DotNetCoreCLI@2
