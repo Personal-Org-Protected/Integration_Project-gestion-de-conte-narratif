@@ -9,24 +9,32 @@ parameters:
     type: string
   - name: buildConfig
     type: string
+  - name: connectionString
+    type: string
+
+variables:
 
 stages:
   - stage: Build
     jobs:
     - job: Build
       steps:
+
       - task: UseDotNet@2
+        displayName: 'Initiate sdk version'
         inputs:
           packageType: 'sdk'
           version: '8.x'
           installationPath: $(Agent.ToolsDirectory)/dotnet
 
       - task: DotNetCoreCLI@2
+        displayName: 'Restore dependencies'
         inputs:
           command: 'restore'
           projects: '**/*.csproj'
 
       - task: DotNetCoreCLI@2
+        displayName: 'Build projects'
         inputs:
           command: 'build'
           projects: '**/*.csproj'
@@ -39,14 +47,26 @@ stages:
           arguments: 'update --global dotnet-ef'
         displayName: 'Intall Dotnet Ef Tools'
 
+      - task: AzurePowerShell@5
+        inputs:
+          azureSubscription: my-arm-service-connection
+          scriptType: filePath
+          scriptPath: $(System.DefaultWorkingDirectory)/update-appsettings.ps1
+          scriptArguments:
+            -filePath  $(mainProjectLocation)/appsettings.json `
+            -connectionString ${{ parameters.connectionString }} `
+          azurePowerShellVersion: latestVersion
+          pwsh: true
+
       - task: DotNetCoreCLI@2
         inputs:
           command: 'custom'
           custom: 'ef'
           arguments: 'migrations script --no-build --idempotent --context ApplicationDbContext --configuration $(buildConfig) --project $(databaseProjectLocation)/Infrastructure.csproj --startup-project $(mainProjectLocation)/StoryTellingApi.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/storyTellScript.sql'
         displayName: 'Generate Migration Script' 
-
+ 
       - task: DotNetCoreCLI@2
+        displayName: 'Publish artifact from build'
         inputs:
           command: 'publish'
           projects: '**/*.csproj'
