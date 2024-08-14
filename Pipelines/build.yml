@@ -49,7 +49,7 @@ stages:
         displayName: 'Intall Dotnet Ef Tools'
       
       - task: AzurePowerShell@5
-        displayName: "API connections"
+        displayName: "Change settings"
         inputs:
           azureSubscription: ${{ parameters.connectionPrincipal }}
           preferredAzurePowerShellVersion: "3.1.0"
@@ -63,6 +63,7 @@ stages:
             $a.ConnectionStrings.ConnectionSecurity = "${{ parameters.connectionString }}"
             $a | ConvertTo-Json | set-content $pathToJson
 
+            Write-Host $a
             Write-Host "setting changed"
 
       - task: DotNetCoreCLI@2
