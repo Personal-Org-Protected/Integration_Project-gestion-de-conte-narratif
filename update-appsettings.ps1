@@ -3,6 +3,7 @@ param (
     $connectionString
 )
 
+Write-Host "Change of setting process...."
 $pathToJson = "${filePath}"
 $a = Get-Content $pathToJson | ConvertFrom-Json
 $a.ConnectionStrings.ConnectionSecurity = "${connectionString}"
