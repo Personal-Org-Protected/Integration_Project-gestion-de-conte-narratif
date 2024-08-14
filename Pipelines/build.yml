@@ -12,7 +12,6 @@ parameters:
   - name: connectionString
     type: string
 
-variables:
 
 stages:
   - stage: Build
