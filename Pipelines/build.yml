@@ -63,7 +63,7 @@ stages:
             $a.ConnectionStrings.ConnectionSecurity = "${{ parameters.connectionString }}"
             $a | ConvertTo-Json | set-content $pathToJson
 
-            Write-Host $a
+            Write-Host $a.ConnectionStrings
             Write-Host "setting changed"
 
       - task: DotNetCoreCLI@2
