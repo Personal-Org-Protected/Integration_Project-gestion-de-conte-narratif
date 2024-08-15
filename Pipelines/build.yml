@@ -69,7 +69,7 @@ stages:
         inputs:
           command: 'custom'
           custom: 'ef'
-          arguments: 'migrations script --no-build --context ApplicationDbContext --idempotent --configuration ${{ parameters.buildConfig }} --project ./src/Infrastructure/Infrastructure.csproj --startup-project ./src/StoryTellingApi/StoryTellingApi.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/storyTellScript.sql'
+          arguments: 'migrations script  --context ApplicationDbContext --idempotent --configuration ${{ parameters.buildConfig }} --project ./src/Infrastructure/Infrastructure.csproj --startup-project ./src/StoryTellingApi/StoryTellingApi.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/storyTellScript.sql'
         displayName: 'Generate Migration Script' 
  
       - task: DotNetCoreCLI@2
