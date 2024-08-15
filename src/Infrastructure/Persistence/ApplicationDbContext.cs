@@ -17,14 +17,16 @@ namespace Infrastructure.Persistence
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
 
+        private IConfiguration _configuration;
         private bool disposed = false;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
             : base(options)
         {
             ChangeTracker.QueryTrackingBehavior =
             QueryTrackingBehavior.NoTracking;
             this.ChangeTracker.LazyLoadingEnabled = false;
+            _configuration = configuration;
         }
 
         public ApplicationDbContext()
@@ -34,13 +36,13 @@ namespace Infrastructure.Persistence
             this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    if (!optionsBuilder.IsConfigured)
-        //    {
-        //        optionsBuilder.UseSqlServer("Server=WP4163;Database=StoryTelling;User Id=StoryTell_user;Password=Mouhsine1998*;Integrated Security=true;Trusted_Connection=True;TrustServerCertificate=True");
-        //    }
-        //}
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ConnectionSecurity")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            }
+        }
 
         /// <summary>
         /// cette partier n'est plsu necessaire le boulot est passé à l'unit of work
