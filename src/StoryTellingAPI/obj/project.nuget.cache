@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "RkxyLJ7fuM9uDa0XRP3yTLVvt350Ctx8XnVpKUNPGoo0aL22N4oW4eE5lXcNd4vx+AwrV4mD2I0xBzZbbKHdbw==",
+  "dgSpecHash": "xfcRzwf5TJ5Jx8n/7egZEgUBAvM3B5II1Z/2tX8+edEJOgBgSLZK937kM/hniyMt2H8HDvXlrmDOEXCPjRl11g==",
   "success": true,
-  "projectFilePath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\SearchImage\\StoryTellingApi.csproj",
+  "projectFilePath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\StoryTellingApi\\StoryTellingApi.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MAICQ97\\.nuget\\packages\\automapper\\13.0.1\\automapper.13.0.1.nupkg.sha512",
     "C:\\Users\\MAICQ97\\.nuget\\packages\\azure.core\\1.38.0\\azure.core.1.38.0.nupkg.sha512",

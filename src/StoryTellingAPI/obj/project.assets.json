@@ -6144,11 +6144,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\SearchImage\\StoryTellingApi.csproj",
+      "projectUniqueName": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\StoryTellingApi\\StoryTellingApi.csproj",
       "projectName": "StoryTellingApi",
-      "projectPath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\SearchImage\\StoryTellingApi.csproj",
+      "projectPath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\StoryTellingApi\\StoryTellingApi.csproj",
       "packagesPath": "C:\\Users\\MAICQ97\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\SearchImage\\obj\\",
+      "outputPath": "C:\\Users\\MAICQ97\\source\\repos\\StoryTelling_BackEnd\\Integration_Project-gestion-de-conte-narratif\\src\\StoryTellingApi\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\MAICQ97\\AppData\\Roaming\\NuGet\\NuGet.Config",
