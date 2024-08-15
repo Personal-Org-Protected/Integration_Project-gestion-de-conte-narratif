@@ -4,6 +4,7 @@ using Domain.Identity;
 using Infrastructure.Persistence.DataConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,13 +34,13 @@ namespace Infrastructure.Persistence
             this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-                optionsBuilder.UseSqlServer("Server=WP4163;Database=StoryTelling;User Id=StoryTell_user;Password=Mouhsine1998*;Integrated Security=true;Trusted_Connection=True;TrustServerCertificate=True");
-            }
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    if (!optionsBuilder.IsConfigured)
+        //    {
+        //        optionsBuilder.UseSqlServer("Server=WP4163;Database=StoryTelling;User Id=StoryTell_user;Password=Mouhsine1998*;Integrated Security=true;Trusted_Connection=True;TrustServerCertificate=True");
+        //    }
+        //}
 
         /// <summary>
         /// cette partier n'est plsu necessaire le boulot est passé à l'unit of work

@@ -20,10 +20,11 @@ namespace Infrastructure.DependencyInjections
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
         {
-            var sqlString = new SqlConnectionStringBuilder(configuration.GetConnectionString("ConnectionSecurity"))
-            {
-                Password= Environment.GetEnvironmentVariable("StoryTell_DB_Password")
-        }.ConnectionString;
+            string sqlString = "Server=WP4163;Database=StoryTelling;User Id=StoryTell_user;Password=Mouhsine1998*;Integrated Security=true;Trusted_Connection=True;TrustServerCertificate=True";
+        //    var sqlString = new SqlConnectionStringBuilder(configuration.GetConnectionString("ConnectionSecurity"))
+        //    {
+        //        Password= Environment.GetEnvironmentVariable("StoryTell_DB_Password")
+        //}.ConnectionString;
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
             services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlServer(
