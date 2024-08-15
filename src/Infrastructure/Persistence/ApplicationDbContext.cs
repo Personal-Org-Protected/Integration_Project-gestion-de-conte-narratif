@@ -115,12 +115,8 @@ namespace Infrastructure.Persistence
             builder.ApplyConfiguration(new NotificationsEntityTypeConfiguration());
             builder.ApplyConfiguration(new RatingEntityTypeConfiguration());
             builder.ApplyConfiguration(new UserIdentityTypeConfiguration());
-        }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            base.OnConfiguring(optionsBuilder);
-            optionsBuilder.UseSqlServer("Server=WP4163;Database=StoryTelling;User Id=StoryTell_user;Password=Mouhsine1998*;Integrated Security=true;Trusted_Connection=True;TrustServerCertificate=True");
+
         }
 
     }
