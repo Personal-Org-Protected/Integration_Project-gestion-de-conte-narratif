@@ -48,7 +48,6 @@ namespace Infrastructure.Persistence
         /// cette partier n'est plsu necessaire le boulot est passé à l'unit of work
         /// </summary>
         public DbSet<Image> Images { get; set; }
-
         public DbSet<Story> Stories { get; set; }
         public DbSet<Tag> Tag { get; set; }
         public DbSet<StoryTelling> StoryTellings { get; set; }
