@@ -8,7 +8,7 @@ using Microsoft.Identity.Web.Resource;
 
 namespace SearchImage.Controllers
 {
-    [Authorize(AuthenticationSchemes = "BearerAdmin", Policy = "AdminAcces")]
+    [Authorize("AdminAccess")]
     [ApiVersion("2.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
@@ -19,8 +19,6 @@ namespace SearchImage.Controllers
         [HttpDelete("{user_id}")]
         public async Task<ActionResult<Result>> PostResiliserAsync(string user_id)//modified
         {
-            string[] scopeRequiredByApi = ["access_as_user","access_as_admin"];
-            HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
             return await Mediator.Send(new UseCase_SupprimerUtilisateur(user_id));
         }
 

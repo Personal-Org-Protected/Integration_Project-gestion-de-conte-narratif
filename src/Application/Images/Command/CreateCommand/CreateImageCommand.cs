@@ -4,12 +4,14 @@ using Application.Common.Models;
 using Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using Polly;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Net;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Application.Images.Command.CreateCommand
@@ -35,8 +37,11 @@ namespace Application.Images.Command.CreateCommand
         }
         public async Task<Result> Handle(CreateImageCommand request, CancellationToken cancellationToken)
         {
-            var user_id=_user.getUserId();
+            var user_id = "testUser";//_user.getUserId();
             var tag = await getDefaultTag(request.IdTag);
+
+            bool isAlready = await ImageAlreadyExist(user_id, request.Uri, cancellationToken);
+            if (isAlready) { return Result.Failure("Action Failed : image already exist", new List<string>()); }
             //var format = request.Uri[request.Uri.LastIndexOf('.')..];
             var entity = new Image()
             {
@@ -74,6 +79,12 @@ namespace Application.Images.Command.CreateCommand
                 .FindAsync(idTag);
             tag.numberRef++;
             _context.Tag.Update(tag);
+        }
+
+        private async Task<bool> ImageAlreadyExist(string user_id, string uri, CancellationToken cancellationToken)
+        {
+            return !await _context.Images
+                            .AnyAsync(t => t.Uri == uri, cancellationToken);
         }
     }
 

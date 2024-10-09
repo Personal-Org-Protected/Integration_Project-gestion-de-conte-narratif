@@ -12,6 +12,18 @@
   <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <SourceRoot Include="C:\Users\MAICQ97\.nuget\packages\" />
   </ItemGroup>
+  <ItemGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
+    <None Include="$(NuGetPackageRoot)nsfwspy\3.5.0\contentFiles\any\netcoreapp2.0\NsfwSpyModel.zip" Condition="Exists('$(NuGetPackageRoot)nsfwspy\3.5.0\contentFiles\any\netcoreapp2.0\NsfwSpyModel.zip')">
+      <NuGetPackageId>NsfwSpy</NuGetPackageId>
+      <NuGetPackageVersion>3.5.0</NuGetPackageVersion>
+      <NuGetItemType>None</NuGetItemType>
+      <Pack>false</Pack>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <TargetPath>NsfwSpyModel.zip</TargetPath>
+      <Private>True</Private>
+      <Link>NsfwSpyModel.zip</Link>
+    </None>
+  </ItemGroup>
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.7\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props" Condition="Exists('$(NuGetPackageRoot)microsoft.entityframeworkcore\8.0.7\buildTransitive\net8.0\Microsoft.EntityFrameworkCore.props')" />
   </ImportGroup>

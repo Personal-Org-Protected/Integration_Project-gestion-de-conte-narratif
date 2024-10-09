@@ -11,7 +11,7 @@ using Microsoft.Identity.Web;
 namespace SearchImage.Controllers
 {
     [ApiVersion("1.0")]
-    [Authorize(AuthenticationSchemes = "Bearer")]
+    //[Authorize(AuthenticationSchemes = "Bearer")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]

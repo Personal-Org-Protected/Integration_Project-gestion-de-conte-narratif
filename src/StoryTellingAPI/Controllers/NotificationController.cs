@@ -40,7 +40,7 @@ namespace SearchImage.Controllers
             return await Mediator.Send(adminSendMessage);
         }
 
-        [Authorize("UserAccess")]//utilisable seulment en interne dans l'applicatif
+        [Authorize("ReadContent")]//utilisable seulment en interne dans l'applicatif
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateNotificationCommand createNotification)
         {
@@ -48,7 +48,7 @@ namespace SearchImage.Controllers
         }
 
 
-        [Authorize("NotificationAccess")]
+        [Authorize("ReadContent")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Result>> Put(int id,[FromQuery]UpdateNotificationCommand updateNotification)
         {
@@ -61,7 +61,7 @@ namespace SearchImage.Controllers
 
 
 
-        [Authorize("NotificationAccess")]
+        [Authorize("ReadContent")]
         [HttpDelete("/{id}")]
         public async Task<ActionResult<Result>> Delete2(int id)
         {

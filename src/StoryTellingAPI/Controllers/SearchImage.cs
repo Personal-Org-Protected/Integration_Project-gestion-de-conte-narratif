@@ -12,14 +12,14 @@ using Microsoft.AspNetCore.Mvc;
 namespace SearchImage.Controllers
 {
 
-    [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class SearchImage : ApiController
     {
 
-        [Authorize("Read-author")]
+        [Authorize("AuthorAccess")]
         [HttpGet]
         public async Task<ActionResult<PaginatedItems<ImageDto>>> Get([FromQuery] GetImageByOwnerQueries imageByOwnerQueries)//modified
         {
@@ -51,6 +51,18 @@ namespace SearchImage.Controllers
         {
            return  await Mediator.Send(createImageCommand);
         }
+
+        //[HttpPost("upload")]
+        //public async Task<IActionResult> UploadImage([FromForm] IFormFile imageFile, [FromBody] string description, [FromQuery] int idTag )
+        //{
+        //    if (imageFile == null || imageFile.Length == 0)
+        //    {
+        //        return BadRequest("No file was uploaded.");
+        //    }
+        //    await Mediator.Send(new CreateImageByDropFileCommand(imageFile,description,idTag));
+        //    // Return success message
+        //    return Ok(new { message = "File uploaded successfully!" });
+        //}
 
 
         [Authorize("AuthorAccess")]

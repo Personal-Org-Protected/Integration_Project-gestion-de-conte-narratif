@@ -1,5 +1,6 @@
 ﻿using Application.Common.Models;
 using Application.UserCases.UserLambda.Command;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,6 +8,7 @@ namespace SearchImage.Controllers
 {
     [ApiVersion("2.0")]
     [Produces("application/json")]
+    [Authorize("ReadContent")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class UseCaseUserController : ApiController

@@ -5,6 +5,8 @@ using LogginLibrary;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.Identity.Web;
@@ -12,6 +14,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Polly;
 using SearchImage.Filters;
+using Swashbuckle.AspNetCore.Filters;
 using System.Reflection;
 using System.Text;
 
@@ -33,7 +36,7 @@ builder.Services.AddApiVersioning(options =>
 {
     options.AssumeDefaultVersionWhenUnspecified = true;
     options.ReportApiVersions = true;
-    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(1,0);
+    options.DefaultApiVersion = new Microsoft.AspNetCore.Mvc.ApiVersion(2,1);
 });
 
 
@@ -98,6 +101,7 @@ builder.Services.AddSwaggerGen(opt =>
             Type = ReferenceType.SecurityScheme
         }
     };
+    opt.OperationFilter<SecurityRequirementsOperationFilter>();
     opt.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
     opt.AddSecurityRequirement(new OpenApiSecurityRequirement
         {
@@ -124,7 +128,10 @@ builder.Services.AddCors(option =>
                       policy =>
                       {
                           policy
-                          .AllowAnyOrigin()
+                          .WithOrigins(new string[]
+                          {
+                              configuration["CorsPolicy:Default:uri:Angular"]
+                          })
                           .AllowAnyHeader()
                           .AllowAnyMethod();
                       });
@@ -145,79 +152,36 @@ builder.Services.AddControllers(options =>
     options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status500InternalServerError));
     options.Filters.Add(new ProducesResponseTypeAttribute(StatusCodes.Status401Unauthorized));
     options.ReturnHttpNotAcceptable = true;
-
-    var policy = new AuthorizationPolicyBuilder()
-            .RequireAuthenticatedUser()
-            // .RequireClaim("email") // disabled this to test with users that have no email (no license added)
-            .Build();
-    options.Filters.Add(new AuthorizeFilter(policy));
 });
 
-builder
-    .Services.AddFluentValidationAutoValidation()
-    .AddFluentValidationClientsideAdapters();
 
+//builder.Services.Configure<IdentityOptions>(options =>
+//{
+//    options.SignIn.RequireConfirmedEmail = true;
+//});
 
-builder.Services.AddMicrosoftIdentityWebApiAuthentication(
-        configuration, "AzureB2CUserApi");
-builder.Services.AddMicrosoftIdentityWebApiAuthentication(
-    configuration, "AzureB2CAdminApi", "BearerAdmin");
-
+//builder.Services.AddTransient<IEmailSender, EmailSender>();
 
 
 //authentification configuration
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//})
-//  .AddMicrosoftIdentityWebApi(options =>
-//{
-//    builder.Configuration.Bind("AzureAdB2C", options);
-//    options.Authority = configuration["Azure:Issuer"];
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidIssuer = configuration["Azure:Issuer"],
-//        ValidAudiences = new List<string>
-//        {
-//            configuration["Azure:Audience"],
-//            configuration["AzureAdB2C:ClientId"]
-//        },
-//    };
-//}, options => { builder.Configuration.Bind("AzureAdB2C", options); });
-
-//builder.Services.AddAuthorization(options =>
-//{
-//    options.AddPolicy("default", pol => pol.RequireAuthenticatedUser());
-//    options.DefaultPolicy = options.GetPolicy("default");
-//    options.AddPolicy("ReadContent", pol =>
-//                                            {
-//                                                pol.RequireScope(new[]
-//                                                {
-//                                                    "read:item"
-//                                                });
-//                                            });
-//});
-
-//}).AddJwtBearer(options =>
-//{//using jwt bearer configuration
-//    options.Authority = configuration["Auth0:Authority"];
-//    //options.Audience = configuration["Auth0:Audience:MyApi"];
-//    options.TokenValidationParameters = new TokenValidationParameters//modfied
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidAudiences = new List<string>
-//        {
-//            configuration["Auth0:Audience:MyApi"],
-//            configuration["Auth0:Audience:NativeApi"]
-//        }
-//    };
-//});
-
-
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{//using jwt bearer configuration
+    options.Authority = configuration["Auth0:Authority"];
+    // options.Audience = configuration["Auth0:Audience:MyApi"];
+    options.TokenValidationParameters = new TokenValidationParameters//modfied
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidAudiences = new List<string>
+        {
+            configuration["Auth0:Audience:MyApi"],
+}
+    };
+});
 var app = builder.Build();
 
 
@@ -227,7 +191,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(opt=>opt.SwaggerEndpoint("/swagger/v2/swagger.json", "Api_StoryTelling v2"));
 }
-
+//app.MapIdentityApi<IdentityUser>();
 app.UseHttpsRedirection();
 
 app.UseCors(configuration["CorsPolicy:Default:name"]);
