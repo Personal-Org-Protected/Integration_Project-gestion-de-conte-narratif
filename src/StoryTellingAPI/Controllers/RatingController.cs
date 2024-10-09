@@ -8,14 +8,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace SearchImage.Controllers
 {
-    [Authorize("UserAccess")]
+    [Authorize("ReadContent")]
     [ApiVersion("1.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     public class RatingController : ApiController 
     {
-        [Authorize("ReadContent")]
         [HttpGet("{id}")]
         public async Task<ActionResult<AlreadyRated>> Get(int id)//modified
         {
@@ -23,7 +22,6 @@ namespace SearchImage.Controllers
         }
 
 
-        [Authorize("UserAccess")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateRatingInfoCommand createRatingInfoCommand)//modified
         {
@@ -31,7 +29,6 @@ namespace SearchImage.Controllers
         }
 
 
-        [Authorize("UserAccess")]
         [HttpPut("{id}")]
         public async Task<ActionResult<Result>> Update(int id, UpdateRatingInfoCommand updateRatingInfoCommand)
         {

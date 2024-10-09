@@ -1,5 +1,6 @@
 ﻿using Application.Common.Models;
 using Application.UserCases.Author.Command;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace SearchImage.Controllers
     [ApiVersion("2.0")]
     [Produces("application/json")]
     [Route("api/v{version:apiVersion}/[controller]")]
+    [Authorize("AuthorAccess")]
     [ApiController]
     public class UseCaseAuthorController : ApiController
     {

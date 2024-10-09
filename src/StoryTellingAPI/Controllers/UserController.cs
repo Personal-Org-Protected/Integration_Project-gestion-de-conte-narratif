@@ -21,7 +21,7 @@ namespace SearchImage.Controllers
     [ApiController]
     public class UserController : ApiController
     {
-        [Authorize(AuthenticationSchemes = "BearerAdmin", Policy = "AdminAcces")]
+        [Authorize("AdminAcces")]
         [HttpGet]
         public async Task<PaginatedItems<UserDisplay>> GetAsync([FromQuery] GetUserQueries getUserQueries)
         {
@@ -67,14 +67,14 @@ namespace SearchImage.Controllers
 
 
 
-        [Authorize("UpdateUser")]
+        [Authorize("readContent")]
         [HttpPut]
         public async Task<ActionResult<Result>> UpdateAsync(UpdateUserCommand updateUserCommand)//modified
         {
             return  await Mediator.Send(updateUserCommand);
         }
 
-        [Authorize("UpdateUser")]
+        [Authorize("readContent")]
         [HttpPut("avatar")]
         public async Task<ActionResult<Result>> UpdateAsync(ModifyAvatarCommand updateUserCommand)//modified
         {

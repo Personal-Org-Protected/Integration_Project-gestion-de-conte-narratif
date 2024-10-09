@@ -15,7 +15,7 @@ namespace SearchImage.Controllers
     public class LibraryController : ApiController
     {
         //native
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpGet]
         public async Task<LibrariesDto> GetByOwner()//modified
         {

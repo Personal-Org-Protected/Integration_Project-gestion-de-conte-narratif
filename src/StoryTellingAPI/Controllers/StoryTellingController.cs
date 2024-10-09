@@ -38,7 +38,7 @@ namespace SearchImage.Controllers
             return await Mediator.Send(new StoryHasBeenBoughtQueries(id));
         }
 
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpGet("AlreadyBought/{id}")]
         public async Task<ActionResult<HasBeenBoughtDto>> get(int id)
         {
@@ -46,7 +46,7 @@ namespace SearchImage.Controllers
         }
 
 
-        [Authorize("Read-author")]
+        [Authorize("AuthorAccess")]
         [HttpGet("user")]
         public async Task<PaginatedItems<StoryTellingDto>> Get([FromQuery] int pgNumber,[FromQuery] int idTag)//modified
         {
@@ -54,7 +54,7 @@ namespace SearchImage.Controllers
         }
 
 
-       [Authorize("UserAccess")]
+       [Authorize("ReadContent")]
         [HttpGet("Store")]
         public async Task<PaginatedItems<FacadeDto>> GetStore([FromQuery] StoreWindowQueries storeWindowQueries)//modified
         {
@@ -71,7 +71,7 @@ namespace SearchImage.Controllers
 
 
 
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpGet("facade/{id}")]
         public async Task<FacadeDto> Get1(int id)//modified
         {
@@ -99,14 +99,14 @@ namespace SearchImage.Controllers
         }
 
 
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpPut("haveBeenBought/{id}")]
         public async Task<ActionResult<Result>> Put(int id)
         {
             return await Mediator.Send(new StoryHaveBeenBoughtCommand(id));
         }
 
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpPut("Rating/{id}")]
         public async Task<ActionResult<Result>> Put2(int id)
         {
@@ -114,7 +114,7 @@ namespace SearchImage.Controllers
         }
 
 
-        [Authorize("Read-author")]
+        [Authorize("AuthorAccess")]
         [HttpPut("Finish/{id}")]
         public async Task<ActionResult<Result>> Put3(int id)
         {

@@ -1,0 +1,84 @@
+parameters:
+  - name: stage
+    type: string
+  - name: application
+    type: string
+  - name: apiProjectLocation
+    type: string
+  - name: dbProjectLocation
+    type: string
+  - name: buildConfig
+    type: string
+  - name: connectionString
+    type: string
+  - name: connectionPrincipal
+    type: string
+
+
+stages:
+  - stage: Build
+    jobs:
+    - job: Build
+      steps:
+
+      - task: UseDotNet@2
+        displayName: 'Initiate sdk version'
+        inputs:
+          packageType: 'sdk'
+          version: '8.x'
+          installationPath: $(Agent.ToolsDirectory)/dotnet
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Restore dependencies'
+        inputs:
+          command: 'restore'
+          projects: '**/*.csproj'
+
+      - task: DotNetCoreCLI@2
+        displayName: 'Build projects'
+        inputs:
+          command: 'build'
+          projects: '**/*.csproj'
+          arguments: '--configuration ${{ parameters.buildConfig }}'
+
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'custom'
+          custom: 'tool'
+          arguments: 'update --global dotnet-ef'
+        displayName: 'Intall Dotnet Ef Tools'
+      
+      # - task: AzurePowerShell@5
+      #   displayName: "Change settings"
+      #   inputs:
+      #     azureSubscription: ${{ parameters.connectionPrincipal }}
+      #     preferredAzurePowerShellVersion: "3.1.0"
+      #     ScriptType: "InlineScript"
+      #     workingDirectory: $(System.DefaultWorkingDirectory)
+      #     pwsh: true
+      #     Inline: |
+      #       Write-Host "Change of setting process...."
+      #       $pathToJson = "./src/StoryTellingApi/appsettings.json"
+      #       $a = Get-Content $pathToJson | ConvertFrom-Json
+      #       $a.ConnectionStrings.ConnectionSecurity = "${{ parameters.connectionString }}"
+      #       $a | ConvertTo-Json | set-content $pathToJson
+
+      #       Write-Host "setting changed"
+
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'custom'
+          custom: 'ef'
+          arguments: 'migrations script  --context ApplicationDbContext --no-build --idempotent --configuration ${{ parameters.buildConfig }} --project src/Infrastructure/Infrastructure.csproj --startup-project src/StoryTellingApi/StoryTellingApi.csproj --output  $(Build.ArtifactStagingDirectory)/Migrations/storyTellScript.sql'
+        displayName: 'Generate Migration Script' 
+ 
+      - task: DotNetCoreCLI@2
+        displayName: 'Publish artifact from build'
+        inputs:
+          command: 'publish'
+          projects: '**/*.csproj'
+          arguments: '--configuration ${{ parameters.buildConfig }} --output $(Build.ArtifactStagingDirectory)'
+          zipAfterPublish: true
+
+      - publish: $(Build.ArtifactStagingDirectory)
+        artifact: drop

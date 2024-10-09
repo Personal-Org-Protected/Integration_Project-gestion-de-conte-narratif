@@ -17,7 +17,7 @@ namespace SearchImage.Controllers
     public class StoryBoxController : ApiController
     {
         //native
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpGet]
         public async Task<PaginatedItems<StoryBoxesDto>> Get([FromQuery] GetStoryBoxByUserQueries getStoryTellingQueries)
         {
@@ -25,28 +25,28 @@ namespace SearchImage.Controllers
         }
 
    
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpGet("{id}")]
         public async Task<StoryBoxesDto> Get(int id)
         {
             return await Mediator.Send(new GetStoryBoxByIdQueries(id));
         }
 
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpGet("facade")]
         public async Task<PaginatedItems<ChapterFacadeDto>> Get([FromQuery]GetChapitresFacadeQueries getChapitresFacade)
         {
             return await Mediator.Send(getChapitresFacade);
         }
 
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpGet("read")]
         public async Task<ChapterDto> Get([FromQuery]GetStoryBoxeReadQueries getStoryBoxeRead)
         {
             return await Mediator.Send(getStoryBoxeRead);
         }
 
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpPost]
         public async Task<ActionResult<Result>> Post(CreateStoryBoxAfterTransactionCommand createStoryTelling)//modified
         {
@@ -54,7 +54,7 @@ namespace SearchImage.Controllers
         }
 
         //native
-        [Authorize("UserAccess")]
+        [Authorize("ReadContent")]
         [HttpPut("Stop-Reading/{id}/{order}")]
         public async Task<ActionResult<Result>> Put(int id,  int order)
         {

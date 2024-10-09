@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 namespace Application.Users.Command.CreateCommand
 {
 
-    public record CreateUserCommand(string user_id,string email, string username,string b2cObjId, string userRole) : IRequest<Result>;
+    public record CreateUserCommand(string user_id) : IRequest<Result>;
 
 
     public class CreateUserCommandResponseHandler : IRequestHandler<CreateUserCommand, Result>
@@ -31,11 +31,7 @@ namespace Application.Users.Command.CreateCommand
             var entity = new User()
             {
                 user_id = request.user_id,
-                email = request.email,
-                username = request.username,
                 avatar="",
-                userRole = request.userRole,
-                b2cObjId =request.b2cObjId
             };
             await _context.Users.AddAsync(entity);
             var result= await _context.SaveChangesAsync(cancellationToken);

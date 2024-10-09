@@ -13,7 +13,7 @@ namespace SearchImage.Controllers
     [ApiController]
     public class BasketController : ApiController
     {
-        [Authorize("BasketAccess")]
+        [Authorize("ReadContent")]
         [HttpGet]
         public async Task<BasketDto> Get()
         {

@@ -4,6 +4,7 @@ using Domain.Identity;
 using Infrastructure.Persistence.DataConfiguration;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,14 +17,16 @@ namespace Infrastructure.Persistence
     public class ApplicationDbContext : DbContext, IApplicationDbContext
     {
 
+        private IConfiguration _configuration;
         private bool disposed = false;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, IConfiguration configuration)
             : base(options)
         {
             ChangeTracker.QueryTrackingBehavior =
             QueryTrackingBehavior.NoTracking;
             this.ChangeTracker.LazyLoadingEnabled = false;
+            _configuration = configuration;
         }
 
         public ApplicationDbContext()
@@ -33,11 +36,18 @@ namespace Infrastructure.Persistence
             this.ChangeTracker.LazyLoadingEnabled = false;
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(_configuration.GetConnectionString("ConnectionSecurity")).UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            }
+        }
+
         /// <summary>
         /// cette partier n'est plsu necessaire le boulot est passé à l'unit of work
         /// </summary>
         public DbSet<Image> Images { get; set; }
-
         public DbSet<Story> Stories { get; set; }
         public DbSet<Tag> Tag { get; set; }
         public DbSet<StoryTelling> StoryTellings { get; set; }
