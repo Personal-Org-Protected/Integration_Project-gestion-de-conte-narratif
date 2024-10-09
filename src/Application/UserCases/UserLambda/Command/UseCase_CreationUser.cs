@@ -67,8 +67,6 @@ namespace Application.UserCases.UserLambda.Command
             var entity = new User()
             {
                 user_id = user_id,
-                email = email,
-                username = username,
                 avatar = ""
             };
             await _context.Users.AddAsync(entity);
